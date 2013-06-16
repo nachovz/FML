@@ -1,19 +1,27 @@
 package ve.com.fml.learning.classifier;
 
 import ve.com.fml.model.fuzzy.FuzzyInstances;
-import weka.classifiers.trees.J48;
+import ve.com.fml.model.fuzzy.distance.FuzzyDistance;
+import weka.classifiers.lazy.IBk;
 import weka.core.Instances;
 
-/**
- * Un árbol de decisión difuso basado en C4.5
- * */
-public class FuzzyDT extends J48{
+public class FuzzyKnn extends IBk{
 
+	
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	FuzzyDistance fd;
 
+	public FuzzyKnn(){
+		super();
+	}
+	
+	public FuzzyKnn(int k) {
+		super(k);
+	}
+	
 	@Override
 	public String getRevision() {
 		// TODO Auto-generated method stub
@@ -22,9 +30,9 @@ public class FuzzyDT extends J48{
 
 	@Override
 	public void buildClassifier(Instances arg0) throws Exception {
-		FuzzyInstances fuzzyInstances = (FuzzyInstances) arg0;
-		Instances instances = FuzzyInstances.getFuzzifiedInstances(fuzzyInstances);
-		super.buildClassifier(instances);
+		fd = new FuzzyDistance((FuzzyInstances) arg0);
+		this.getNearestNeighbourSearchAlgorithm().setDistanceFunction(fd);
+		super.buildClassifier(arg0);
 	}
-	
+
 }

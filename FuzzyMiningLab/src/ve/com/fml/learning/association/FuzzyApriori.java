@@ -1,30 +1,25 @@
-package ve.com.fml.learning.classifier;
+package ve.com.fml.learning.association;
 
 import ve.com.fml.model.fuzzy.FuzzyInstances;
-import weka.classifiers.trees.J48;
+import weka.associations.Apriori;
 import weka.core.Instances;
 
-/**
- * Un árbol de decisión difuso basado en C4.5
- * */
-public class FuzzyDT extends J48{
+public class FuzzyApriori extends Apriori{
 
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	@Override
 	public String getRevision() {
-		// TODO Auto-generated method stub
-		return "Test revision";
-	}
-
-	@Override
-	public void buildClassifier(Instances arg0) throws Exception {
-		FuzzyInstances fuzzyInstances = (FuzzyInstances) arg0;
-		Instances instances = FuzzyInstances.getFuzzifiedInstances(fuzzyInstances);
-		super.buildClassifier(instances);
+		return "Test Revision";
 	}
 	
+	@Override
+	public void buildAssociations(Instances arg0) throws Exception {
+		FuzzyInstances fuzzyInstances = (FuzzyInstances) arg0;
+		Instances instances = FuzzyInstances.getFuzzifiedInstances(fuzzyInstances);
+		super.buildAssociations(instances);
+	}
 }

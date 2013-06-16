@@ -1,4 +1,4 @@
-package ve.com.fml.model.fuzzy;
+package ve.com.fml.model.fuzzy.membership;
 
 public class SingletonFuzzyMembership extends FuzzyMembership {
 
