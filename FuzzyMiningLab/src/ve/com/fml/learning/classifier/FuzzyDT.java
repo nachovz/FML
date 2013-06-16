@@ -23,7 +23,7 @@ public class FuzzyDT extends J48{
 	@Override
 	public void buildClassifier(Instances arg0) throws Exception {
 		FuzzyInstances fuzzyInstances = (FuzzyInstances) arg0;
-		Instances instances = FuzzyInstances.getFuzzifiedInstances(fuzzyInstances);
+		Instances instances = fuzzyInstances.getFuzzifiedInstances();
 		super.buildClassifier(instances);
 	}
 	

@@ -15,6 +15,16 @@ public class FuzzyKMeans extends SimpleKMeans {
 	private static final long serialVersionUID = 1L;
 	FuzzyDistance fd;
 	
+	public FuzzyKMeans(int k){
+		super();
+		try {
+			setNumClusters(k);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public String getRevision() {
 		// TODO Auto-generated method stub

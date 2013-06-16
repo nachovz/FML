@@ -19,7 +19,7 @@ public class FuzzyApriori extends Apriori{
 	@Override
 	public void buildAssociations(Instances arg0) throws Exception {
 		FuzzyInstances fuzzyInstances = (FuzzyInstances) arg0;
-		Instances instances = FuzzyInstances.getFuzzifiedInstances(fuzzyInstances);
+		Instances instances = fuzzyInstances.getFuzzifiedInstances();
 		super.buildAssociations(instances);
 	}
 }

@@ -1,5 +1,6 @@
 package ve.com.fml.model.fuzzy;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import weka.core.Attribute;
@@ -21,6 +22,7 @@ public class FuzzyInstances extends Instances {
 	
 	public FuzzyInstances(Instances arg0) {
 		super(arg0);
+		membership = new HashMap<Integer, FuzzyVariable>();
 	}
 
 	public Map<Integer,FuzzyVariable> getMembership() {
@@ -35,19 +37,19 @@ public class FuzzyInstances extends Instances {
 	 * Genera un conjunto de datos difusificado en el cual cada atributo marcado como difuso es reemplazado por
 	 * la etiqueta relativa al conjunto difuso para el cual la instancia tiene el mayor grado de pertenencia
 	 * */
-	public static Instances getFuzzifiedInstances(FuzzyInstances fuzzyInstances){
-		Instances fuzzyfied = new Instances(fuzzyInstances);
-		Map<Integer,FuzzyVariable> fuzzyVars = fuzzyInstances.getMembership();
+	public Instances getFuzzifiedInstances(){
+		Instances fuzzyfied = new Instances(this);
+		Map<Integer,FuzzyVariable> fuzzyVars = getMembership();
 		int numInstances = fuzzyfied.numInstances();
 		for (Integer attrIndex : fuzzyVars.keySet()) {
-			Attribute oldAttr = fuzzyInstances.attribute(attrIndex);
-			Attribute newAttr = new Attribute(oldAttr.name(),Attribute.STRING);
+			Attribute oldAttr = attribute(attrIndex);
+			Attribute newAttr = new Attribute(oldAttr.name(),Attribute.NOMINAL);
 			fuzzyfied.insertAttributeAt(newAttr, attrIndex);
 			String newLabel = null;
 			FuzzyVariable fV = fuzzyVars.get(attrIndex);
 			
 			for(int i = 0; i < numInstances; i++){
-				newLabel = fV.getHighestMembershipSet(fuzzyInstances.instance(i).value(newAttr));
+				newLabel = fV.getHighestMembershipSet(instance(i).value(newAttr));
 				fuzzyfied.instance(i).setValue(newAttr, newLabel);
 			}
 		}
