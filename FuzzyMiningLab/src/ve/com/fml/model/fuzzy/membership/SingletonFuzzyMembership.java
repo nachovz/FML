@@ -2,6 +2,10 @@ package ve.com.fml.model.fuzzy.membership;
 
 public class SingletonFuzzyMembership extends FuzzyMembership {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private double x;
 	private double epsilon = 0.0001;
 	
@@ -19,6 +23,11 @@ public class SingletonFuzzyMembership extends FuzzyMembership {
 	
 	public void setEpsilon(double epsilon) {
 		this.epsilon = epsilon;
+	}
+	
+	@Override
+	public String toString() {
+		return "value = "+x;
 	}
 
 }

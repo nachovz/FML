@@ -14,10 +14,6 @@ public class InstancesLoader {
 
 			// Make the last attribute be the class
 			instances.setClassIndex(instances.numAttributes() - 1);
-			
-			// Print header and instances.
-			System.out.println("\nDataset:\n");
-			System.out.println(instances);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

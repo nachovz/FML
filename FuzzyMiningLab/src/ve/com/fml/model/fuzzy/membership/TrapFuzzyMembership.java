@@ -2,6 +2,10 @@ package ve.com.fml.model.fuzzy.membership;
 
 public class TrapFuzzyMembership extends FuzzyMembership {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private double lowerBound;
 	private double upperBound;
 	private double topTrap1;
@@ -30,6 +34,11 @@ public class TrapFuzzyMembership extends FuzzyMembership {
 		else if(value > topTrap2 && value < upperBound)
 			result = maxY*(upperBound - value)/(upperBound - topTrap2);
 		return result;
+	}
+	
+	@Override
+	public String toString() {
+		return "Lower bound = "+lowerBound+", Ceil: "+topTrap1+" to "+topTrap2+", Upper bound: "+upperBound;
 	}
 
 }

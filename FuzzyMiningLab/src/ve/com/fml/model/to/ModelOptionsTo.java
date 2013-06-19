@@ -13,6 +13,7 @@ public class ModelOptionsTo implements Serializable {
 	private int model;
 	private int type;
 	private int k;
+	private int folds = 10;
 	
 	public int getModel() {
 		return model;
@@ -31,6 +32,12 @@ public class ModelOptionsTo implements Serializable {
 	}
 	public void setK(int k) {
 		this.k = k;
+	}
+	public int getFolds() {
+		return folds;
+	}
+	public void setFolds(int folds) {
+		this.folds = folds;
 	}
 	
 	

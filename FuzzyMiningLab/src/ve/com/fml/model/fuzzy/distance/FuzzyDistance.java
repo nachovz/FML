@@ -17,6 +17,7 @@ public class FuzzyDistance extends EuclideanDistance{
 
 	public FuzzyDistance(FuzzyInstances instances){
 		super(instances);
+		this.instances = instances;
 	}
 
 	@Override
@@ -27,13 +28,17 @@ public class FuzzyDistance extends EuclideanDistance{
 			Map<String,FuzzyMembership> fuzzySets = fV.getFuzzySets();
 			double maxVal = 0;
 			for (String label : fuzzySets.keySet()) {
-				double val = (!m_DontNormalize) ? 
-						Math.min(fuzzySets.get(label).fuzzyEval(norm(val1, index)), fuzzySets.get(label).fuzzyEval(norm(val2, index))):
-						Math.min(fuzzySets.get(label).fuzzyEval(val1), fuzzySets.get(label).fuzzyEval(val2));
+				/*double val = (!m_DontNormalize) ? 
+						Math.min(norm(fuzzySets.get(label).fuzzyEval(val1), index), norm(fuzzySets.get(label).fuzzyEval(val2), index)):
+						Math.min(fuzzySets.get(label).fuzzyEval(val1), fuzzySets.get(label).fuzzyEval(val2));*/
+				double val = Math.min(fuzzySets.get(label).fuzzyEval(val1), fuzzySets.get(label).fuzzyEval(val2));
 				maxVal = Math.max(maxVal, val);
 			}
-			return maxVal;
+			//System.out.println("dF("+val1+","+val2+") = "+maxVal+" norm1: "+norm(maxVal,index));
+			//return maxVal;
+			return (!m_DontNormalize) ? norm(maxVal == 0? 1:1/maxVal,index): maxVal == 0? 1:1/maxVal;
 		}else{
+			//System.out.println("dC("+val1+","+val2+") = "+super.difference(index, val1, val2));
 			return super.difference(index, val1, val2);
 		}
 	}

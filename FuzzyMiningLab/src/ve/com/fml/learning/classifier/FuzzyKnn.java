@@ -13,6 +13,10 @@ public class FuzzyKnn extends IBk{
 	 */
 	private static final long serialVersionUID = 1L;
 	FuzzyDistance fd;
+	
+	public void config(FuzzyInstances fuzzyInstances){
+		fd = new FuzzyDistance(fuzzyInstances);
+	}
 
 	public FuzzyKnn(){
 		super();
@@ -30,7 +34,6 @@ public class FuzzyKnn extends IBk{
 
 	@Override
 	public void buildClassifier(Instances arg0) throws Exception {
-		fd = new FuzzyDistance((FuzzyInstances) arg0);
 		this.getNearestNeighbourSearchAlgorithm().setDistanceFunction(fd);
 		super.buildClassifier(arg0);
 	}

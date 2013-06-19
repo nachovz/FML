@@ -2,6 +2,10 @@ package ve.com.fml.model.fuzzy.membership;
 
 public class TriangleFuzzyMembership extends FuzzyMembership {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private double lowerBound;
 	private double upperBound;
 	private double topTriangle;
@@ -21,11 +25,18 @@ public class TriangleFuzzyMembership extends FuzzyMembership {
 	@Override
 	public double fuzzyEval(double value) {
 		double result = 0;
-		if(value > lowerBound && value <= topTriangle)
+		if(value == topTriangle)
+			result = 1;
+		else if(value > lowerBound && value < topTriangle)
 			result = maxY*(value - lowerBound)/(topTriangle - lowerBound);
-		else if(value > topTriangle && value <upperBound)
+		else if(value > topTriangle && value < upperBound)
 			result = maxY*(upperBound - value)/(upperBound - topTriangle);
 		return result;
+	}
+	
+	@Override
+	public String toString() {
+		return "Lower bound = "+lowerBound+", Peak: "+topTriangle+", Upper bound: "+upperBound;
 	}
 
 }

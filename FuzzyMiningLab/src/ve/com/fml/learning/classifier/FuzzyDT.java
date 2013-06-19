@@ -13,7 +13,9 @@ public class FuzzyDT extends J48{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+		Instances instances;
+	
+	
 	@Override
 	public String getRevision() {
 		// TODO Auto-generated method stub
@@ -22,9 +24,11 @@ public class FuzzyDT extends J48{
 
 	@Override
 	public void buildClassifier(Instances arg0) throws Exception {
-		FuzzyInstances fuzzyInstances = (FuzzyInstances) arg0;
-		Instances instances = fuzzyInstances.getFuzzifiedInstances();
-		super.buildClassifier(instances);
+		super.buildClassifier(arg0);
+	}
+
+	public void config(FuzzyInstances fuzzyInstances) {
+		instances = fuzzyInstances.getFuzzifiedInstances();
 	}
 	
 }

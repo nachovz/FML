@@ -3,6 +3,7 @@ package ve.com.fml.model.fuzzy;
 import java.util.HashMap;
 import java.util.Map;
 
+import ve.com.fml.model.fuzzy.membership.FuzzyMembership;
 import weka.core.Attribute;
 import weka.core.Instances;
 
@@ -33,27 +34,55 @@ public class FuzzyInstances extends Instances {
 		this.membership = membership;
 	}
 	
+	public void addFuzzySet(Integer attrIndex, String label, FuzzyMembership memFunction){
+		if(membership.containsKey(attrIndex)){
+			membership.get(attrIndex).addFuzzySet(label, memFunction);
+		}else{
+			FuzzyVariable fV = new FuzzyVariable();
+			fV.addFuzzySet(label, memFunction);
+			membership.put(attrIndex, fV);
+		}
+	}
+	
 	/**
 	 * Genera un conjunto de datos difusificado en el cual cada atributo marcado como difuso es reemplazado por
 	 * la etiqueta relativa al conjunto difuso para el cual la instancia tiene el mayor grado de pertenencia
 	 * */
 	public Instances getFuzzifiedInstances(){
+		
 		Instances fuzzyfied = new Instances(this);
 		Map<Integer,FuzzyVariable> fuzzyVars = getMembership();
 		int numInstances = fuzzyfied.numInstances();
 		for (Integer attrIndex : fuzzyVars.keySet()) {
+			try{
 			Attribute oldAttr = attribute(attrIndex);
-			Attribute newAttr = new Attribute(oldAttr.name(),Attribute.NOMINAL);
+			FuzzyVariable fV = fuzzyVars.get(attrIndex); 
+			Attribute newAttr = new Attribute(oldAttr.name(), fV.getLabelList());
+			fuzzyfied.deleteAttributeAt(attrIndex);
 			fuzzyfied.insertAttributeAt(newAttr, attrIndex);
 			String newLabel = null;
-			FuzzyVariable fV = fuzzyVars.get(attrIndex);
+			
 			
 			for(int i = 0; i < numInstances; i++){
-				newLabel = fV.getHighestMembershipSet(instance(i).value(newAttr));
-				fuzzyfied.instance(i).setValue(newAttr, newLabel);
+				newLabel = fV.getHighestMembershipSet(instance(i).value(oldAttr));
+				
+					fuzzyfied.instance(i).setValue(attrIndex, newLabel);
+				
+			}
+			}catch(Exception e){
+				e.printStackTrace();
 			}
 		}
 		return fuzzyfied;
+	}
+	
+	@Override
+	public String toString() {
+		String output = super.toString()+"\n";
+		output += "Fuzzy Sets: \n";
+		for (Integer index : membership.keySet()) 
+			output += attribute(index).name()+": "+membership.get(index)+"\n";
+		return output;
 	}
 
 }
