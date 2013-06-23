@@ -13,7 +13,7 @@ public class InstancesLoader {
 			instances = source.getDataSet();
 
 			// Make the last attribute be the class
-			instances.setClassIndex(instances.numAttributes() - 1);
+			//instances.setClassIndex(instances.numAttributes() - 1);
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

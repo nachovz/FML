@@ -15,6 +15,10 @@ public class FuzzyKMeans extends SimpleKMeans {
 	private static final long serialVersionUID = 1L;
 	FuzzyDistance fd;
 	
+	public void config(FuzzyInstances fuzzyInstances){
+		fd = new FuzzyDistance(fuzzyInstances);
+	}
+	
 	public FuzzyKMeans(int k){
 		super();
 		try {
@@ -33,7 +37,6 @@ public class FuzzyKMeans extends SimpleKMeans {
 	
 	@Override
 	public void buildClusterer(Instances arg0) throws Exception {
-		fd = new FuzzyDistance((FuzzyInstances) arg0);
 		this.setDistanceFunction(fd);
 		super.buildClusterer(arg0);
 	}
