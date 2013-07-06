@@ -21,6 +21,8 @@ public class Test {
 	 */
 	public static void main(String[] args) {
 
+		
+		
 		//cargo data desde archivo con InstancesLoader
 		FuzzyInstances fuzzyInstances = new FuzzyInstances(InstancesLoader.loadFromTextFile("C:\\Users\\Hdz\\Desktop\\iris.arff"));
 

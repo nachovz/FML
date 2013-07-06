@@ -1,11 +1,21 @@
 package ve.com.fml.model.fuzzy;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
+
+import javax.smartcardio.ATR;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
+
+import org.w3c.dom.views.AbstractView;
 
 import ve.com.fml.model.fuzzy.membership.FuzzyMembership;
 import weka.core.Attribute;
 import weka.core.Instances;
+import weka.filters.Filter;
+import weka.filters.unsupervised.attribute.Normalize;
 
 public class FuzzyInstances extends Instances {
 
@@ -83,6 +93,18 @@ public class FuzzyInstances extends Instances {
 		for (Integer index : membership.keySet()) 
 			output += attribute(index).name()+": "+membership.get(index)+"\n";
 		return output;
+	}
+	
+	public HashMap<Integer, String> getNormalizableAttributes(){
+		HashMap<Integer, String> attributes = new HashMap<Integer, String>();
+		
+		for (int i = 0; i < numAttributes(); i++) {
+			if (attribute(i).type() == Attribute.NUMERIC) {
+				attributes.put(i,attribute(i).name());
+			}
+		}
+		
+		return attributes;
 	}
 
 }
