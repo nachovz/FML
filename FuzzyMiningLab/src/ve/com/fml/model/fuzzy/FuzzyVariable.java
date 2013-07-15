@@ -60,4 +60,8 @@ public class FuzzyVariable implements Serializable{
 		labels.addAll(fuzzySets.keySet());
 		return labels;
 	}
+
+	public void removeFuzzySet(String label) {
+		fuzzySets.remove(label);
+	}
 }

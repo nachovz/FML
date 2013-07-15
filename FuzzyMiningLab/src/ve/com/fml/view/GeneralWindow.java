@@ -168,6 +168,7 @@ public class GeneralWindow extends JFrame {
 		cardPanel.setLayout(new CardLayout(0, 0));
 		cardPanel.add(new EsquemaDeTrabajo(), "Esquema de trabajo");
 		cardPanel.add(new DataConfigurationWindow(), "Cargar datos");
+		cardPanel.add(new DataMiningTechniqueWindow(), "Seleccion tecnica");
 		//cardPanel.add(new DefinirCromosoma(), GAL_GUI.language.casosDeUso[1]);
 		//cardPanel.add(new DefinirFuncion(), GAL_GUI.language.casosDeUso[2]);
 		//cardPanel.add(new ConfigurarAlgoritmo(), GAL_GUI.language.casosDeUso[3]);
@@ -195,23 +196,23 @@ public class GeneralWindow extends JFrame {
 		btnEsquemaDeTrabajo.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
 //		JButton btnDefinirCromosoma = new JButton(GAL_GUI.language.casosDeUso[1]);
-		JButton btnDefinirCromosoma = new JButton("Carga de Datos");
-		btnDefinirCromosoma.setBounds(3, 90, 141, 30);
-		btnDefinirCromosoma.addActionListener(new ActionListener() {
+		JButton btnLoadData = new JButton("Carga de Datos");
+		btnLoadData.setBounds(3, 90, 141, 30);
+		btnLoadData.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*if(! (real_interface instanceof DefinirCromosoma))
-					((CardLayout)cardPanel.getLayout()).show(cardPanel,GAL_GUI.language.casosDeUso[1]);*/
+				if(! (real_interface instanceof DataConfigurationWindow))
+					((CardLayout)cardPanel.getLayout()).show(cardPanel,"Cargar datos");
 			}
 		});
-		btnDefinirCromosoma.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		btnLoadData.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
 		//JButton btnDefinirFuncin = new JButton(GAL_GUI.language.casosDeUso[2]);
-		JButton btnDefinirFuncin = new JButton("Definir funcion");
+		JButton btnDefinirFuncin = new JButton("Seleccionar Técnica");
 		btnDefinirFuncin.setBounds(3, 160, 141, 30);
 		btnDefinirFuncin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				/*if(! (real_interface instanceof DefinirFuncion))
-					((CardLayout)cardPanel.getLayout()).show(cardPanel,GAL_GUI.language.casosDeUso[2]);*/
+				if(! (real_interface instanceof DataMiningTechniqueWindow))
+					((CardLayout)cardPanel.getLayout()).show(cardPanel,"Seleccion tecnica");
 			}
 		});
 		btnDefinirFuncin.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -318,7 +319,7 @@ public class GeneralWindow extends JFrame {
 		buttons.add(btnEjecutarAlgoritmo);
 		buttons.add(btnConfiguraralgoritmo);
 		buttons.add(btnDefinirFuncin);
-		buttons.add(btnDefinirCromosoma);
+		buttons.add(btnLoadData);
 		
 		contentPane.add(cardPanel);
 	}

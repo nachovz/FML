@@ -4,20 +4,14 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
-import java.util.HashMap;
-import java.util.Set;
-import java.util.Vector;
 
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 
 import ve.com.fml.model.datasource.GlobalData;
 import ve.com.fml.model.fuzzy.FuzzyInstances;
@@ -53,8 +47,6 @@ public class EditDataWindow extends JFrame {
 		normalizePanel = new JPanel();
 		normalizePanel.setBounds(3, 20, 141, 30);
 		
-		HashMap<Integer, String> hashito = GlobalData.getInstance().getFuzzyInstances().getNormalizableAttributes();
-		JComboBox<String> attributesList = new JComboBox<String>(new Vector<String>(hashito.values()));
 		
 		JButton btnNormalize = new JButton("Normalizar");
 		btnNormalize.addActionListener(new ActionListener() {

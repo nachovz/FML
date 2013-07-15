@@ -1,21 +1,12 @@
 package ve.com.fml.model.fuzzy;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-import javax.smartcardio.ATR;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
-
-import org.w3c.dom.views.AbstractView;
-
 import ve.com.fml.model.fuzzy.membership.FuzzyMembership;
 import weka.core.Attribute;
 import weka.core.Instances;
-import weka.filters.Filter;
-import weka.filters.unsupervised.attribute.Normalize;
 
 public class FuzzyInstances extends Instances {
 
@@ -51,6 +42,12 @@ public class FuzzyInstances extends Instances {
 			FuzzyVariable fV = new FuzzyVariable();
 			fV.addFuzzySet(label, memFunction);
 			membership.put(attrIndex, fV);
+		}
+	}
+	
+	public void removeFuzzySet(Integer attrIndex, String label){
+		if(membership.containsKey(attrIndex)){
+			membership.get(attrIndex).removeFuzzySet(label);
 		}
 	}
 	
@@ -95,16 +92,23 @@ public class FuzzyInstances extends Instances {
 		return output;
 	}
 	
-	public HashMap<Integer, String> getNormalizableAttributes(){
-		HashMap<Integer, String> attributes = new HashMap<Integer, String>();
+	public HashMap<String, Integer> getNumericAttributes(){
+		HashMap<String, Integer> attributes = new HashMap<String, Integer>();
 		
 		for (int i = 0; i < numAttributes(); i++) {
 			if (attribute(i).type() == Attribute.NUMERIC) {
-				attributes.put(i,attribute(i).name());
+				attributes.put(attribute(i).name(),i);
 			}
 		}
 		
 		return attributes;
+	}
+	
+	public Vector<String> getFuzzySets(Integer attrIndex){
+		Vector<String> fSLabels = new Vector<String>();
+		if(membership.containsKey(attrIndex))
+			fSLabels.addAll(membership.get(attrIndex).getLabelList());
+		return fSLabels;
 	}
 
 }
