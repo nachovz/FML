@@ -38,5 +38,38 @@ public class TriangleFuzzyMembership extends FuzzyMembership {
 	public String toString() {
 		return "Lower bound = "+lowerBound+", Peak: "+topTriangle+", Upper bound: "+upperBound;
 	}
+	
+	public double getLowerBound() {
+		return lowerBound;
+	}
+
+	public void setLowerBound(double lowerBound) {
+		this.lowerBound = lowerBound;
+	}
+
+	public double getUpperBound() {
+		return upperBound;
+	}
+
+	public void setUpperBound(double upperBound) {
+		this.upperBound = upperBound;
+	}
+
+	public double getTopTriangle() {
+		return topTriangle;
+	}
+
+	public void setTopTriangle(double topTriangle) {
+		this.topTriangle = topTriangle;
+	}
+
+	public double getMaxY() {
+		return maxY;
+	}
+
+	public void setMaxY(double maxY) {
+		this.maxY = maxY;
+	}
+
 
 }

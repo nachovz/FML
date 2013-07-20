@@ -95,7 +95,9 @@ public class DefineFuzzySetsWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				//TODO prompt para crear conjunto difuso sobre la variable seleccionada
+				AddFuzzySetWindow addFuzzySetWindow = new AddFuzzySetWindow(attributeList.getSelectedIndex());
+				addFuzzySetWindow.setVisible(true);
+				//repaint on window close
 			}
 		});
 

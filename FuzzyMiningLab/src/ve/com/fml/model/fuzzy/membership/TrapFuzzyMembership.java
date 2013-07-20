@@ -41,4 +41,44 @@ public class TrapFuzzyMembership extends FuzzyMembership {
 		return "Lower bound = "+lowerBound+", Ceil: "+topTrap1+" to "+topTrap2+", Upper bound: "+upperBound;
 	}
 
+	public double getLowerBound() {
+		return lowerBound;
+	}
+
+	public void setLowerBound(double lowerBound) {
+		this.lowerBound = lowerBound;
+	}
+
+	public double getUpperBound() {
+		return upperBound;
+	}
+
+	public void setUpperBound(double upperBound) {
+		this.upperBound = upperBound;
+	}
+
+	public double getTopTrap1() {
+		return topTrap1;
+	}
+
+	public void setTopTrap1(double topTrap1) {
+		this.topTrap1 = topTrap1;
+	}
+
+	public double getTopTrap2() {
+		return topTrap2;
+	}
+
+	public void setTopTrap2(double topTrap2) {
+		this.topTrap2 = topTrap2;
+	}
+
+	public double getMaxY() {
+		return maxY;
+	}
+
+	public void setMaxY(double maxY) {
+		this.maxY = maxY;
+	}
+
 }
