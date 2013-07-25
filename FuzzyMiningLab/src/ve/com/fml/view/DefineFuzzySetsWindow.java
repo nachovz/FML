@@ -127,8 +127,9 @@ public class DefineFuzzySetsWindow extends JFrame {
 				if(fuzzySetsList.getSelectedIndex() == 0){
 					//error no se ha seleccionado conjunto difuso
 				}else{
-					//prompt de si está seguro
-					GlobalData.getInstance().getFuzzyInstances().removeFuzzySet(numericAtts.get(attributeList.getSelectedItem()), (String) fuzzySetsList.getSelectedItem());
+					AddFuzzySetWindow addFuzzySetWindow = new AddFuzzySetWindow(attributeList.getSelectedIndex(),(String)fuzzySetsList.getSelectedItem());
+					addFuzzySetWindow.setVisible(true);
+					//repaint on window close
 				}
 			}
 		});

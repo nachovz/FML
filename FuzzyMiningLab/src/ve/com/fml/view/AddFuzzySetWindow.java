@@ -88,13 +88,14 @@ public class AddFuzzySetWindow extends JFrame{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Validar y paja
-				if(fuzzySetLabel != null)
-					options.save(GlobalData.getInstance().getFuzzyInstances().getMembership().get(attrIndex).getFuzzySets().get(fuzzySetLabel));
-				else{
-					FuzzyMembership fM = null;
-					options.save(fM);
+				if(fuzzySetLabel != null){
+					GlobalData.getInstance().getFuzzyInstances().getMembership().get(attrIndex).removeFuzzySet(fuzzySetLabel);
+					GlobalData.getInstance().getFuzzyInstances().getMembership().get(attrIndex).addFuzzySet(options.name.getText(),options.save());
+				}else{
+					FuzzyMembership fM = options.save();
 					GlobalData.getInstance().getFuzzyInstances().getMembership().put(attrIndex, new FuzzyVariable());
-					GlobalData.getInstance().getFuzzyInstances().getMembership().get(attrIndex).addFuzzySet(fuzzySetLabel, fM);
+					GlobalData.getInstance().getFuzzyInstances().getMembership().get(attrIndex).addFuzzySet(options.name.getText(), fM);
+					dispose();
 				}
 			}
 		});
@@ -157,12 +158,16 @@ public class AddFuzzySetWindow extends JFrame{
 				upperBound.setText(""+mem.getUpperBound());
 				top.setText(""+mem.getTopTriangle());
 			}
-			lowerBoundLabel.setBounds(10, 10, 100, 30);
-			lowerBound.setBounds(110, 10, 100, 30);
-			upperBoundLabel.setBounds(10, 50, 100, 30);
-			upperBound.setBounds(110, 50, 100, 30);
-			topLabel.setBounds(10, 90, 100, 30);
-			top.setBounds(110, 90, 100, 30);
+			nameLabel.setBounds(10, 10, 100, 30);
+			name.setBounds(110, 10, 100, 30);
+			lowerBoundLabel.setBounds(10, 50, 100, 30);
+			lowerBound.setBounds(110, 50, 100, 30);
+			upperBoundLabel.setBounds(10, 90, 100, 30);
+			upperBound.setBounds(110, 90, 100, 30);
+			topLabel.setBounds(10, 130, 100, 30);
+			top.setBounds(110, 130, 100, 30);
+			add(nameLabel);
+			add(name);
 			add(lowerBoundLabel);
 			add(lowerBound);
 			add(upperBoundLabel);
@@ -171,12 +176,12 @@ public class AddFuzzySetWindow extends JFrame{
 			add(top);
 		}
 
-		public void save(FuzzyMembership mem){
-			if(mem == null)
-				mem = new TriangleFuzzyMembership(0, 0, 0);
-			((TriangleFuzzyMembership)mem).setLowerBound(Double.parseDouble(lowerBound.getText()));
-			((TriangleFuzzyMembership)mem).setUpperBound(Double.parseDouble(upperBound.getText()));
-			((TriangleFuzzyMembership)mem).setTopTriangle(Double.parseDouble(top.getText()));
+		public FuzzyMembership save(){
+			TriangleFuzzyMembership	mem = new TriangleFuzzyMembership(0, 0, 0);
+			mem.setLowerBound(Double.parseDouble(lowerBound.getText()));
+			mem.setUpperBound(Double.parseDouble(upperBound.getText()));
+			mem.setTopTriangle(Double.parseDouble(top.getText()));
+			return mem;
 		}
 	}
 
@@ -203,14 +208,18 @@ public class AddFuzzySetWindow extends JFrame{
 				top1.setText(""+mem.getTopTrap1());
 				top2.setText(""+mem.getTopTrap2());
 			}
-			lowerBoundLabel.setBounds(10, 10, 100, 30);
-			lowerBound.setBounds(110, 10, 100, 30);
-			upperBoundLabel.setBounds(10, 50, 100, 30);
-			upperBound.setBounds(110, 50, 100, 30);
-			top1Label.setBounds(10, 90, 100, 30);
-			top1.setBounds(110, 90, 100, 30);
-			top2Label.setBounds(10, 130, 100, 30);
-			top2.setBounds(110, 130, 100, 30);
+			nameLabel.setBounds(10, 10, 100, 30);
+			name.setBounds(110, 10, 100, 30);
+			lowerBoundLabel.setBounds(10, 50, 100, 30);
+			lowerBound.setBounds(110, 50, 100, 30);
+			upperBoundLabel.setBounds(10, 90, 100, 30);
+			upperBound.setBounds(110, 90, 100, 30);
+			top1Label.setBounds(10, 130, 100, 30);
+			top1.setBounds(110, 130, 100, 30);
+			top2Label.setBounds(10, 170, 100, 30);
+			top2.setBounds(110, 170, 100, 30);
+			add(nameLabel);
+			add(name);
 			add(lowerBoundLabel);
 			add(upperBoundLabel);
 			add(top1Label);
@@ -221,13 +230,13 @@ public class AddFuzzySetWindow extends JFrame{
 			add(top2);
 		}
 
-		public void save(FuzzyMembership mem){
-			if(mem == null)
-				mem = new TrapFuzzyMembership(0, 0, 0, 0);
-			((TrapFuzzyMembership)mem).setLowerBound(Double.parseDouble(lowerBound.getText()));
-			((TrapFuzzyMembership)mem).setUpperBound(Double.parseDouble(upperBound.getText()));
-			((TrapFuzzyMembership)mem).setTopTrap1(Double.parseDouble(top1.getText()));
-			((TrapFuzzyMembership)mem).setTopTrap2(Double.parseDouble(top2.getText()));
+		public FuzzyMembership save(){
+			TrapFuzzyMembership mem = new TrapFuzzyMembership(0, 0, 0, 0);
+			mem.setLowerBound(Double.parseDouble(lowerBound.getText()));
+			mem.setUpperBound(Double.parseDouble(upperBound.getText()));
+			mem.setTopTrap1(Double.parseDouble(top1.getText()));
+			mem.setTopTrap2(Double.parseDouble(top2.getText()));
+			return mem;
 		}
 	}
 
@@ -244,16 +253,20 @@ public class AddFuzzySetWindow extends JFrame{
 			setBounds(10,50,365,260);
 			if(mem != null)
 				x.setText(""+mem.getX());
-			xLabel.setBounds(10, 10, 100, 30);
-			x.setBounds(110, 10, 100, 30);
+			nameLabel.setBounds(10, 10, 100, 30);
+			name.setBounds(110, 10, 100, 30);
+			xLabel.setBounds(10, 50, 100, 30);
+			x.setBounds(110, 50, 100, 30);
+			add(nameLabel);
+			add(name);
 			add(x);
 			add(xLabel);
 		}
 
-		public void save(FuzzyMembership mem){
-			if(mem == null)
-				mem = new SingletonFuzzyMembership(0);
-			((SingletonFuzzyMembership)mem).setX(Double.parseDouble(x.getText()));
+		public FuzzyMembership save(){
+			SingletonFuzzyMembership mem = new SingletonFuzzyMembership(0);
+			mem.setX(Double.parseDouble(x.getText()));
+			return mem;
 		}
 	}
 	
@@ -261,8 +274,10 @@ public class AddFuzzySetWindow extends JFrame{
 		/**
 		 * 
 		 */
+		public JTextField name = new JTextField();
+		protected JLabel nameLabel = new JLabel("Nombre del conjunto:");
 		private static final long serialVersionUID = 1L;
 
-		public abstract void save(FuzzyMembership mem);
+		public abstract FuzzyMembership save();
 	}
 }

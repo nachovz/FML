@@ -17,6 +17,12 @@ public class FuzzyInstances extends Instances {
 	private Map<Integer,FuzzyVariable> membership;	//relación entre atributos numéricos del conjunto de datos y variables lingüísticas
 	
 	
+	public FuzzyInstances(FuzzyInstances arg0) {
+		super(arg0);
+		this.membership = new HashMap<Integer, FuzzyVariable>();
+		membership.putAll(arg0.getMembership());
+	}
+	
 	public FuzzyInstances(Instances arg0, Map<Integer,FuzzyVariable> membership) {
 		super(arg0);
 		setMembership(membership);

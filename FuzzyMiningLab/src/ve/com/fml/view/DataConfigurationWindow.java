@@ -52,7 +52,7 @@ public class DataConfigurationWindow extends JPanel {
 		setSize(630, 435);
 
 		//		setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 255), 2), GAL_GUI.language.casosDeUso[4], TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial",Font.BOLD,12), new Color(0, 0, 255)));
-		setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 255), 2), "Configuración de datos", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial",Font.BOLD,12), new Color(0, 0, 255)));
+		setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 255), 2), "Carga de datos", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial",Font.BOLD,12), new Color(0, 0, 255)));
 
 		//		JPanel picture = new JPanel();
 		//		picture.setBounds(16, 132, 598, 286);

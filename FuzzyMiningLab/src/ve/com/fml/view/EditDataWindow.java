@@ -1,9 +1,7 @@
 package ve.com.fml.view;
 
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -32,17 +30,17 @@ public class EditDataWindow extends JFrame {
 	
 	public EditDataWindow() {
 		
+		GlobalData.getInstance().storeInstancesBackup();
 		setResizable(true);
-		setTitle("Editar datos");
-		setBounds(100, 100, 800, 580);
+		setTitle("Configuración de datos");
 		setLayout(null);
 		contentPane = new JPanel();
 		
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		//contentPane.setLayout(new CardLayout());
 		setContentPane(contentPane);
 		
-		JPanel buttons = new JPanel();
-		buttons.setBounds(5, 5, 144, 430);
+		
 		
 		normalizePanel = new JPanel();
 		normalizePanel.setBounds(3, 20, 141, 30);
@@ -62,8 +60,6 @@ public class EditDataWindow extends JFrame {
 				}
 			}
 		});
-		btnNormalize.setBounds(3, 20, 141, 30);
-		btnNormalize.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
 		JButton btnReplace = new JButton("Reemplazar valores ausentes");
 		btnReplace.addActionListener(new ActionListener() {
@@ -79,8 +75,19 @@ public class EditDataWindow extends JFrame {
 				}
 			}
 		});
-		btnNormalize.setBounds(3, 50, 141, 30);
-		btnNormalize.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		
+		JButton btnReset = new JButton("Deshacer cambios");
+		btnReset.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					GlobalData.getInstance().restoreInstancesBackup();
+					contentPane.repaint();
+				} catch (Exception e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
 		
 		table = new JTable(new AbstractTableModel() {
 			/**
@@ -123,29 +130,19 @@ public class EditDataWindow extends JFrame {
 			}
 			
 		});
-		this.addComponentListener(new java.awt.event.ComponentAdapter() {
-	        public void componentResized(ComponentEvent e) {
-	                    setSize();
-	            }
-	    });
 		//table.setBounds(100, 100, getWidth(), getHeight());
 		scrollPane = new JScrollPane(table);
 		//scrollPane.setBounds(100, 100, getWidth(), getHeight());
 		//table.setFillsViewportHeight(true);
 		//normalizePanel.add(attributesList);
-		normalizePanel.add(btnNormalize);
-		buttons.add(normalizePanel);
-		buttons.add(btnReplace);
 		
-		contentPane.add(buttons);
+		normalizePanel.add(btnNormalize);
+		normalizePanel.add(btnReplace);
+		normalizePanel.add(btnReset);
+		contentPane.add(normalizePanel);
 		contentPane.add(scrollPane);
+		setBounds(100, 100, table.getColumnCount()*100 + 10, table.getRowHeight()*25 + 125);
 	}
 	
-	public void setSize(){
-//	    this.table.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
-//	    this.scrollPane.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
-//	    this.scrollPane.revalidate();
-//	    this.table.revalidate();
-	}
 
 }

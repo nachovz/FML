@@ -6,6 +6,7 @@ public class GlobalData {
 
 	private static GlobalData globalData;
 	private FuzzyInstances fuzzyInstances;
+	private FuzzyInstances oldfuzzyInstances;
 	private Integer currentTechnique;
 	
 	public static GlobalData getInstance(){
@@ -32,5 +33,21 @@ public class GlobalData {
 
 	public void setCurrentTechnique(Integer currentTechnique) {
 		this.currentTechnique = currentTechnique;
+	}
+
+	public FuzzyInstances getOldfuzzyInstances() {
+		return oldfuzzyInstances;
+	}
+
+	public void setOldfuzzyInstances(FuzzyInstances oldfuzzyInstances) {
+		this.oldfuzzyInstances = oldfuzzyInstances;
+	}
+	
+	public void storeInstancesBackup(){
+		oldfuzzyInstances = new FuzzyInstances(fuzzyInstances);
+	}
+	
+	public void restoreInstancesBackup(){
+		fuzzyInstances = new FuzzyInstances(oldfuzzyInstances);
 	}
 }
