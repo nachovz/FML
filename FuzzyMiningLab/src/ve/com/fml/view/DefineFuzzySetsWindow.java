@@ -1,9 +1,10 @@
 package ve.com.fml.view;
 
-import java.awt.Font;
+import java.awt.CardLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.HashMap;
 import java.util.Vector;
 
@@ -16,11 +17,11 @@ import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.AbstractTableModel;
 
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
+
 import ve.com.fml.model.datasource.GlobalData;
-import ve.com.fml.model.fuzzy.FuzzyInstances;
-import weka.filters.Filter;
-import weka.filters.unsupervised.attribute.Normalize;
-import weka.filters.unsupervised.attribute.ReplaceMissingValues;
 
 public class DefineFuzzySetsWindow extends JFrame {
 
@@ -28,6 +29,7 @@ public class DefineFuzzySetsWindow extends JFrame {
 	private JScrollPane scrollPane;
 	private JTable table;
 	private JPanel normalizePanel;
+	private JPanel buttons;
 	/**
 	 * Edit data pane
 	 */
@@ -38,23 +40,23 @@ public class DefineFuzzySetsWindow extends JFrame {
 		setResizable(true);
 		setTitle("Difusificación del Conjunto de Datos");
 		setBounds(100, 100, 800, 580);
-		setLayout(null);
+		setLayout(new CardLayout());
 		contentPane = new JPanel();
 
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-
-		JPanel buttons = new JPanel();
-		buttons.setBounds(5, 5, 144, 430);
-
 		normalizePanel = new JPanel();
-		normalizePanel.setBounds(3, 20, 141, 30);
+		buttons = new JPanel();
 
 
 		/** Control para selección de atributo difusificable */
 		final HashMap<String, Integer> numericAtts = GlobalData.getInstance().getFuzzyInstances().getNumericAttributes();
-		final JComboBox<String> attributeList = new JComboBox<String>(new Vector<String>(numericAtts.keySet()));
-
+		//final JComboBox<String> attributeList = new JComboBox<String>(new Vector<String>(numericAtts.keySet()));
+		final JComboBox<String> attributeList = new JComboBox<String>();
+		attributeList.addItem("Seleccione un atributo numérico...");
+		for (String numAttLabel : numericAtts.keySet()) {
+			attributeList.addItem(numAttLabel);
+		}
 
 		/** Control para selección de conjunto difuso */
 		final JComboBox<String> fuzzySetsList = new JComboBox<String>();
@@ -70,10 +72,13 @@ public class DefineFuzzySetsWindow extends JFrame {
 			public void actionPerformed(ActionEvent arg0) {
 				fuzzySetsList.removeAllItems();
 				fuzzySetsList.addItem("Seleccione un conjunto difuso...");
-				Vector<String> currentFS = GlobalData.getInstance().getFuzzyInstances().getFuzzySets(numericAtts.get(attributeList.getSelectedItem()));
-				for (String fuzzySetLabel : currentFS) {
-					fuzzySetsList.addItem(fuzzySetLabel);
+				if(attributeList.getSelectedIndex() != 0){
+					Vector<String> currentFS = GlobalData.getInstance().getFuzzyInstances().getFuzzySets(numericAtts.get(attributeList.getSelectedItem()));
+					for (String fuzzySetLabel : currentFS) {
+						fuzzySetsList.addItem(fuzzySetLabel);
+					}
 				}
+				contentPane.repaint();
 			}
 		});
 
@@ -81,12 +86,13 @@ public class DefineFuzzySetsWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-
+				//TODO agregar el chart
+				contentPane.repaint();
 			}
 		});
 
-		add(attributeList);
-		add(fuzzySetsList);
+		normalizePanel.add(attributeList);
+		normalizePanel.add(fuzzySetsList);
 
 		/**Controles para agregar conjunto difuso*/
 		JButton btnAddFS = new JButton("Agregar conjunto difuso");
@@ -95,9 +101,67 @@ public class DefineFuzzySetsWindow extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				AddFuzzySetWindow addFuzzySetWindow = new AddFuzzySetWindow(attributeList.getSelectedIndex());
-				addFuzzySetWindow.setVisible(true);
-				//repaint on window close
+				if(attributeList.getSelectedIndex() != 0){
+					AddFuzzySetWindow addFuzzySetWindow = new AddFuzzySetWindow(numericAtts.get(attributeList.getSelectedItem()));
+					addFuzzySetWindow.setVisible(true);
+					setEnabled(false);
+					//repaint and enable on window close
+
+					addFuzzySetWindow.addWindowListener(new WindowListener() {
+						@Override
+						public void windowClosed(WindowEvent e) {
+							setEnabled(true);
+							toFront();
+							fuzzySetsList.removeAllItems();
+							fuzzySetsList.addItem("Seleccione un conjunto difuso...");
+							if(attributeList.getSelectedIndex() != 0){
+								Vector<String> currentFS = GlobalData.getInstance().getFuzzyInstances().getFuzzySets(numericAtts.get(attributeList.getSelectedItem()));
+								for (String fuzzySetLabel : currentFS) {
+									fuzzySetsList.addItem(fuzzySetLabel);
+								}
+							}
+							contentPane.repaint();
+						}
+
+						@Override
+						public void windowActivated(WindowEvent e) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void windowClosing(WindowEvent e) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void windowDeactivated(WindowEvent e) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void windowDeiconified(WindowEvent e) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void windowIconified(WindowEvent e) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void windowOpened(WindowEvent e) {
+							// TODO Auto-generated method stub
+
+						}
+					});
+				}else{
+					//alert, tiene que seleccionar un atribruto
+				}
 			}
 		});
 
@@ -118,7 +182,7 @@ public class DefineFuzzySetsWindow extends JFrame {
 		});
 
 		JButton btnEditFS = new JButton("Editar conjunto difuso");
-		
+
 		btnEditFS.addActionListener(new ActionListener() {
 
 			@Override
@@ -127,53 +191,66 @@ public class DefineFuzzySetsWindow extends JFrame {
 				if(fuzzySetsList.getSelectedIndex() == 0){
 					//error no se ha seleccionado conjunto difuso
 				}else{
-					AddFuzzySetWindow addFuzzySetWindow = new AddFuzzySetWindow(attributeList.getSelectedIndex(),(String)fuzzySetsList.getSelectedItem());
+					AddFuzzySetWindow addFuzzySetWindow = new AddFuzzySetWindow(numericAtts.get(attributeList.getSelectedItem()),(String)fuzzySetsList.getSelectedItem());
 					addFuzzySetWindow.setVisible(true);
 					//repaint on window close
+					setEnabled(false);
+					//repaint and enable on window close
+
+					addFuzzySetWindow.addWindowListener(new WindowListener() {
+						@Override
+						public void windowClosed(WindowEvent e) {
+							setEnabled(true);
+							toFront();
+							fuzzySetsList.removeAllItems();
+							fuzzySetsList.addItem("Seleccione un conjunto difuso...");
+							if(attributeList.getSelectedIndex() != 0){
+								Vector<String> currentFS = GlobalData.getInstance().getFuzzyInstances().getFuzzySets(numericAtts.get(attributeList.getSelectedItem()));
+								for (String fuzzySetLabel : currentFS) {
+									fuzzySetsList.addItem(fuzzySetLabel);
+								}
+							}
+							contentPane.repaint();
+						}
+
+						@Override
+						public void windowActivated(WindowEvent e) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void windowClosing(WindowEvent e) {
+						}
+
+						@Override
+						public void windowDeactivated(WindowEvent e) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void windowDeiconified(WindowEvent e) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void windowIconified(WindowEvent e) {
+							// TODO Auto-generated method stub
+
+						}
+
+						@Override
+						public void windowOpened(WindowEvent e) {
+							// TODO Auto-generated method stub
+
+						}
+					});
 				}
 			}
 		});
-		
-		add(btnAddFS);
-		add(btnDelFS);
-		add(btnEditFS);
 
-
-
-
-		JButton btnNormalize = new JButton("Normalizar");
-		btnNormalize.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				Normalize normalize = new Normalize();
-				try {
-					normalize.setInputFormat(GlobalData.getInstance().getFuzzyInstances());
-					GlobalData.getInstance().setFuzzyInstances(new FuzzyInstances(Filter.useFilter(GlobalData.getInstance().getFuzzyInstances(), normalize)));
-					contentPane.repaint();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
-		btnNormalize.setBounds(3, 20, 141, 30);
-		btnNormalize.setFont(new Font("Tahoma", Font.PLAIN, 11));
-
-		JButton btnReplace = new JButton("Reemplazar valores ausentes");
-		btnReplace.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ReplaceMissingValues replace = new ReplaceMissingValues();
-				try {
-					replace.setInputFormat(GlobalData.getInstance().getFuzzyInstances());
-					GlobalData.getInstance().setFuzzyInstances(new FuzzyInstances(Filter.useFilter(GlobalData.getInstance().getFuzzyInstances(), replace)));
-					contentPane.repaint();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-			}
-		});
-		btnNormalize.setBounds(3, 50, 141, 30);
-		btnNormalize.setFont(new Font("Tahoma", Font.PLAIN, 11));
 
 		table = new JTable(new AbstractTableModel() {
 			/**
@@ -216,29 +293,37 @@ public class DefineFuzzySetsWindow extends JFrame {
 			}
 
 		});
-		this.addComponentListener(new java.awt.event.ComponentAdapter() {
-			public void componentResized(ComponentEvent e) {
-				setSize();
-			}
-		});
 		//table.setBounds(100, 100, getWidth(), getHeight());
 		scrollPane = new JScrollPane(table);
 		//scrollPane.setBounds(100, 100, getWidth(), getHeight());
 		//table.setFillsViewportHeight(true);
 		//normalizePanel.add(attributesList);
-		normalizePanel.add(btnNormalize);
-		buttons.add(normalizePanel);
-		buttons.add(btnReplace);
-
+		
+		
+		XYDataset data = createDataset();
+		
+		buttons.add(btnAddFS);
+		buttons.add(btnDelFS);
+		buttons.add(btnEditFS);
+		
+		contentPane.add(normalizePanel);
 		contentPane.add(buttons);
 		contentPane.add(scrollPane);
+		
 	}
+	
+	private static XYDataset createDataset(){
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        
+        
+       /* rqm.generateNumbers();
+        XYSeries series = new XYSeries("Scatter");
+                for(int i = 0; i < rqm.size(); i++){
+                        series.add(rqm.yValueAt(i), rqm.xValueAt(i));
+                }
+                dataset.addSeries(series);*/
+                return dataset;
+    }
 
-	public void setSize(){
-		//	    this.table.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
-		//	    this.scrollPane.setPreferredSize(new Dimension(this.getWidth(), this.getHeight()));
-		//	    this.scrollPane.revalidate();
-		//	    this.table.revalidate();
-	}
 
 }

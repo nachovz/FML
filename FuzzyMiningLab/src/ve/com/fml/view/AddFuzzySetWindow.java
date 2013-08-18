@@ -28,6 +28,7 @@ public class AddFuzzySetWindow extends JFrame{
 	private FuzzySetFormPanel options;
 	private JButton saveButton = new JButton("Guardar");
 	private JButton cancelButton = new JButton("Cancelar");
+	private String fuzzySetLabel;
 
 	public AddFuzzySetWindow(Integer attrIndex) {
 		this(attrIndex, null);
@@ -35,7 +36,7 @@ public class AddFuzzySetWindow extends JFrame{
 
 	public AddFuzzySetWindow(Integer attrIdx, String fuzzyLabel) {
 		final Integer attrIndex = attrIdx;
-		final String fuzzySetLabel = fuzzyLabel;
+		fuzzySetLabel = fuzzyLabel;
 		
 		setResizable(true);
 		setTitle("Difusificación del Conjunto de Datos");
@@ -93,10 +94,11 @@ public class AddFuzzySetWindow extends JFrame{
 					GlobalData.getInstance().getFuzzyInstances().getMembership().get(attrIndex).addFuzzySet(options.name.getText(),options.save());
 				}else{
 					FuzzyMembership fM = options.save();
-					GlobalData.getInstance().getFuzzyInstances().getMembership().put(attrIndex, new FuzzyVariable());
+					if(!GlobalData.getInstance().getFuzzyInstances().getMembership().containsKey(attrIndex))
+						GlobalData.getInstance().getFuzzyInstances().getMembership().put(attrIndex, new FuzzyVariable());
 					GlobalData.getInstance().getFuzzyInstances().getMembership().get(attrIndex).addFuzzySet(options.name.getText(), fM);
-					dispose();
 				}
+				dispose();
 			}
 		});
 		saveButton.setBounds(170, 320, 100, 30);
@@ -154,6 +156,7 @@ public class AddFuzzySetWindow extends JFrame{
 			setBorder(BorderFactory.createLineBorder(Color.black));
 			setBounds(10,50,365,260);
 			if(mem != null){
+				name.setText(fuzzySetLabel);
 				lowerBound.setText(""+mem.getLowerBound());
 				upperBound.setText(""+mem.getUpperBound());
 				top.setText(""+mem.getTopTriangle());
@@ -203,6 +206,7 @@ public class AddFuzzySetWindow extends JFrame{
 			setBorder(BorderFactory.createLineBorder(Color.black));
 			setBounds(10,50,365,260);
 			if(mem != null){
+				name.setText(fuzzySetLabel);
 				lowerBound.setText(""+mem.getLowerBound());
 				upperBound.setText(""+mem.getUpperBound());
 				top1.setText(""+mem.getTopTrap1());
@@ -251,8 +255,10 @@ public class AddFuzzySetWindow extends JFrame{
 		public SingletonFormPanel(SingletonFuzzyMembership mem) {
 			setBorder(BorderFactory.createLineBorder(Color.black));
 			setBounds(10,50,365,260);
-			if(mem != null)
+			if(mem != null){
 				x.setText(""+mem.getX());
+				name.setText(fuzzySetLabel);	
+			}
 			nameLabel.setBounds(10, 10, 100, 30);
 			name.setBounds(110, 10, 100, 30);
 			xLabel.setBounds(10, 50, 100, 30);

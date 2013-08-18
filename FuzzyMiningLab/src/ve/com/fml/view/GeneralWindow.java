@@ -34,7 +34,7 @@ public class GeneralWindow extends JFrame {
 	 */
 	public GeneralWindow() {
 		setResizable(false);
-		setTitle("JGAL");
+		setTitle("jFML");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 800, 580);
 		contentPane = new JPanel();
