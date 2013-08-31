@@ -10,10 +10,16 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
 import javax.swing.border.TitledBorder;
 import javax.swing.border.BevelBorder;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+
+import ve.com.fml.model.datasource.GlobalData;
+
 import java.awt.CardLayout;
 
 public class GeneralWindow extends JFrame {
@@ -28,6 +34,10 @@ public class GeneralWindow extends JFrame {
 	static JPanel pnl_ProgressConfig2;
 	static JPanel pnl_ProgressConfig3;
 	static JPanel pnl_ProgressResultados;
+	
+	//Botones
+	JButton btnDefinirFuncin;
+	JButton btnConfiguraralgoritmo;
 	
 	/**
 	 * Create the frame.
@@ -106,17 +116,23 @@ public class GeneralWindow extends JFrame {
 		pnl_ProgressConfig3.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 		
 //		JButton btnVerResultados = new JButton(GAL_GUI.language.progreso[9]);
-		JButton btnVerResultados = new JButton("Ver resultados");
+		JButton btnVerResultados = new JButton("Limpiar Datos");
 		btnVerResultados.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//if(!GAL_GUI.gal.executed())
-				if(true) //TODO: Verificar si el algoritmo corrio
-					//JOptionPane.showMessageDialog(GeneralWindow.this, GAL_GUI.language.Errors[21]);
-					JOptionPane.showMessageDialog(GeneralWindow.this, "Error, el algoritmo no ha corrido");
-				else{
-					ResultsViewWindow Newframe= new ResultsViewWindow();
-					Newframe.setVisible(true);
+				if(JOptionPane.showConfirmDialog(null, "Desea limpiar todo?","Aceptar",JOptionPane.OK_CANCEL_OPTION)== JOptionPane.OK_OPTION){
+					GlobalData.clearInstance();
+					mainWindowRefresh();
 				}
+				
+				
+				//if(!GAL_GUI.gal.executed())
+//				if(true) //TODO: Verificar si el algoritmo corrio
+//					//JOptionPane.showMessageDialog(GeneralWindow.this, GAL_GUI.language.Errors[21]);
+//					JOptionPane.showMessageDialog(GeneralWindow.this, "Error, el algoritmo no ha corrido");
+//				else{
+//					ResultsViewWindow Newframe= new ResultsViewWindow();
+//					Newframe.setVisible(true);
+//				}
 			}
 		});
 		btnVerResultados.setBounds(612, 18, 120, 23);
@@ -174,16 +190,6 @@ public class GeneralWindow extends JFrame {
 		//cardPanel.add(new ConfigurarAlgoritmo(), GAL_GUI.language.casosDeUso[3]);
 		//cardPanel.add(new EjecutarAlgoritmo(), GAL_GUI.language.casosDeUso[4]);
 		
-//		JButton btnSalir = new JButton(GAL_GUI.language.casosDeUso[5]);
-		JButton btnSalir = new JButton("Salir");
-		btnSalir.setBounds(3, 370, 141, 30);
-		btnSalir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				System.exit(0);
-			}
-		});
-		btnSalir.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		
 //		JButton btnEsquemaDeTrabajo = new JButton(GAL_GUI.language.casosDeUso[0]);
 		JButton btnEsquemaDeTrabajo = new JButton("Esquema de trabajo");
 		btnEsquemaDeTrabajo.setBounds(3, 20, 141, 30);
@@ -207,7 +213,7 @@ public class GeneralWindow extends JFrame {
 		btnLoadData.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
 		//JButton btnDefinirFuncin = new JButton(GAL_GUI.language.casosDeUso[2]);
-		JButton btnDefinirFuncin = new JButton("Seleccionar Técnica");
+		btnDefinirFuncin = new JButton("Seleccionar Técnica");
 		btnDefinirFuncin.setBounds(3, 160, 141, 30);
 		btnDefinirFuncin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -218,7 +224,7 @@ public class GeneralWindow extends JFrame {
 		btnDefinirFuncin.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
 //		JButton btnConfiguraralgoritmo = new JButton(GAL_GUI.language.casosDeUso[3]);
-		JButton btnConfiguraralgoritmo = new JButton("Configurar algoritmo");
+		btnConfiguraralgoritmo = new JButton("Ejecutar algoritmo");
 		btnConfiguraralgoritmo.setBounds(3, 230, 141, 30);
 		btnConfiguraralgoritmo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -228,18 +234,29 @@ public class GeneralWindow extends JFrame {
 		});
 		btnConfiguraralgoritmo.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
-//		JButton btnEjecutarAlgoritmo = new JButton(GAL_GUI.language.casosDeUso[4]);
-		JButton btnEjecutarAlgoritmo = new JButton("Cargar datos");
-		btnEjecutarAlgoritmo.setBounds(3, 300, 141, 30);
-		btnEjecutarAlgoritmo.addActionListener(new ActionListener() {
+//		JButton btnSalir = new JButton(GAL_GUI.language.casosDeUso[5]);
+		JButton btnSalir = new JButton("Salir");
+		btnSalir.setBounds(3, 300, 141, 30);
+		btnSalir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-//				if(! (real_interface instanceof EjecutarAlgoritmo))
-//					((CardLayout)cardPanel.getLayout()).show(cardPanel,GAL_GUI.language.casosDeUso[4]);*/
-				if(! (real_interface instanceof DataConfigurationWindow))
-					((CardLayout)cardPanel.getLayout()).show(cardPanel,"Cargar datos");
+				System.exit(0);
 			}
 		});
-		btnEjecutarAlgoritmo.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		btnSalir.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		
+//		JButton btnEjecutarAlgoritmo = new JButton(GAL_GUI.language.casosDeUso[4]);
+//		JButton btnEjecutarAlgoritmo = new JButton("Cargar datos");
+//		btnEjecutarAlgoritmo.setBounds(3, 300, 141, 30);
+//		btnEjecutarAlgoritmo.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+////				if(! (real_interface instanceof EjecutarAlgoritmo))
+////					((CardLayout)cardPanel.getLayout()).show(cardPanel,GAL_GUI.language.casosDeUso[4]);*/
+//				if(! (real_interface instanceof DataConfigurationWindow))
+//					((CardLayout)cardPanel.getLayout()).show(cardPanel,"Cargar datos");
+//			}
+//		});
+//		btnEjecutarAlgoritmo.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		
 		contentPane.setLayout(null);
 		contentPane.add(progress);
 		progress.setLayout(null);
@@ -316,11 +333,70 @@ public class GeneralWindow extends JFrame {
 		buttons.setLayout(null);
 		buttons.add(btnEsquemaDeTrabajo);
 		buttons.add(btnSalir);
-		buttons.add(btnEjecutarAlgoritmo);
+		//buttons.add(btnEjecutarAlgoritmo);
 		buttons.add(btnConfiguraralgoritmo);
 		buttons.add(btnDefinirFuncin);
 		buttons.add(btnLoadData);
 		
 		contentPane.add(cardPanel);
+		
+		addWindowListener(new WindowListener() {
+			
+			@Override
+			public void windowOpened(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowIconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowDeiconified(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowDeactivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowClosing(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowClosed(WindowEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void windowActivated(WindowEvent e) {
+				// TODO Auto-generated method stub
+				mainWindowRefresh();
+			}
+		});
+	}
+	
+	private void mainWindowRefresh(){
+		btnConfiguraralgoritmo.setEnabled(true);
+		btnDefinirFuncin.setEnabled(true);
+		
+		if (!GlobalData.instanceCreated()) {
+			btnDefinirFuncin.setEnabled(false);
+			btnConfiguraralgoritmo.setEnabled(false);
+		}else if(GlobalData.getInstance().getConfiguredTechnique() == null){
+			btnConfiguraralgoritmo.setEnabled(false);
+		}
+		
+		
 	}
 }
