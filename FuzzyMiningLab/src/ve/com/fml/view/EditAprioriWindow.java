@@ -164,5 +164,3 @@ public class EditAprioriWindow extends javax.swing.JFrame {
     private javax.swing.JTextField kTextField1;
     // End of variables declaration
 }
-
-
