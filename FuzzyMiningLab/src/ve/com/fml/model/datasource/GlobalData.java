@@ -1,5 +1,7 @@
 package ve.com.fml.model.datasource;
 
+import java.util.Map;
+
 import ve.com.fml.model.fuzzy.FuzzyInstances;
 
 public class GlobalData {
@@ -8,7 +10,8 @@ public class GlobalData {
 	private FuzzyInstances fuzzyInstances;
 	private FuzzyInstances oldfuzzyInstances;
 	private Integer currentTechnique;
-	
+	private Map<String,Object> configuredTechnique;
+		
 	public static GlobalData getInstance(){
 		
 		if(globalData == null){
@@ -17,6 +20,10 @@ public class GlobalData {
 		}else{
 			return globalData;
 		}
+	}
+	
+	public static void clearInstance(){
+		globalData = null;
 	}
 
 	public FuzzyInstances getFuzzyInstances() {
@@ -50,4 +57,17 @@ public class GlobalData {
 	public void restoreInstancesBackup(){
 		fuzzyInstances = new FuzzyInstances(oldfuzzyInstances);
 	}
+	
+	public static boolean instanceCreated(){
+		return globalData != null;
+	}
+	
+	public Map<String, Object> getConfiguredTechnique() {
+		return configuredTechnique;
+	}
+
+	public void setConfiguredTechnique(Map<String, Object> configuredTechnique) {
+		this.configuredTechnique = configuredTechnique;
+	}
+
 }

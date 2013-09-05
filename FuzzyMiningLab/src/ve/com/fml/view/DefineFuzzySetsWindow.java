@@ -177,6 +177,15 @@ public class DefineFuzzySetsWindow extends JFrame {
 				}else{
 					//prompt de si está seguro
 					GlobalData.getInstance().getFuzzyInstances().removeFuzzySet(numericAtts.get(attributeList.getSelectedItem()), (String) fuzzySetsList.getSelectedItem());
+					fuzzySetsList.removeAllItems();
+					fuzzySetsList.addItem("Seleccione un conjunto difuso...");
+					if(attributeList.getSelectedIndex() != 0){
+						Vector<String> currentFS = GlobalData.getInstance().getFuzzyInstances().getFuzzySets(numericAtts.get(attributeList.getSelectedItem()));
+						for (String fuzzySetLabel : currentFS) {
+							fuzzySetsList.addItem(fuzzySetLabel);
+						}
+					}
+					contentPane.repaint();
 				}
 			}
 		});
