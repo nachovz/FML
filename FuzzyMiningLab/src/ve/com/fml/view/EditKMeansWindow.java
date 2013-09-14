@@ -128,4 +128,5 @@ public class EditKMeansWindow extends javax.swing.JFrame {
     private javax.swing.JLabel kLabel;
     private javax.swing.JTextField kTextField;
     // End of variables declaration
+
 }
