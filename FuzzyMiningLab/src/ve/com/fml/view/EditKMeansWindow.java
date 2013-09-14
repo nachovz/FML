@@ -120,21 +120,6 @@ public class EditKMeansWindow extends javax.swing.JFrame {
         pack();
     }// </editor-fold>
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-    
-        /*
-         * Create and display the form
-         */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-
-            public void run() {
-                new EditKMeansWindow().setVisible(true);
-            }
-        });
-    }
     // Variables declaration - do not modify
     private javax.swing.JLabel TitleLabel;
     private javax.swing.JButton cancelButton;
