@@ -1,5 +1,7 @@
 package ve.com.fml.model.fuzzy;
 
+import java.lang.reflect.Array;
+
 public class FuzzyDataMining {
 
 
@@ -7,6 +9,8 @@ public class FuzzyDataMining {
 	public static final int MODEL_FUZZY_KNN = 1;
 	public static final int MODEL_FUZZY_APRIORI = 2;
 	public static final int MODEL_FUZZY_KMEANS = 3;
+	
+	public static final String[] names = {"Árbol de decisión","K-vecinos","Apriori","K-medias"};
 
 	public static final int TYPE_CLASSIFICATION = 0;
 	public static final int TYPE_REGRESSION = 1;
@@ -48,4 +52,7 @@ public class FuzzyDataMining {
 		return result;
 	}
 
+	public static String gettechniqueName(int technique){
+		return names[technique];
+	}
 }

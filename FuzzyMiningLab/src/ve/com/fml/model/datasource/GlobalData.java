@@ -11,6 +11,8 @@ public class GlobalData {
 	private FuzzyInstances oldfuzzyInstances;
 	private Integer currentTechnique;
 	private Map<String,Object> configuredTechnique;
+	
+	private String datasetName;
 		
 	public static GlobalData getInstance(){
 		
@@ -68,6 +70,14 @@ public class GlobalData {
 
 	public void setConfiguredTechnique(Map<String, Object> configuredTechnique) {
 		this.configuredTechnique = configuredTechnique;
+	}
+
+	public String getDatasetName() {
+		return datasetName;
+	}
+
+	public void setDatasetName(String datasetName) {
+		this.datasetName = datasetName;
 	}
 
 }
