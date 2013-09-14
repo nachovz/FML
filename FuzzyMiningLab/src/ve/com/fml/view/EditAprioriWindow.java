@@ -1,5 +1,12 @@
 package ve.com.fml.view;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+
+import ve.com.fml.model.datasource.GlobalData;
+import ve.com.fml.model.fuzzy.FuzzyDataMining;
+
 public class EditAprioriWindow extends javax.swing.JFrame {
 
     /**
@@ -24,9 +31,9 @@ public class EditAprioriWindow extends javax.swing.JFrame {
 
         kDefLabel = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jButton1 = new javax.swing.JButton();
+        cancelButton = new javax.swing.JButton();
         kLabel = new javax.swing.JLabel();
-        jButton2 = new javax.swing.JButton();
+        saveButton = new javax.swing.JButton();
         TitleLabel = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         kTextField = new javax.swing.JTextField();
@@ -35,30 +42,40 @@ public class EditAprioriWindow extends javax.swing.JFrame {
         kDefLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
+        setTitle("Configuración de Algoritmo");
+        
         kDefLabel.setText("(default = 10)");
 
-        jButton1.setText("Cancelar");
+        cancelButton.setText("Cancelar");
+        cancelButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
 
         kLabel.setText("Número de reglas a buscar:");
 
-        jButton2.setText("Guardar");
+        kLabel1.setText("Confianza mínima de una regla: ");
+        
+        saveButton.setText("Guardar");
+        saveButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				GlobalData.getInstance().setCurrentTechnique(FuzzyDataMining.MODEL_FUZZY_APRIORI);
+				HashMap<String, Object> options = new HashMap<String, Object>();
+				if(!kTextField.getText().isEmpty())
+					options.put("nr", kTextField.getText());
+				if(!kTextField1.getText().isEmpty())
+					options.put("mc", kTextField1.getText());
+				GlobalData.getInstance().setConfiguredTechnique(options);
+				dispose();
+			}
+		});
 
         TitleLabel.setText("Configuración de Apriori Difuso");
-
-        kTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                kTextFieldActionPerformed(evt);
-            }
-        });
-
-        kLabel1.setText("Confianza mínima de una regla: ");
-
-        kTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                kTextField1ActionPerformed(evt);
-            }
-        });
 
         kDefLabel1.setText("(default = 0.9)");
 
@@ -93,9 +110,9 @@ public class EditAprioriWindow extends javax.swing.JFrame {
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton2)
+                        .addComponent(saveButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)
+                        .addComponent(cancelButton)
                         .addContainerGap())))
         );
         layout.setVerticalGroup(
@@ -119,21 +136,14 @@ public class EditAprioriWindow extends javax.swing.JFrame {
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(cancelButton)
+                    .addComponent(saveButton))
                 .addContainerGap())
         );
 
         pack();
     }// </editor-fold>
 
-    private void kTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void kTextField1ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
 
     /**
      * @param args the command line arguments
@@ -152,8 +162,8 @@ public class EditAprioriWindow extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify
     private javax.swing.JLabel TitleLabel;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JButton saveButton;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel kDefLabel;

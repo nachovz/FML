@@ -240,26 +240,20 @@ public class DataMiningTechniqueWindow extends JPanel {
 						kNNFrame.setVisible(true);
 						break;
 					case FuzzyDataMining.MODEL_FUZZY_DT:
-						//EditDTWindow dTFrame = new EditDataWindow();
-						//dTFrame.setVisible(true);
+						EditDTWindow dTFrame = new EditDTWindow();
+						dTFrame.setVisible(true);
 						break;
 					case FuzzyDataMining.MODEL_FUZZY_KMEANS:
-						//EditKMeansWindow kMeansFrame = new EditDataWindow();
-						//kMeansFrame.setVisible(true);
+						EditKMeansWindow kMeansFrame = new EditKMeansWindow();
+						kMeansFrame.setVisible(true);
 						break;
 					case FuzzyDataMining.MODEL_FUZZY_APRIORI:
-						//EditAprioriWindow aprioriFrame = new EditDataWindow();
-						//aprioriFrame.setVisible(true);
+						EditAprioriWindow aprioriFrame = new EditAprioriWindow();
+						aprioriFrame.setVisible(true);
 						break;
 					}
 					
 				}
-				//				if(!GAL_GUI.gal.executed())
-				//					JOptionPane.showMessageDialog(DataConfigurationWindow.this, GAL_GUI.language.Errors[21]);
-				//				else{
-				//					ResultsViewWindow Newframe= new ResultsViewWindow();
-				//					Newframe.setVisible(true);
-				//				}
 			}
 		});
 		btn_TechniqueConfiguration.setBounds(400, 28, 76, 50);

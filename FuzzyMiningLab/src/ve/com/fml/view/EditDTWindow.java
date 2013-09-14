@@ -1,5 +1,12 @@
 package ve.com.fml.view;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
+
+import ve.com.fml.model.datasource.GlobalData;
+import ve.com.fml.model.fuzzy.FuzzyDataMining;
+
 
 public class EditDTWindow extends javax.swing.JFrame {
 
@@ -31,35 +38,46 @@ public class EditDTWindow extends javax.swing.JFrame {
         kDefLabel = new javax.swing.JLabel();
         kDefLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        cancelButton = new javax.swing.JButton();
+        saveButton = new javax.swing.JButton();
         kLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        kTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                kTextFieldActionPerformed(evt);
-            }
-        });
+        setTitle("Configuración de Algoritmo");
 
         kLabel1.setText("Umbral de confianza para la poda:");
 
         TitleLabel.setText("Configuración de Árbol de Decisión Difuso");
 
-        kTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                kTextField1ActionPerformed(evt);
-            }
-        });
-
         kDefLabel.setText("(default = 2)");
 
         kDefLabel1.setText("(default = 0.25)");
 
-        jButton1.setText("Cancelar");
+        cancelButton.setText("Cancelar");
+        cancelButton.addActionListener(new ActionListener() {
 
-        jButton2.setText("Guardar");
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+			}
+		});
+
+        saveButton.setText("Guardar");
+        saveButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				GlobalData.getInstance().setCurrentTechnique(FuzzyDataMining.MODEL_FUZZY_DT);
+				HashMap<String, Object> options = new HashMap<String, Object>();
+				if(!kTextField.getText().isEmpty())
+					options.put("mno", kTextField.getText());
+				if(!kTextField1.getText().isEmpty())
+					options.put("ctt", kTextField1.getText());
+				GlobalData.getInstance().setConfiguredTechnique(options);
+				dispose();
+			}
+		});
+
 
         kLabel.setText("Número mínimo de instancias por hoja:");
 
@@ -92,9 +110,9 @@ public class EditDTWindow extends javax.swing.JFrame {
                             .addComponent(jSeparator2)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
-                                .addComponent(jButton2)
+                                .addComponent(saveButton)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1)))
+                                .addComponent(cancelButton)))
                         .addContainerGap())))
         );
         layout.setVerticalGroup(
@@ -118,21 +136,14 @@ public class EditDTWindow extends javax.swing.JFrame {
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(cancelButton)
+                    .addComponent(saveButton))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>
 
-    private void kTextFieldActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
-
-    private void kTextField1ActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    }
 
     /**
      * @param args the command line arguments
@@ -152,8 +163,8 @@ public class EditDTWindow extends javax.swing.JFrame {
     }
     // Variables declaration - do not modify
     private javax.swing.JLabel TitleLabel;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
+    private javax.swing.JButton cancelButton;
+    private javax.swing.JButton saveButton;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JLabel kDefLabel;
