@@ -214,95 +214,37 @@ public class GeneralWindow extends JFrame {
 		JLabel labelConfiguracionTecnica = new JLabel("Configuración: ");
 		labelConfiguracionTecnica.setBounds(255, 50, 75, 12);
 		labelConfiguracionTecnica.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		
-//			labelConfiguracionValor = new JLabel("-");
-//			labelConfiguracionValor.setBounds(330, 50, 150, 12);
-//			labelConfiguracionValor.setFont(new Font("Tahoma", Font.PLAIN, 11));
 			
 			panelTecnicaConfiguracion = new JPanel((LayoutManager) new FlowLayout(FlowLayout.LEADING));
 			panelTecnicaConfiguracion.setBounds(330, 50, 80, 38);
 			panelTecnicaConfiguracion.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-//			
-//		JLabel lblSelector = new JLabel(GAL_GUI.language.progreso[6]);
-		JLabel lblSelector = new JLabel("Selector");
-		lblSelector.setBounds(420, 48, 39, 14);
-		lblSelector.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		lblSelector.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-//		JLabel lblparametros = new JLabel(GAL_GUI.language.progreso[8]);
-		JLabel lblparametros = new JLabel("Parametros");
-		lblparametros.setBounds(527, 46, 55, 14);
-		lblparametros.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		
-//		JLabel lblOperadores = new JLabel(GAL_GUI.language.progreso[7]+" |");
-		JLabel lblOperadores = new JLabel("Operadores |");
-		lblOperadores.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblOperadores.setBounds(412, 70, 83, 14);
-		lblOperadores.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		
-		
-
-		
-//		JLabel lblresultados = new JLabel(GAL_GUI.language.progreso[10]);
-		JLabel lblresultados = new JLabel("Resultados");
-		lblresultados.setBounds(679, 48, 53, 14);
-		lblresultados.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		
-
-		
-//		JButton btnVerConfiguracion = new JButton(GAL_GUI.language.progreso[5]);
-		JButton btnVerConfiguracion = new JButton("Ver configuracion");
-		btnVerConfiguracion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ConfigurationViewWindow Newframe= new ConfigurationViewWindow();
-				Newframe.setVisible(true);
-			}
-		});
-		btnVerConfiguracion.setBounds(431, 18, 120, 23);
-		btnVerConfiguracion.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		
-		pnl_ProgressConfig1 = new JPanel();
-		pnl_ProgressConfig1.setBounds(464, 46, 16, 16);
-		pnl_ProgressConfig1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		
-		pnl_ProgressConfig2 = new JPanel();
-		pnl_ProgressConfig2.setBounds(485, 46, 16, 16);
-		pnl_ProgressConfig2.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		
-		pnl_ProgressFuncion2 = new JPanel();
-		pnl_ProgressFuncion2.setBounds(303, 46, 16, 16);
-		pnl_ProgressFuncion2.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		
-		pnl_ProgressConfig3 = new JPanel();
-		pnl_ProgressConfig3.setBounds(506, 46, 16, 16);
-		pnl_ProgressConfig3.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		
-//		JButton btnVerResultados = new JButton(GAL_GUI.language.progreso[9]);
-		JButton btnVerResultados = new JButton("Limpiar Datos");
-		btnVerResultados.addActionListener(new ActionListener() {
+		//JButton btnVerResultados = new JButton(GAL_GUI.language.progreso[9]);
+		JButton btnLimpiar = new JButton("Limpiar Datos");
+		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(JOptionPane.showConfirmDialog(null, "Desea limpiar todo?","Aceptar",JOptionPane.OK_CANCEL_OPTION)== JOptionPane.OK_OPTION){
 					GlobalData.clearInstance();
 					mainWindowRefresh();
 				}
-				
-				
-				//if(!GAL_GUI.gal.executed())
-//				if(true) //TODO: Verificar si el algoritmo corrio
-//					//JOptionPane.showMessageDialog(GeneralWindow.this, GAL_GUI.language.Errors[21]);
-//					JOptionPane.showMessageDialog(GeneralWindow.this, "Error, el algoritmo no ha corrido");
-//				else{
-//					ResultsViewWindow Newframe= new ResultsViewWindow();
-//					Newframe.setVisible(true);
-//				}
 			}
 		});
-		btnVerResultados.setBounds(612, 18, 120, 23);
-		btnVerResultados.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		btnLimpiar.setBounds(450, 30, 120, 23);
+		btnLimpiar.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
-		pnl_ProgressResultados = new JPanel();
-		pnl_ProgressResultados.setBounds(658, 46, 16, 16);
-		pnl_ProgressResultados.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+//		JButton btnVerConfiguracion = new JButton(GAL_GUI.language.progreso[5]);
+		JButton btnAyuda = new JButton("Ayuda");
+		btnAyuda.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ConfigurationViewWindow Newframe= new ConfigurationViewWindow();
+				Newframe.setVisible(true);
+			}
+		});
+		btnAyuda.setBounds(600, 30, 120, 23);
+		btnAyuda.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		
+//		
+		
 		
 		contentPane.setLayout(null);
 		contentPane.add(progress);
@@ -324,20 +266,9 @@ public class GeneralWindow extends JFrame {
 			//progress.add(labelConfiguracionValor);
 			progress.add(panelTecnicaConfiguracion);
 	
-		/*progress.add(pnl_ProgressCromosoma);
-		progress.add(lblAptitud);
-		progress.add(pnl_ProgressFuncion2);
-		progress.add(lblTerminacin);*/
-		progress.add(lblSelector);
-		progress.add(pnl_ProgressConfig1);
-		progress.add(pnl_ProgressConfig2);
-		progress.add(pnl_ProgressConfig3);
-		progress.add(lblparametros);
-		progress.add(btnVerConfiguracion);
-		progress.add(btnVerResultados);
-		progress.add(pnl_ProgressResultados);
-		progress.add(lblresultados);
-		progress.add(lblOperadores);
+		progress.add(btnAyuda);
+		progress.add(btnLimpiar);
+
 		
 		/*JButton btn_LimpiarTodo = new JButton("");
 		btn_LimpiarTodo.addActionListener(new ActionListener() {
@@ -449,8 +380,7 @@ public class GeneralWindow extends JFrame {
 	private void mainWindowRefresh(){
 		btnConfiguraralgoritmo.setEnabled(true);
 		btnDefinirFuncin.setEnabled(true);
-		
-		
+
 		if (!GlobalData.instanceCreated()) {
 			btnDefinirFuncin.setEnabled(false);
 			btnConfiguraralgoritmo.setEnabled(false);
@@ -477,11 +407,8 @@ public class GeneralWindow extends JFrame {
 			Entry<String, Object> pair = it.next();
 	        JLabel config = new JLabel(pair.getKey() + " = " + pair.getValue());
 	        config.setFont(new Font("Tahoma", Font.PLAIN, 11));
-	        panelTecnicaConfiguracion.add(config);
-	        panelTecnicaConfiguracion.invalidate();
-	       
+	        panelTecnicaConfiguracion.add(config);       
 	        it.remove(); // avoids a ConcurrentModificationException
-	        pair =null;
 	    }
 	}
 
