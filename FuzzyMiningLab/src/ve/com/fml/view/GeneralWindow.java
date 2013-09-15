@@ -408,7 +408,7 @@ public class GeneralWindow extends JFrame {
 	        JLabel config = new JLabel(pair.getKey() + " = " + pair.getValue());
 	        config.setFont(new Font("Tahoma", Font.PLAIN, 11));
 	        panelTecnicaConfiguracion.add(config);       
-	        it.remove(); // avoids a ConcurrentModificationException
+	        //it.remove(); // avoids a ConcurrentModificationException
 	    }
 	}
 
