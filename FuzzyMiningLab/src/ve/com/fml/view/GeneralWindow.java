@@ -7,7 +7,9 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.LayoutManager;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.WindowEvent;
@@ -22,6 +24,9 @@ import ve.com.fml.model.datasource.GlobalData;
 import ve.com.fml.model.fuzzy.FuzzyDataMining;
 
 import java.awt.CardLayout;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 public class GeneralWindow extends JFrame {
 
@@ -48,6 +53,7 @@ public class GeneralWindow extends JFrame {
 	JLabel labelNombreTecnicaValor;
 	JLabel labelConfiguracionValor;
 	
+	JPanel panelTecnicaConfiguracion;
 	
 	/**
 	 * Create the frame.
@@ -209,9 +215,13 @@ public class GeneralWindow extends JFrame {
 		labelConfiguracionTecnica.setBounds(255, 50, 75, 12);
 		labelConfiguracionTecnica.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
-			labelConfiguracionValor = new JLabel("-");
-			labelConfiguracionValor.setBounds(330, 50, 150, 12);
-			labelConfiguracionValor.setFont(new Font("Tahoma", Font.PLAIN, 11));
+//			labelConfiguracionValor = new JLabel("-");
+//			labelConfiguracionValor.setBounds(330, 50, 150, 12);
+//			labelConfiguracionValor.setFont(new Font("Tahoma", Font.PLAIN, 11));
+			
+			panelTecnicaConfiguracion = new JPanel((LayoutManager) new FlowLayout(FlowLayout.LEADING));
+			panelTecnicaConfiguracion.setBounds(330, 50, 80, 38);
+			panelTecnicaConfiguracion.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
 //			
 //		JLabel lblSelector = new JLabel(GAL_GUI.language.progreso[6]);
 		JLabel lblSelector = new JLabel("Selector");
@@ -311,7 +321,8 @@ public class GeneralWindow extends JFrame {
 			progress.add(labelNombreTecnica);
 			progress.add(labelNombreTecnicaValor);
 			progress.add(labelConfiguracionTecnica);
-			progress.add(labelConfiguracionValor);
+			//progress.add(labelConfiguracionValor);
+			progress.add(panelTecnicaConfiguracion);
 	
 		/*progress.add(pnl_ProgressCromosoma);
 		progress.add(lblAptitud);
@@ -439,18 +450,18 @@ public class GeneralWindow extends JFrame {
 		btnConfiguraralgoritmo.setEnabled(true);
 		btnDefinirFuncin.setEnabled(true);
 		
+		
 		if (!GlobalData.instanceCreated()) {
 			btnDefinirFuncin.setEnabled(false);
 			btnConfiguraralgoritmo.setEnabled(false);
-			
-			clearTextFields();
-			
+			clearTextFields1();
 		}else if(GlobalData.getInstance().getConfiguredTechnique() == null){
 			btnConfiguraralgoritmo.setEnabled(false);
-			
+			clearTextFields1();
 			setEtapa1Data();
-		}else{
-			
+		}else if(GlobalData.getInstance().getConfiguredTechnique() != null){
+			clearTextFields2();
+			System.out.println("Current technique: "+GlobalData.getInstance().getConfiguredTechnique().values());
 			setEtapa2Data();
 		}
 		
@@ -460,6 +471,18 @@ public class GeneralWindow extends JFrame {
 	private void setEtapa2Data() {
 		labelNombreTecnicaValor.setText(FuzzyDataMining.names[GlobalData.getInstance().getCurrentTechnique()]);
 		//labelConfiguracionValor.setText(clrTxt);
+		Iterator<Entry<String, Object>> it = GlobalData.getInstance().getConfiguredTechnique().entrySet().iterator();
+		 System.out.println("Hola: "+it);
+		while (it.hasNext()) {
+			Entry<String, Object> pair = it.next();
+	        JLabel config = new JLabel(pair.getKey() + " = " + pair.getValue());
+	        config.setFont(new Font("Tahoma", Font.PLAIN, 11));
+	        panelTecnicaConfiguracion.add(config);
+	        panelTecnicaConfiguracion.invalidate();
+	       
+	        it.remove(); // avoids a ConcurrentModificationException
+	        pair =null;
+	    }
 	}
 
 	private void setEtapa1Data() {
@@ -471,13 +494,19 @@ public class GeneralWindow extends JFrame {
 	
 	
 
-	private void clearTextFields() {
+	private void clearTextFields1() {
 		String clrTxt = "-";
 		labelNombreConjuntoValor.setText(clrTxt);
 		labelAtributosValor.setText(clrTxt);
 		labelInstanciasValor.setText(clrTxt);
 		labelNumeroConjuntosDifusosValor.setText(clrTxt);
+	}
+	private void clearTextFields2() {
+		String clrTxt = "-";
 		labelNombreTecnicaValor.setText(clrTxt);
-		labelConfiguracionValor.setText(clrTxt);
+		//labelConfiguracionValor.setText(clrTxt);
+		panelTecnicaConfiguracion.removeAll();
+		panelTecnicaConfiguracion.validate();
+		panelTecnicaConfiguracion.updateUI();
 	}
 }
