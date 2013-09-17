@@ -90,6 +90,7 @@ public class DataConfigurationWindow extends JPanel {
 					int returnVal= fc.showOpenDialog(DataConfigurationWindow.this);
 					if(returnVal == JFileChooser.APPROVE_OPTION)
 						GlobalData.getInstance().setFuzzyInstances(new FuzzyInstances(InstancesLoader.loadFromTextFile(fc.getSelectedFile().getAbsolutePath())));
+						GlobalData.getInstance().setDatasetName(fc.getSelectedFile().getName());
 					//actualizar();
 				}catch(Exception ex){
 					//					JOptionPane.showMessageDialog(null, GAL_GUI.language.Errors[10]);

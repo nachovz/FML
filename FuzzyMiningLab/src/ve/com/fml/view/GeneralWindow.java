@@ -1,26 +1,33 @@
 package ve.com.fml.view;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JButton;
-import javax.swing.border.LineBorder;
+import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.LayoutManager;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
-import javax.swing.border.TitledBorder;
-import javax.swing.border.BevelBorder;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
+import javax.swing.border.TitledBorder;
 
 import ve.com.fml.model.datasource.GlobalData;
+import ve.com.fml.model.fuzzy.FuzzyDataMining;
 
-import java.awt.CardLayout;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 public class GeneralWindow extends JFrame {
 
@@ -28,7 +35,6 @@ public class GeneralWindow extends JFrame {
 	private JPanel contentPane;
 	private JPanel real_interface;
 	static JPanel pnl_ProgressCromosoma;
-	static JPanel pnl_ProgressFuncion1;
 	static JPanel pnl_ProgressFuncion2;
 	static JPanel pnl_ProgressConfig1;
 	static JPanel pnl_ProgressConfig2;
@@ -38,6 +44,17 @@ public class GeneralWindow extends JFrame {
 	//Botones
 	JButton btnDefinirFuncin;
 	JButton btnConfiguraralgoritmo;
+	
+	//Progress data
+	JLabel labelNombreConjuntoValor;
+	JLabel labelAtributosValor;
+	JLabel labelInstanciasValor;
+	JLabel labelNumeroConjuntosDifusosValor;
+	
+	JLabel labelNombreTecnicaValor;
+	JLabel labelConfiguracionValor;
+	
+	JPanel panelTecnicaConfiguracion;
 	
 	/**
 	 * Create the frame.
@@ -54,138 +71,13 @@ public class GeneralWindow extends JFrame {
 		JPanel buttons = new JPanel();
 		buttons.setBounds(5, 5, 144, 430);
 		
-		JPanel progress = new JPanel();
-		progress.setBounds(5, 446, 779, 101);
-		progress.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2), "Progress", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial",Font.BOLD,12), new Color(0, 0, 0)));
-		
-//		JButton btnVerCromosoma = new JButton(GAL_GUI.language.progreso[0]);
-		JButton btnVerCromosoma = new JButton("Cargar datos");
-		btnVerCromosoma.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//GeneViewWindow Newframe= new GeneViewWindow();
-				DataConfigurationWindow Newframe= new DataConfigurationWindow();
-				Newframe.setVisible(true);
-			}
-		});
-		btnVerCromosoma.setBounds(58, 18, 120, 23);
-		btnVerCromosoma.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		
-		pnl_ProgressCromosoma = new JPanel();
-		pnl_ProgressCromosoma.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		
-//		JButton btnVerFuncion = new JButton(GAL_GUI.language.progreso[2]);
-		JButton btnVerFuncion = new JButton("Ver funcion");
-		btnVerFuncion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				FunctionViewWindow Newframe= new FunctionViewWindow();
-				Newframe.setVisible(true);
-			}
-		});
-		btnVerFuncion.setBounds(237, 18, 120, 23);
-		btnVerFuncion.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		
-		pnl_ProgressFuncion1 = new JPanel();
-		pnl_ProgressFuncion1.setBounds(282, 46, 16, 16);
-		pnl_ProgressFuncion1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		
-//		JButton btnVerConfiguracion = new JButton(GAL_GUI.language.progreso[5]);
-		JButton btnVerConfiguracion = new JButton("Ver configuracion");
-		btnVerConfiguracion.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				ConfigurationViewWindow Newframe= new ConfigurationViewWindow();
-				Newframe.setVisible(true);
-			}
-		});
-		btnVerConfiguracion.setBounds(431, 18, 120, 23);
-		btnVerConfiguracion.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		
-		pnl_ProgressConfig1 = new JPanel();
-		pnl_ProgressConfig1.setBounds(464, 46, 16, 16);
-		pnl_ProgressConfig1.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		
-		pnl_ProgressConfig2 = new JPanel();
-		pnl_ProgressConfig2.setBounds(485, 46, 16, 16);
-		pnl_ProgressConfig2.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		
-		pnl_ProgressFuncion2 = new JPanel();
-		pnl_ProgressFuncion2.setBounds(303, 46, 16, 16);
-		pnl_ProgressFuncion2.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		
-		pnl_ProgressConfig3 = new JPanel();
-		pnl_ProgressConfig3.setBounds(506, 46, 16, 16);
-		pnl_ProgressConfig3.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		
-//		JButton btnVerResultados = new JButton(GAL_GUI.language.progreso[9]);
-		JButton btnVerResultados = new JButton("Limpiar Datos");
-		btnVerResultados.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if(JOptionPane.showConfirmDialog(null, "Desea limpiar todo?","Aceptar",JOptionPane.OK_CANCEL_OPTION)== JOptionPane.OK_OPTION){
-					GlobalData.clearInstance();
-					mainWindowRefresh();
-				}
-				
-				
-				//if(!GAL_GUI.gal.executed())
-//				if(true) //TODO: Verificar si el algoritmo corrio
-//					//JOptionPane.showMessageDialog(GeneralWindow.this, GAL_GUI.language.Errors[21]);
-//					JOptionPane.showMessageDialog(GeneralWindow.this, "Error, el algoritmo no ha corrido");
-//				else{
-//					ResultsViewWindow Newframe= new ResultsViewWindow();
-//					Newframe.setVisible(true);
-//				}
-			}
-		});
-		btnVerResultados.setBounds(612, 18, 120, 23);
-		btnVerResultados.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		
-		pnl_ProgressResultados = new JPanel();
-		pnl_ProgressResultados.setBounds(658, 46, 16, 16);
-		pnl_ProgressResultados.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
-		
-//		JLabel lblSelector = new JLabel(GAL_GUI.language.progreso[6]);
-		JLabel lblSelector = new JLabel("Selector");
-		lblSelector.setBounds(420, 48, 39, 14);
-		lblSelector.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		lblSelector.setHorizontalAlignment(SwingConstants.RIGHT);
-		
-//		JLabel lblparametros = new JLabel(GAL_GUI.language.progreso[8]);
-		JLabel lblparametros = new JLabel("Parametros");
-		lblparametros.setBounds(527, 46, 55, 14);
-		lblparametros.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		
-//		JLabel lblOperadores = new JLabel(GAL_GUI.language.progreso[7]+" |");
-		JLabel lblOperadores = new JLabel("Operadores |");
-		lblOperadores.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblOperadores.setBounds(412, 70, 83, 14);
-		lblOperadores.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		
-//		JLabel lblTerminacin = new JLabel(GAL_GUI.language.progreso[4]);
-		JLabel lblTerminacin = new JLabel("Terminacion");
-		lblTerminacin.setBounds(324, 48, 57, 14);
-		lblTerminacin.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		
-//		JLabel lblAptitud = new JLabel(GAL_GUI.language.progreso[3]);
-		JLabel lblAptitud = new JLabel("Aptitud");
-		lblAptitud.setBounds(242, 48, 35, 14);
-		lblAptitud.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		
-		//JLabel lblVariables = new JLabel(GAL_GUI.language.progreso[1]);
-		JLabel lblVariables = new JLabel("Variables");
-		lblVariables.setBounds(66, 46, 43, 14);
-		lblVariables.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		
-//		JLabel lblresultados = new JLabel(GAL_GUI.language.progreso[10]);
-		JLabel lblresultados = new JLabel("Resultados");
-		lblresultados.setBounds(679, 48, 53, 14);
-		lblresultados.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		
 		final JPanel cardPanel = new JPanel();
 		cardPanel.setBounds(154, 5, 630, 435);
 		cardPanel.setLayout(new CardLayout(0, 0));
 		cardPanel.add(new EsquemaDeTrabajo(), "Esquema de trabajo");
 		cardPanel.add(new DataConfigurationWindow(), "Cargar datos");
 		cardPanel.add(new DataMiningTechniqueWindow(), "Seleccion tecnica");
-		//cardPanel.add(new DefinirCromosoma(), GAL_GUI.language.casosDeUso[1]);
+		cardPanel.add(new RunAlgorithm(), "Generacion del Modelo");
 		//cardPanel.add(new DefinirFuncion(), GAL_GUI.language.casosDeUso[2]);
 		//cardPanel.add(new ConfigurarAlgoritmo(), GAL_GUI.language.casosDeUso[3]);
 		//cardPanel.add(new EjecutarAlgoritmo(), GAL_GUI.language.casosDeUso[4]);
@@ -228,8 +120,9 @@ public class GeneralWindow extends JFrame {
 		btnConfiguraralgoritmo.setBounds(3, 230, 141, 30);
 		btnConfiguraralgoritmo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				/*if(! (real_interface instanceof ConfigurarAlgoritmo))
-					((CardLayout)cardPanel.getLayout()).show(cardPanel,GAL_GUI.language.casosDeUso[3]);*/
+				if(! (real_interface instanceof RunAlgorithm)){
+					((CardLayout)cardPanel.getLayout()).show(cardPanel,"Generacion del Modelo");
+				}
 			}
 		});
 		btnConfiguraralgoritmo.setFont(new Font("Tahoma", Font.PLAIN, 11));
@@ -257,29 +150,129 @@ public class GeneralWindow extends JFrame {
 //		});
 //		btnEjecutarAlgoritmo.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
+		/*
+		 * 
+		 * BARRA DE PROGRESO
+		 * 
+		 */
+		
+		JPanel progress = new JPanel();
+		progress.setBounds(5, 446, 779, 101);
+		progress.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2), "Progress", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial",Font.BOLD,12), new Color(0, 0, 0)));
+		
+		JLabel labelDataset = new JLabel("DataSet");
+		labelDataset.setBounds(40, 15, 120, 23);
+		labelDataset.setFont(new Font("Tahoma", Font.BOLD , 14));
+		
+		pnl_ProgressCromosoma = new JPanel();
+		pnl_ProgressCromosoma.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		
+		//JLabel lblVariables = new JLabel(GAL_GUI.language.progreso[1]);
+		JLabel labelNombre = new JLabel("Nombre: ");
+		labelNombre.setBounds(40, 36, 60, 12);
+		labelNombre.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		
+			labelNombreConjuntoValor = new JLabel("-");
+			labelNombreConjuntoValor.setBounds(100, 36, 150, 12);
+			labelNombreConjuntoValor.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		
+		JLabel labelAtributos = new JLabel("Atributos: ");
+		labelAtributos.setBounds(40, 50, 60, 12);
+		labelAtributos.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		
+			labelAtributosValor = new JLabel("-");
+			labelAtributosValor.setBounds(100, 50, 150, 12);
+			labelAtributosValor.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		
+		JLabel labelInstancias = new JLabel("Instancias: ");
+		labelInstancias.setBounds(40, 64, 60, 12);
+		labelInstancias.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		
+			labelInstanciasValor = new JLabel("-");
+			labelInstanciasValor.setBounds(100, 64, 150, 12);
+			labelInstanciasValor.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		
+		JLabel labelConjuntos = new JLabel("Conjuntos: ");
+		labelConjuntos.setBounds(40, 78, 60, 12);
+		labelConjuntos.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		
+			labelNumeroConjuntosDifusosValor = new JLabel("-");
+			labelNumeroConjuntosDifusosValor.setBounds(100, 78, 150, 12);
+			labelNumeroConjuntosDifusosValor.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		
+		
+		JLabel labelTecnica = new JLabel("Técnica");
+		labelTecnica.setBounds(255, 15, 120, 23);
+		labelTecnica.setFont(new Font("Tahoma", Font.BOLD , 14));
+		
+		JLabel labelNombreTecnica = new JLabel("Nombre: ");
+		labelNombreTecnica.setBounds(255, 36, 75, 12);
+		labelNombreTecnica.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		
+			labelNombreTecnicaValor = new JLabel("-");
+			labelNombreTecnicaValor.setBounds(330, 36, 150, 12);
+			labelNombreTecnicaValor.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		
+		JLabel labelConfiguracionTecnica = new JLabel("Configuración: ");
+		labelConfiguracionTecnica.setBounds(255, 50, 75, 12);
+		labelConfiguracionTecnica.setFont(new Font("Tahoma", Font.PLAIN, 11));
+			
+			panelTecnicaConfiguracion = new JPanel((LayoutManager) new FlowLayout(FlowLayout.LEADING));
+			panelTecnicaConfiguracion.setBounds(330, 50, 80, 38);
+			panelTecnicaConfiguracion.setBorder(new BevelBorder(BevelBorder.LOWERED, null, null, null, null));
+		
+		//JButton btnVerResultados = new JButton(GAL_GUI.language.progreso[9]);
+		JButton btnLimpiar = new JButton("Limpiar Datos");
+		btnLimpiar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(JOptionPane.showConfirmDialog(null, "Desea limpiar todo?","Aceptar",JOptionPane.OK_CANCEL_OPTION)== JOptionPane.OK_OPTION){
+					GlobalData.clearInstance();
+					mainWindowRefresh();
+				}
+			}
+		});
+		btnLimpiar.setBounds(450, 30, 120, 23);
+		btnLimpiar.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		
+//		JButton btnVerConfiguracion = new JButton(GAL_GUI.language.progreso[5]);
+		JButton btnAyuda = new JButton("Ayuda");
+		btnAyuda.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ConfigurationViewWindow Newframe= new ConfigurationViewWindow();
+				Newframe.setVisible(true);
+			}
+		});
+		btnAyuda.setBounds(600, 30, 120, 23);
+		btnAyuda.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		
+//		
+		
+		
 		contentPane.setLayout(null);
 		contentPane.add(progress);
 		progress.setLayout(null);
-		progress.add(btnVerCromosoma);
-		progress.add(btnVerFuncion);
-		progress.add(lblVariables);
-		progress.add(pnl_ProgressCromosoma);
-		progress.add(lblAptitud);
-		progress.add(pnl_ProgressFuncion1);
-		progress.add(pnl_ProgressFuncion2);
-		progress.add(lblTerminacin);
-		progress.add(lblSelector);
-		progress.add(pnl_ProgressConfig1);
-		progress.add(pnl_ProgressConfig2);
-		progress.add(pnl_ProgressConfig3);
-		progress.add(lblparametros);
-		progress.add(btnVerConfiguracion);
-		progress.add(btnVerResultados);
-		progress.add(pnl_ProgressResultados);
-		progress.add(lblresultados);
-		progress.add(lblOperadores);
+		progress.add(labelDataset);
+			progress.add(labelNombre);
+			progress.add(labelNombreConjuntoValor);
+			progress.add(labelAtributos);
+			progress.add(labelAtributosValor);
+			progress.add(labelInstancias);
+			progress.add(labelInstanciasValor);
+			progress.add(labelConjuntos);
+			progress.add(labelNumeroConjuntosDifusosValor);
+			
+			progress.add(labelTecnica);
+			progress.add(labelNombreTecnica);
+			progress.add(labelNombreTecnicaValor);
+			progress.add(labelConfiguracionTecnica);
+			//progress.add(labelConfiguracionValor);
+			progress.add(panelTecnicaConfiguracion);
+	
+		progress.add(btnAyuda);
+		progress.add(btnLimpiar);
+
 		
-		JButton btn_LimpiarTodo = new JButton("");
+		/*JButton btn_LimpiarTodo = new JButton("");
 		btn_LimpiarTodo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 //				int ret=JOptionPane.showConfirmDialog(null, GAL_GUI.language.Questions[6],GAL_GUI.language.CommonWords[8],JOptionPane.OK_CANCEL_OPTION);
@@ -299,7 +292,7 @@ public class GeneralWindow extends JFrame {
 		//btn_LimpiarTodo.setIcon(new ImageIcon(GeneralWindow.class.getResource("/Images/limpiar.png")));
 		//btn_LimpiarTodo.setToolTipText(GAL_GUI.language.CommonWords[8]);
 		btn_LimpiarTodo.setBounds(15, 18, 20, 20);
-		progress.add(btn_LimpiarTodo);
+		progress.add(btn_LimpiarTodo);*/
 		
 		JPanel help = new JPanel();
 //		help.addMouseListener(new MouseAdapter() {
@@ -389,14 +382,63 @@ public class GeneralWindow extends JFrame {
 	private void mainWindowRefresh(){
 		btnConfiguraralgoritmo.setEnabled(true);
 		btnDefinirFuncin.setEnabled(true);
-		
+
 		if (!GlobalData.instanceCreated()) {
 			btnDefinirFuncin.setEnabled(false);
 			btnConfiguraralgoritmo.setEnabled(false);
+			clearTextFields1();
 		}else if(GlobalData.getInstance().getConfiguredTechnique() == null){
 			btnConfiguraralgoritmo.setEnabled(false);
+			clearTextFields1();
+			setEtapa1Data();
+		}else if(GlobalData.getInstance().getConfiguredTechnique() != null){
+			clearTextFields2();
+			System.out.println("Current technique: "+GlobalData.getInstance().getConfiguredTechnique().values());
+			setEtapa2Data();
 		}
 		
 		
+	}
+	
+
+	
+	
+	private void setEtapa2Data() {
+		labelNombreTecnicaValor.setText(FuzzyDataMining.names[GlobalData.getInstance().getCurrentTechnique()]);
+		//labelConfiguracionValor.setText(clrTxt);
+		Iterator<Entry<String, Object>> it = GlobalData.getInstance().getConfiguredTechnique().entrySet().iterator();
+		 System.out.println("Hola: "+it);
+		while (it.hasNext()) {
+			Entry<String, Object> pair = it.next();
+	        JLabel config = new JLabel(pair.getKey() + " = " + pair.getValue());
+	        config.setFont(new Font("Tahoma", Font.PLAIN, 11));
+	        panelTecnicaConfiguracion.add(config);       
+	        //it.remove(); // avoids a ConcurrentModificationException
+	    }
+	}
+
+	private void setEtapa1Data() {
+		labelNombreConjuntoValor.setText(GlobalData.getInstance().getDatasetName());
+		labelAtributosValor.setText(""+(GlobalData.getInstance().getFuzzyInstances().numAttributes()-1));
+		labelInstanciasValor.setText(""+GlobalData.getInstance().getFuzzyInstances().numInstances());
+		labelNumeroConjuntosDifusosValor.setText(""+GlobalData.getInstance().getFuzzyInstances().numClasses());
+	}
+	
+	
+
+	private void clearTextFields1() {
+		String clrTxt = "-";
+		labelNombreConjuntoValor.setText(clrTxt);
+		labelAtributosValor.setText(clrTxt);
+		labelInstanciasValor.setText(clrTxt);
+		labelNumeroConjuntosDifusosValor.setText(clrTxt);
+	}
+	private void clearTextFields2() {
+		String clrTxt = "-";
+		labelNombreTecnicaValor.setText(clrTxt);
+		//labelConfiguracionValor.setText(clrTxt);
+		panelTecnicaConfiguracion.removeAll();
+		panelTecnicaConfiguracion.validate();
+		panelTecnicaConfiguracion.updateUI();
 	}
 }

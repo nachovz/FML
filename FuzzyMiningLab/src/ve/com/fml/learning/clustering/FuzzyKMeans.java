@@ -19,6 +19,10 @@ public class FuzzyKMeans extends SimpleKMeans {
 		fd = new FuzzyDistance(fuzzyInstances);
 	}
 	
+	public FuzzyKMeans(){
+		super();
+	}
+	
 	public FuzzyKMeans(int k){
 		super();
 		try {
