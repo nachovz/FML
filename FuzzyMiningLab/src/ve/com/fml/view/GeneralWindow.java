@@ -4,11 +4,13 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
 import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -23,11 +25,6 @@ import javax.swing.border.TitledBorder;
 
 import ve.com.fml.model.datasource.GlobalData;
 import ve.com.fml.model.fuzzy.FuzzyDataMining;
-
-
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map.Entry;
 
 public class GeneralWindow extends JFrame {
 
@@ -399,9 +396,6 @@ public class GeneralWindow extends JFrame {
 		
 		
 	}
-	
-
-	
 	
 	private void setEtapa2Data() {
 		labelNombreTecnicaValor.setText(FuzzyDataMining.names[GlobalData.getInstance().getCurrentTechnique()]);

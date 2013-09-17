@@ -20,7 +20,6 @@ public class GlobalData {
 	private Integer currentTechnique;
 	private HashMap<String, Object> configuredTechnique;
 	private String result;
-	
 	private String datasetName;
 		
 	public static GlobalData getInstance(){
@@ -160,6 +159,7 @@ public class GlobalData {
 	public void setConfiguredTechnique(HashMap<String, Object> configuredTechnique) {
 		this.configuredTechnique = configuredTechnique;
 	}
+
 
 	public String getResult() {
 		return result;
