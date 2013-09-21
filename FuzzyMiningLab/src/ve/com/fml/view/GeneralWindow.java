@@ -155,7 +155,7 @@ public class GeneralWindow extends JFrame {
 		
 		JPanel progress = new JPanel();
 		progress.setBounds(5, 446, 779, 101);
-		progress.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2), "Progress", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial",Font.BOLD,12), new Color(0, 0, 0)));
+		progress.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2), "Progreso", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial",Font.BOLD,12), new Color(0, 0, 0)));
 		
 		JLabel labelDataset = new JLabel("DataSet");
 		labelDataset.setBounds(40, 15, 120, 23);
@@ -224,6 +224,11 @@ public class GeneralWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(JOptionPane.showConfirmDialog(null, "Desea limpiar todo?","Aceptar",JOptionPane.OK_CANCEL_OPTION)== JOptionPane.OK_OPTION){
 					GlobalData.clearInstance();
+					cardPanel.add(new EsquemaDeTrabajo(), "Esquema de trabajo");
+					cardPanel.add(new DataConfigurationWindow(), "Cargar datos");
+					cardPanel.add(new DataMiningTechniqueWindow(), "Seleccion tecnica");
+					cardPanel.add(new RunAlgorithm(), "Generacion del Modelo");
+					((CardLayout)cardPanel.getLayout()).show(cardPanel,"Esquema de trabajo");
 					mainWindowRefresh();
 				}
 			}
@@ -235,8 +240,7 @@ public class GeneralWindow extends JFrame {
 		JButton btnAyuda = new JButton("Ayuda");
 		btnAyuda.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ConfigurationViewWindow Newframe= new ConfigurationViewWindow();
-				Newframe.setVisible(true);
+				
 			}
 		});
 		btnAyuda.setBounds(600, 30, 120, 23);

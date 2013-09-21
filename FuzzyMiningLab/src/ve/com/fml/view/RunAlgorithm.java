@@ -5,12 +5,7 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
@@ -18,48 +13,90 @@ import ve.com.fml.model.datasource.GlobalData;
 
 public class RunAlgorithm extends JPanel {
 	private static final long serialVersionUID = 1L;
-	private JTextArea resultArea = new JTextArea();
-	private JButton setupAndRun = new JButton();
 	
 	/**
 	 * Create the panel.
 	 */
 	public RunAlgorithm() {
-		setSize(630, 435);
-		setupAndRun.setSize(100,50);
-		setupAndRun.setText("Ejecutar");
-		resultArea.setSize(100,100);
+		initComponents();
+
+//		
+	}
+	
+	private void initComponents() {
 
 		setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2), "Modelo resultante", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial",Font.BOLD,12), Color.BLACK));
-		setLayout(null);
+		jLabel1 = new javax.swing.JLabel();
+        runAlgButton = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        saveDatasetButton = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        resultArea = new javax.swing.JTextArea();
 
-		JPanel picture = new JPanel();
-		picture.setBounds(16, 28, 589, 390);
+        jLabel1.setText("Ejecutar Algoritmo");
 
-		JLabel label = new JLabel("");
-		//		if(GAL_GUI.language.imageLanguage.equals("image_es"))
-		//			label.setIcon(new ImageIcon(EsquemaDeTrabajo.class.getResource("/Images/mapa_ppal.png")));
-		//		else
-		//			label.setIcon(new ImageIcon(EsquemaDeTrabajo.class.getResource("/Images/mapa_ppal_english.png")));
-		label.setBackground(new Color(255,255,255));
-		GroupLayout gl_picture = new GroupLayout(picture);
-		gl_picture.setHorizontalGroup(
-				gl_picture.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_picture.createSequentialGroup()
-						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(label, GroupLayout.PREFERRED_SIZE, 578, GroupLayout.PREFERRED_SIZE)
-						.addContainerGap())
-				);
-		gl_picture.setVerticalGroup(
-				gl_picture.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_picture.createSequentialGroup()
-						.addContainerGap()
-						.addComponent(label, GroupLayout.DEFAULT_SIZE, 368, Short.MAX_VALUE)
-						.addContainerGap())
-				);
-		
-		
-		setupAndRun.addActionListener(new ActionListener() {
+        runAlgButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/btn_Ejecutar.png"))); // NOI18N
+        runAlgButton.setMaximumSize(new java.awt.Dimension(99, 49));
+        runAlgButton.setMinimumSize(new java.awt.Dimension(76, 50));
+        runAlgButton.setPreferredSize(new java.awt.Dimension(76, 50));
+
+        jLabel2.setText("Guardar Conjunto de Datos");
+
+        saveDatasetButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/btn_Guardar.png"))); // NOI18N
+        saveDatasetButton.setMinimumSize(new java.awt.Dimension(76, 50));
+        saveDatasetButton.setPreferredSize(new java.awt.Dimension(76, 50));
+
+        resultArea.setColumns(20);
+        resultArea.setRows(5);
+        jScrollPane1.setViewportView(resultArea);
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(this);
+        setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(10, 10, 10)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jSeparator1)
+                                .addComponent(jScrollPane1)))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGap(132, 132, 132)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                .addComponent(runAlgButton, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel1))
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                .addComponent(saveDatasetButton, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2))
+                            .addGap(108, 108, 108)))
+                    .addContainerGap())
+            );
+            jPanel1Layout.setVerticalGroup(
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(saveDatasetButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(7, 7, 7)
+                            .addComponent(jLabel2))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(runAlgButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(7, 7, 7)
+                            .addComponent(jLabel1)))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE)
+                    .addContainerGap())
+            );
+
+       
+
+        runAlgButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -67,12 +104,15 @@ public class RunAlgorithm extends JPanel {
 				resultArea.setText(GlobalData.getInstance().getResult());
 			}
 		});
-		picture.add(setupAndRun);
-		
-		//picture.setLayout(gl_picture);
-		picture.add(resultArea);
-		add(picture);
-		
-	}
+        
+    }// </editor-fold>
+	
+	private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTextArea resultArea;
+    private javax.swing.JButton runAlgButton;
+    private javax.swing.JButton saveDatasetButton;
 
 }

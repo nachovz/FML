@@ -38,7 +38,7 @@ public class Test {
 		try {
 
 			fkm.config(fuzzyInstances);
-			ClusterEvaluation eval = new ClusterEvaluation();
+			//ClusterEvaluation eval = new ClusterEvaluation();
 
 			fkm.buildClusterer(fuzzyInstances);
 			

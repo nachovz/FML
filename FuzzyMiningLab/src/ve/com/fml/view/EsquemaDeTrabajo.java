@@ -1,13 +1,13 @@
 package ve.com.fml.view;
 
-import javax.swing.JPanel;
+import java.awt.Color;
+import java.awt.Font;
+
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
-import java.awt.Color;
-import javax.swing.ImageIcon;
-import java.awt.Font;
 import javax.swing.border.TitledBorder;
 
 public class EsquemaDeTrabajo extends JPanel {
