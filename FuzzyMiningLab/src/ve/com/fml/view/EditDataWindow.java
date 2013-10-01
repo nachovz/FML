@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -17,7 +18,7 @@ import weka.filters.Filter;
 import weka.filters.unsupervised.attribute.Normalize;
 import weka.filters.unsupervised.attribute.ReplaceMissingValues;
 
-public class EditDataWindow extends JFrame {
+public class EditDataWindow extends JDialog {
 
 	private JPanel contentPane;
 	private JScrollPane scrollPane;
@@ -28,8 +29,10 @@ public class EditDataWindow extends JFrame {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	public EditDataWindow() {
-		
+	
+	
+	public EditDataWindow(JFrame parent, boolean isModal){
+		super(parent, isModal);
 		GlobalData.getInstance().storeInstancesBackup();
 		setResizable(true);
 		setTitle("Configuración de datos");

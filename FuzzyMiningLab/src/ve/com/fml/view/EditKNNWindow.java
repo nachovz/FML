@@ -4,11 +4,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 
+import javax.swing.JFrame;
+
 import ve.com.fml.model.datasource.GlobalData;
 import ve.com.fml.model.fuzzy.FuzzyDataMining;
 
 
-public class EditKNNWindow extends javax.swing.JFrame {
+public class EditKNNWindow extends javax.swing.JDialog {
 
 	/**
 	 * 
@@ -16,8 +18,11 @@ public class EditKNNWindow extends javax.swing.JFrame {
 	private static final long serialVersionUID = 1L;
 	/**
 	 * Creates new form EditKNNWindow
+	 * @param isModal 
+	 * @param topFrame 
 	 */
-	public EditKNNWindow() {
+	public EditKNNWindow(JFrame topFrame, boolean isModal) {
+		super(topFrame,isModal);
 		initComponents();
 	}
 
@@ -39,7 +44,7 @@ public class EditKNNWindow extends javax.swing.JFrame {
 		cancelButton = new javax.swing.JButton();
 		saveButton = new javax.swing.JButton();
 
-		setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+		//setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		setTitle("Configuración de Algoritmo");
 
 		kLabel.setText("K (Número de vecinos):");

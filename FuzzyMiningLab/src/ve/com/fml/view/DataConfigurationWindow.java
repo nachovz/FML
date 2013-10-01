@@ -8,13 +8,17 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import org.jfree.ui.RefineryUtilities;
 
 import ve.com.fml.model.datasource.GlobalData;
 import ve.com.fml.model.datasource.InstancesLoader;
@@ -29,29 +33,9 @@ public class DataConfigurationWindow extends JPanel {
 
 	public DataConfigurationWindow(){
 
-		//		JMenuItem mntmAbrir = new JMenuItem(GAL_GUI.language.CommonWords[3]);
-		//		JMenuItem mntmAbrir = new JMenuItem("Abrir");
-		//		mntmAbrir.addActionListener(new ActionListener() {
-		//			public void actionPerformed(ActionEvent e) {
-		//				try{
-		//					JFileChooser fc= new JFileChooser();
-		//					int returnVal= fc.showOpenDialog(DataConfigurationWindow.this);
-		//					if(returnVal == JFileChooser.APPROVE_OPTION)
-		//						GlobalData.getInstance().setFuzzyInstances(new FuzzyInstances(InstancesLoader.loadFromTextFile(fc.getSelectedFile().getAbsolutePath())));
-		//					//actualizar();
-		//				}catch(Exception ex){
-		//					JOptionPane.showMessageDialog(null, GAL_GUI.language.Errors[10]);
-		//				}
-		//			}
-		//		});
-		//		mntmAbrir.setFont(new Font("Tahoma", Font.PLAIN, 11));
-		//		mnArchivo.add(mntmAbrir);
-
-		//--------------------------------
-
+		final JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 		setSize(630, 435);
 
-		//		setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 255), 2), GAL_GUI.language.casosDeUso[4], TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial",Font.BOLD,12), new Color(0, 0, 255)));
 		setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 255), 2), "Carga de datos", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial",Font.BOLD,12), new Color(0, 0, 255)));
 
 		//		JPanel picture = new JPanel();
@@ -120,8 +104,11 @@ public class DataConfigurationWindow extends JPanel {
 				if(GlobalData.getInstance().getFuzzyInstances() == null)
 					JOptionPane.showMessageDialog(DataConfigurationWindow.this, "No se han cargado los datos");
 				else{
-					EditDataWindow Newframe= new EditDataWindow();
-					Newframe.setVisible(true);
+					
+					EditDataWindow editFrame= new EditDataWindow(topFrame,true);
+					RefineryUtilities.centerFrameOnScreen(editFrame);
+					editFrame.setVisible(true);				
+					
 				}
 				//				if(!GAL_GUI.gal.executed())
 				//					JOptionPane.showMessageDialog(DataConfigurationWindow.this, GAL_GUI.language.Errors[21]);
@@ -148,8 +135,9 @@ public class DataConfigurationWindow extends JPanel {
 				if(GlobalData.getInstance().getFuzzyInstances() == null)
 					JOptionPane.showMessageDialog(DataConfigurationWindow.this, "No se han cargado los datos");
 				else{
-					DefineFuzzySetsWindow Newframe= new DefineFuzzySetsWindow();
-					Newframe.setVisible(true);
+					DefineFuzzySetsWindow fuzzyEditFrame= new DefineFuzzySetsWindow(topFrame,true);
+					RefineryUtilities.centerFrameOnScreen(fuzzyEditFrame);
+					fuzzyEditFrame.setVisible(true);
 				}
 				//				if(!GAL_GUI.gal.executed())
 				//					JOptionPane.showMessageDialog(DataConfigurationWindow.this, GAL_GUI.language.Errors[21]);
@@ -167,94 +155,6 @@ public class DataConfigurationWindow extends JPanel {
 		lblDefineFuzzySets.setHorizontalAlignment(SwingConstants.CENTER);
 
 
-
-		//		JButton btn_Ejecutar = new JButton("");
-		//		btn_Ejecutar.setIcon(new ImageIcon(DataConfigurationWindow.class.getResource("/Images/btn_Ejecutar.png")));
-		//		btn_Ejecutar.addActionListener(new ActionListener() {
-		//			public void actionPerformed(ActionEvent e) {
-		//				int ret= JOptionPane.showOptionDialog(DataConfigurationWindow.this, GAL_GUI.language.Questions[3], GAL_GUI.language.botonesPrincipales[7], 0, JOptionPane.PLAIN_MESSAGE,
-		//						null, new String[]{GAL_GUI.language.Questions[4],GAL_GUI.language.Questions[5]}, GAL_GUI.language.Questions[4]);
-		//				if(ret!=-1){
-		//					if(GAL_GUI.gal.runHandler(ret==0)){
-		//						GeneralWindow.pnl_ProgressResultados.setBackground(new Color(0, 0, 255));
-		//						ResultsViewWindow Newframe= new ResultsViewWindow();
-		//						Newframe.setVisible(true);
-		//					}else{
-		//						GeneralWindow.pnl_ProgressResultados.setBackground(new Color(240, 240, 240));
-		//					}
-		//				}
-		//			}
-		//		});
-		//		btn_Ejecutar.setBounds(48, 28, 76, 50);
-		//		
-		//		JLabel lblEjecutar = new JLabel(GAL_GUI.language.botonesPrincipales[7]);
-		//		lblEjecutar.setBounds(48, 84, 76, 14);
-		//		lblEjecutar.setHorizontalAlignment(SwingConstants.CENTER);
-		//		
-		//		
-		//		
-		//		JButton btn_Guardar = new JButton("");
-		//		btn_Guardar.setIcon(new ImageIcon(DataConfigurationWindow.class.getResource("/Images/btn_Guardar.png")));
-		//		btn_Guardar.addActionListener(new ActionListener() {
-		//			public void actionPerformed(ActionEvent e) {
-		//				int ret= JOptionPane.showOptionDialog(DataConfigurationWindow.this, GAL_GUI.language.Questions[0], GAL_GUI.language.botonesPrincipales[9], 0, JOptionPane.PLAIN_MESSAGE,
-		//						null, new String[]{GAL_GUI.language.Questions[1],GAL_GUI.language.Questions[2]}, GAL_GUI.language.Questions[1]);
-		//				if(ret==0){
-		//					JFileChooser fc= new JFileChooser();
-		//					int returnVal= fc.showSaveDialog(DataConfigurationWindow.this);
-		//					if(returnVal == JFileChooser.APPROVE_OPTION)
-		//						GAL_GUI.gal.saveAll(fc.getSelectedFile());
-		//				}if(ret==1){
-		//					try {
-		//						if(!GAL_GUI.gal.executed())
-		//							throw new Exception(GAL_GUI.language.Errors[22]);
-		//						JFileChooser fc= new JFileChooser();
-		//						int returnVal= fc.showSaveDialog(DataConfigurationWindow.this);
-		//						if(returnVal == JFileChooser.APPROVE_OPTION)
-		//							GAL_GUI.gal.saveResults(fc.getSelectedFile());
-		//					} catch (Exception e1) {
-		//						JOptionPane.showMessageDialog(DataConfigurationWindow.this, e1.getMessage());
-		//					}
-		//				}
-		//			}
-		//		});
-		//		btn_Guardar.setBounds(284, 28, 76, 50);
-		//		
-		//		JLabel lblGuardar = new JLabel(GAL_GUI.language.botonesPrincipales[9]);
-		//		lblGuardar.setBounds(284, 84, 76, 14);
-		//		lblGuardar.setHorizontalAlignment(SwingConstants.CENTER);
-		//		
-		//		
-		//		
-		//		
-		//		
-		//		JLabel lbl_help = new JLabel("");
-		//		help.add(lbl_help);
-		//		lbl_help.setBackground(Color.BLACK);
-		//		lbl_help.setIcon(new ImageIcon(DataConfigurationWindow.class.getResource("/Images/help.png")));
-		//		setLayout(null);
-		//		
-		//		JLabel label = new JLabel("");
-		//		if(GAL_GUI.language.imageLanguage.equals("image_es"))
-		//			label.setIcon(new ImageIcon(DefinirCromosoma.class.getResource("/Images/mapa_DataConfigurationWindow.png")));
-		//		else
-		//			label.setIcon(new ImageIcon(DefinirCromosoma.class.getResource("/Images/mapa_DataConfigurationWindow_english.png")));
-		//		
-		//		GroupLayout gl_picture = new GroupLayout(picture);
-		//		gl_picture.setHorizontalGroup(
-		//			gl_picture.createParallelGroup(Alignment.TRAILING)
-		//				.addGroup(Alignment.LEADING, gl_picture.createSequentialGroup()
-		//					.addContainerGap()
-		//					.addComponent(label, GroupLayout.DEFAULT_SIZE, 578, Short.MAX_VALUE)
-		//					.addContainerGap())
-		//		);
-		//		gl_picture.setVerticalGroup(
-		//			gl_picture.createParallelGroup(Alignment.LEADING)
-		//				.addGroup(gl_picture.createSequentialGroup()
-		//					.addContainerGap()
-		//					.addComponent(label, GroupLayout.PREFERRED_SIZE, 268, GroupLayout.PREFERRED_SIZE)
-		//					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		//		);
 
 		setLayout(null);
 		//		picture.setLayout(gl_picture);
@@ -274,41 +174,7 @@ public class DataConfigurationWindow extends JPanel {
 	}
 
 	void actualizar(){
-		//		if(GAL_GUI.gal.getGeneNames().length>0)
-		//			GeneralWindow.pnl_ProgressCromosoma.setBackground(new Color(0, 128, 64));
-		//		else
-		//			GeneralWindow.pnl_ProgressCromosoma.setBackground(new Color(240, 240, 240));
-		//		
-		//		if(GAL_GUI.gal.getInterpreter(0).getValid())
-		//			GeneralWindow.pnl_ProgressFuncion1.setBackground(new Color(128, 0, 128));
-		//		else
-		//			GeneralWindow.pnl_ProgressFuncion1.setBackground(new Color(240, 240, 240));
-		//
-		//		
-		//		GAL_GUI.gal.validateInterpreter(1);
-		//		if(GAL_GUI.gal.getInterpreter(1).getValid())
-		//			GeneralWindow.pnl_ProgressFuncion2.setBackground(new Color(128, 0, 128));
-		//		else
-		//			GeneralWindow.pnl_ProgressFuncion2.setBackground(new Color(240, 240, 240));
-		//		
-		//		if(GAL_GUI.gal.getSelector()!=null)
-		//			GeneralWindow.pnl_ProgressConfig1.setBackground(new Color(255, 50, 0));
-		//		else
-		//			GeneralWindow.pnl_ProgressConfig1.setBackground(new Color(240, 240, 240));
-		//		
-		//		if(GAL_GUI.gal.getOperatorsNames().length>0)
-		//			GeneralWindow.pnl_ProgressConfig2.setBackground(new Color(255, 50, 0));
-		//		else
-		//			GeneralWindow.pnl_ProgressConfig2.setBackground(new Color(240, 240, 240));
-		//		
-		//		if(GAL_GUI.gal.parametersAssigned())
-		//			GeneralWindow.pnl_ProgressConfig3.setBackground(new Color(255, 50, 0));
-		//		else
-		//			GeneralWindow.pnl_ProgressConfig3.setBackground(new Color(240, 240, 240));
-		//		
-		//		GeneralWindow.pnl_ProgressResultados.setBackground(new Color(240, 240, 240));
-		//	}
-
+		
 	}
 
 

@@ -1,173 +1,283 @@
 package ve.com.fml.view;
 
-import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import java.util.HashMap;
 import java.util.Vector;
 
-import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.AbstractTableModel;
+import javax.swing.SwingUtilities;
 
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.ValueAxis;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.jfree.ui.RefineryUtilities;
 
 import ve.com.fml.model.datasource.GlobalData;
+import ve.com.fml.model.fuzzy.FuzzyVariable;
+import ve.com.fml.model.fuzzy.membership.FuzzyMembership;
+import ve.com.fml.model.fuzzy.membership.SingletonFuzzyMembership;
+import ve.com.fml.model.fuzzy.membership.TrapFuzzyMembership;
+import ve.com.fml.model.fuzzy.membership.TriangleFuzzyMembership;
 
-public class DefineFuzzySetsWindow extends JFrame {
+public class DefineFuzzySetsWindow extends JDialog {
 
-	private JPanel contentPane;
-	private JScrollPane scrollPane;
-	private JTable table;
-	private JPanel normalizePanel;
-	private JPanel buttons;
+	private javax.swing.JComboBox<String> attributeList;
+	private javax.swing.JComboBox<String> fuzzySetsList;
+	private HashMap<String, Integer> numericAtts = GlobalData.getInstance().getFuzzyInstances().getNumericAttributes();
+
+	private javax.swing.JLabel jLabel1;
+	private javax.swing.JLabel jLabel2;
+	private javax.swing.JLabel jLabel3;
+	private javax.swing.JLabel jLabel4;
+	private javax.swing.JLabel jLabel5;
+	private javax.swing.JPanel jPanel1;
+	private javax.swing.JSeparator jSeparator1;
+	private javax.swing.JSeparator jSeparator2;
+	private javax.swing.JButton addFuzzySetButton;
+	private javax.swing.JButton deleteFuzzySetButton;
+	private javax.swing.JButton editFuzzySetButton;
+
+	private JFreeChart chart;
+	private ChartPanel chartPanel;
 	/**
 	 * Edit data pane
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public DefineFuzzySetsWindow() {
+	public DefineFuzzySetsWindow(JFrame topFrame, boolean isModal) {
+		super(topFrame, isModal);
+		initComponents();
+	}
 
-		setResizable(true);
-		setTitle("Difusificación del Conjunto de Datos");
-		setBounds(100, 100, 800, 580);
-		setLayout(new CardLayout());
-		contentPane = new JPanel();
+	private static XYSeries createSeries(String name, FuzzyMembership fuzzyMembership){
+		XYSeries xySeries = new XYSeries(name);
+		if(fuzzyMembership instanceof TriangleFuzzyMembership){
+			xySeries.add(((TriangleFuzzyMembership)fuzzyMembership).getLowerBound(), 0D);
+			xySeries.add(((TriangleFuzzyMembership)fuzzyMembership).getTopTriangle(), 1D);
+			xySeries.add(((TriangleFuzzyMembership)fuzzyMembership).getUpperBound(), 0D);
+		}else if(fuzzyMembership instanceof TrapFuzzyMembership){
+			xySeries.add(((TrapFuzzyMembership)fuzzyMembership).getLowerBound(), 0D);
+			xySeries.add(((TrapFuzzyMembership)fuzzyMembership).getTopTrap1(), 1D);
+			xySeries.add(((TrapFuzzyMembership)fuzzyMembership).getTopTrap2(), 1D);
+			xySeries.add(((TrapFuzzyMembership)fuzzyMembership).getUpperBound(), 0D);
+		}else if(fuzzyMembership instanceof SingletonFuzzyMembership){
+			xySeries.add(((SingletonFuzzyMembership)fuzzyMembership).getX(), 1D);
+		}
+		return xySeries;
 
-		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-		setContentPane(contentPane);
-		normalizePanel = new JPanel();
-		buttons = new JPanel();
+	}
+
+	private static XYDataset createDataset(FuzzyVariable fuzzyVariable) {
+		XYSeriesCollection xyseriescollection = new XYSeriesCollection();
+		if(fuzzyVariable != null){
+			for (String name : fuzzyVariable.getFuzzySets().keySet()) {
+				xyseriescollection.addSeries(createSeries(name, fuzzyVariable.getFuzzySets().get(name)));
+			}
+		}
+		xyseriescollection.setIntervalWidth(0.0D);
+		return xyseriescollection;
+	}
+
+	private void refreshChart(Integer attrIndx){
+		String atrName = GlobalData.getInstance().getFuzzyInstances().attribute(attrIndx-1).name();
+		System.out.println(GlobalData.getInstance().getFuzzyInstances().getMembership());
+		XYDataset xydataset = createDataset(GlobalData.getInstance().getFuzzyInstances().getMembership().get(attrIndx-1));
+		chart = ChartFactory.createXYAreaChart("Conjuntos difusos para el atributo "+atrName,"Dominio (x)", "Función de pertenencia \u03BC(x)", xydataset, PlotOrientation.VERTICAL, true, true, false);
+		chart.setBackgroundPaint(Color.white);
+		XYPlot xyplot = (XYPlot) chart.getPlot();
+		xyplot.setBackgroundPaint(Color.lightGray);
+		xyplot.setForegroundAlpha(0.65F);
+		xyplot.setDomainGridlinePaint(Color.white);
+		xyplot.setRangeGridlinePaint(Color.white);
+		ValueAxis valueaxis = xyplot.getDomainAxis();
+		valueaxis.setTickMarkPaint(Color.black);
+		valueaxis.setLowerMargin(0.0D);
+		valueaxis.setUpperMargin(0.0D);
+		ValueAxis valueaxis1 = xyplot.getRangeAxis();
+		valueaxis1.setTickMarkPaint(Color.black);
+		
+		jPanel1.removeAll();
+		chartPanel = new ChartPanel(chart);
+		chartPanel.setPreferredSize(new Dimension(500, 270));
+		jPanel1.add(chartPanel);
+		//chartPanel.repaint();
+		jPanel1.repaint();
+		//repaint();
+		pack();
+	}
+
+	private void initComponents() {
+
+		jSeparator1 = new javax.swing.JSeparator();
+		addFuzzySetButton = new javax.swing.JButton();
+		jLabel3 = new javax.swing.JLabel();
+		jLabel4 = new javax.swing.JLabel();
+		deleteFuzzySetButton = new javax.swing.JButton();
+		jLabel5 = new javax.swing.JLabel();
+		editFuzzySetButton = new javax.swing.JButton();
+		jSeparator2 = new javax.swing.JSeparator();
+		jPanel1 = new javax.swing.JPanel();
+		jLabel1 = new javax.swing.JLabel();
+		attributeList = new JComboBox<String>();
+		jLabel2 = new javax.swing.JLabel();
+		fuzzySetsList = new JComboBox<String>();
 
 
-		/** Control para selección de atributo difusificable */
-		final HashMap<String, Integer> numericAtts = GlobalData.getInstance().getFuzzyInstances().getNumericAttributes();
-		//final JComboBox<String> attributeList = new JComboBox<String>(new Vector<String>(numericAtts.keySet()));
-		final JComboBox<String> attributeList = new JComboBox<String>();
+		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+
+		addFuzzySetButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/add.png"))); // NOI18N
+		addFuzzySetButton.setMinimumSize(new java.awt.Dimension(76, 50));
+		addFuzzySetButton.setPreferredSize(new java.awt.Dimension(76, 50));
+
+		jLabel3.setText("Agregar Conjunto Difuso");
+
+		jLabel4.setText("Eliminar Conjunto Difuso");
+
+		deleteFuzzySetButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/delete.png"))); // NOI18N
+		deleteFuzzySetButton.setMinimumSize(new java.awt.Dimension(76, 50));
+		deleteFuzzySetButton.setPreferredSize(new java.awt.Dimension(76, 50));
+
+		jLabel5.setText("Editar Conjunto Difuso");
+
+		editFuzzySetButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/pencil.png"))); // NOI18N
+		editFuzzySetButton.setMinimumSize(new java.awt.Dimension(76, 50));
+		editFuzzySetButton.setPreferredSize(new java.awt.Dimension(76, 50));
+
+		/*javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+		jPanel1.setLayout(jPanel1Layout);
+		jPanel1Layout.setHorizontalGroup(
+				jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGap(0, 0, Short.MAX_VALUE)
+				);
+		jPanel1Layout.setVerticalGroup(
+				jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGap(0, 310, Short.MAX_VALUE)
+				);*/
+
+		jLabel1.setText("Atributos Difusificables");
+
+		//attributeList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+		jLabel2.setText("Conjuntos Difusos");
+
+		//fuzzySetsList.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+		getContentPane().setLayout(layout);
+		layout.setHorizontalGroup(
+				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(layout.createSequentialGroup()
+						.addContainerGap()
+						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+								.addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(jSeparator1)
+								.addComponent(jSeparator2)
+								.addGroup(layout.createSequentialGroup()
+										.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+												.addComponent(addFuzzySetButton, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+												.addComponent(jLabel3))
+												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 98, Short.MAX_VALUE)
+												.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+														.addComponent(deleteFuzzySetButton, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+														.addComponent(jLabel4))
+														.addGap(113, 113, 113)
+														.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+																.addComponent(editFuzzySetButton, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+																.addComponent(jLabel5)))
+																.addGroup(layout.createSequentialGroup()
+																		.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+																				.addComponent(jLabel1, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 254, Short.MAX_VALUE)
+																				.addComponent(attributeList, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+																				.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+																				.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+																						.addComponent(jLabel2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+																						.addComponent(fuzzySetsList, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE))))
+																						.addContainerGap())
+				);
+		layout.setVerticalGroup(
+				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(layout.createSequentialGroup()
+						.addGap(16, 16, 16)
+						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+								.addGroup(layout.createSequentialGroup()
+										.addComponent(jLabel1)
+										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addComponent(attributeList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+										.addGroup(layout.createSequentialGroup()
+												.addComponent(jLabel2)
+												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+												.addComponent(fuzzySetsList, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+												.addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+												.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+														.addGroup(layout.createSequentialGroup()
+																.addComponent(addFuzzySetButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+																.addGap(7, 7, 7)
+																.addComponent(jLabel3))
+																.addGroup(layout.createSequentialGroup()
+																		.addComponent(editFuzzySetButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+																		.addGap(7, 7, 7)
+																		.addComponent(jLabel5))
+																		.addGroup(layout.createSequentialGroup()
+																				.addComponent(deleteFuzzySetButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+																				.addGap(7, 7, 7)
+																				.addComponent(jLabel4)))
+																				.addGap(18, 18, 18)
+																				.addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+																				.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																				.addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+																				.addContainerGap())
+				);
+
+
+		numericAtts = GlobalData.getInstance().getFuzzyInstances().getNumericAttributes();
 		attributeList.addItem("Seleccione un atributo numérico...");
 		for (String numAttLabel : numericAtts.keySet()) {
 			attributeList.addItem(numAttLabel);
 		}
 
 		/** Control para selección de conjunto difuso */
-		final JComboBox<String> fuzzySetsList = new JComboBox<String>();
 		fuzzySetsList.addItem("Seleccione un conjunto difuso...");
-		Vector<String> currentFS = GlobalData.getInstance().getFuzzyInstances().getFuzzySets(numericAtts.get(attributeList.getSelectedItem()));
-		for (String fuzzySetLabel : currentFS) {
-			fuzzySetsList.addItem(fuzzySetLabel);
-		}
+
 
 		attributeList.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				fuzzySetsList.removeAllItems();
-				fuzzySetsList.addItem("Seleccione un conjunto difuso...");
-				if(attributeList.getSelectedIndex() != 0){
-					Vector<String> currentFS = GlobalData.getInstance().getFuzzyInstances().getFuzzySets(numericAtts.get(attributeList.getSelectedItem()));
-					for (String fuzzySetLabel : currentFS) {
-						fuzzySetsList.addItem(fuzzySetLabel);
-					}
-				}
-				contentPane.repaint();
+				refreshFuzzySetList();
+				repaint();
 			}
 		});
 
-		fuzzySetsList.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				//TODO agregar el chart
-				contentPane.repaint();
-			}
-		});
-
-		normalizePanel.add(attributeList);
-		normalizePanel.add(fuzzySetsList);
-
-		/**Controles para agregar conjunto difuso*/
-		JButton btnAddFS = new JButton("Agregar conjunto difuso");
-
-		btnAddFS.addActionListener(new ActionListener() {
-
+		addFuzzySetButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				if(attributeList.getSelectedIndex() != 0){
-					AddFuzzySetWindow addFuzzySetWindow = new AddFuzzySetWindow(numericAtts.get(attributeList.getSelectedItem()));
+					AddFuzzySetWindow addFuzzySetWindow = new AddFuzzySetWindow(numericAtts.get(attributeList.getSelectedItem()),(JDialog)SwingUtilities.getWindowAncestor(addFuzzySetButton),true);
+					addFuzzySetWindow.pack();
+					RefineryUtilities.centerFrameOnScreen(addFuzzySetWindow);
 					addFuzzySetWindow.setVisible(true);
-					setEnabled(false);
-					//repaint and enable on window close
-
-					addFuzzySetWindow.addWindowListener(new WindowListener() {
-						@Override
-						public void windowClosed(WindowEvent e) {
-							setEnabled(true);
-							toFront();
-							fuzzySetsList.removeAllItems();
-							fuzzySetsList.addItem("Seleccione un conjunto difuso...");
-							if(attributeList.getSelectedIndex() != 0){
-								Vector<String> currentFS = GlobalData.getInstance().getFuzzyInstances().getFuzzySets(numericAtts.get(attributeList.getSelectedItem()));
-								for (String fuzzySetLabel : currentFS) {
-									fuzzySetsList.addItem(fuzzySetLabel);
-								}
-							}
-							contentPane.repaint();
-						}
-
-						@Override
-						public void windowActivated(WindowEvent e) {
-							// TODO Auto-generated method stub
-
-						}
-
-						@Override
-						public void windowClosing(WindowEvent e) {
-							// TODO Auto-generated method stub
-
-						}
-
-						@Override
-						public void windowDeactivated(WindowEvent e) {
-							// TODO Auto-generated method stub
-
-						}
-
-						@Override
-						public void windowDeiconified(WindowEvent e) {
-							// TODO Auto-generated method stub
-
-						}
-
-						@Override
-						public void windowIconified(WindowEvent e) {
-							// TODO Auto-generated method stub
-
-						}
-
-						@Override
-						public void windowOpened(WindowEvent e) {
-							// TODO Auto-generated method stub
-
-						}
-					});
+					refreshFuzzySetList();
+					repaint();
 				}else{
 					//alert, tiene que seleccionar un atribruto
 				}
 			}
 		});
 
-		JButton btnDelFS = new JButton("Eliminar conjunto difuso");
-
-		btnDelFS.addActionListener(new ActionListener() {
+		deleteFuzzySetButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -177,22 +287,13 @@ public class DefineFuzzySetsWindow extends JFrame {
 				}else{
 					//prompt de si está seguro
 					GlobalData.getInstance().getFuzzyInstances().removeFuzzySet(numericAtts.get(attributeList.getSelectedItem()), (String) fuzzySetsList.getSelectedItem());
-					fuzzySetsList.removeAllItems();
-					fuzzySetsList.addItem("Seleccione un conjunto difuso...");
-					if(attributeList.getSelectedIndex() != 0){
-						Vector<String> currentFS = GlobalData.getInstance().getFuzzyInstances().getFuzzySets(numericAtts.get(attributeList.getSelectedItem()));
-						for (String fuzzySetLabel : currentFS) {
-							fuzzySetsList.addItem(fuzzySetLabel);
-						}
-					}
-					contentPane.repaint();
+					refreshFuzzySetList();
+					repaint();
 				}
 			}
 		});
 
-		JButton btnEditFS = new JButton("Editar conjunto difuso");
-
-		btnEditFS.addActionListener(new ActionListener() {
+		editFuzzySetButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -200,139 +301,29 @@ public class DefineFuzzySetsWindow extends JFrame {
 				if(fuzzySetsList.getSelectedIndex() == 0){
 					//error no se ha seleccionado conjunto difuso
 				}else{
-					AddFuzzySetWindow addFuzzySetWindow = new AddFuzzySetWindow(numericAtts.get(attributeList.getSelectedItem()),(String)fuzzySetsList.getSelectedItem());
+					AddFuzzySetWindow addFuzzySetWindow = new AddFuzzySetWindow(numericAtts.get(attributeList.getSelectedItem()),(String)fuzzySetsList.getSelectedItem(),(JDialog)SwingUtilities.getWindowAncestor(editFuzzySetButton),true);
+					addFuzzySetWindow.pack();
+					RefineryUtilities.centerFrameOnScreen(addFuzzySetWindow);
 					addFuzzySetWindow.setVisible(true);
-					//repaint on window close
-					setEnabled(false);
-					//repaint and enable on window close
-
-					addFuzzySetWindow.addWindowListener(new WindowListener() {
-						@Override
-						public void windowClosed(WindowEvent e) {
-							setEnabled(true);
-							toFront();
-							fuzzySetsList.removeAllItems();
-							fuzzySetsList.addItem("Seleccione un conjunto difuso...");
-							if(attributeList.getSelectedIndex() != 0){
-								Vector<String> currentFS = GlobalData.getInstance().getFuzzyInstances().getFuzzySets(numericAtts.get(attributeList.getSelectedItem()));
-								for (String fuzzySetLabel : currentFS) {
-									fuzzySetsList.addItem(fuzzySetLabel);
-								}
-							}
-							contentPane.repaint();
-						}
-
-						@Override
-						public void windowActivated(WindowEvent e) {
-							// TODO Auto-generated method stub
-
-						}
-
-						@Override
-						public void windowClosing(WindowEvent e) {
-						}
-
-						@Override
-						public void windowDeactivated(WindowEvent e) {
-							// TODO Auto-generated method stub
-
-						}
-
-						@Override
-						public void windowDeiconified(WindowEvent e) {
-							// TODO Auto-generated method stub
-
-						}
-
-						@Override
-						public void windowIconified(WindowEvent e) {
-							// TODO Auto-generated method stub
-
-						}
-
-						@Override
-						public void windowOpened(WindowEvent e) {
-							// TODO Auto-generated method stub
-
-						}
-					});
+					refreshFuzzySetList();
+					repaint();
 				}
 			}
 		});
-
-
-		table = new JTable(new AbstractTableModel() {
-			/**
-			 * Table to show from FuzzyInstance (Singleton)
-			 */
-			private static final long serialVersionUID = 1L;
-
-			@Override
-			public Object getValueAt(int rowIndex, int columnIndex) {
-				if (GlobalData.getInstance().getFuzzyInstances().classIndex() == columnIndex){
-					return ""+GlobalData.getInstance().getFuzzyInstances().classAttribute().value((int) GlobalData.getInstance().getFuzzyInstances().instance(rowIndex).classValue());
-				}
-				return ""+GlobalData.getInstance().getFuzzyInstances().instance(rowIndex).value(columnIndex);
-			}
-
-			@Override
-			public int getRowCount() {
-				return GlobalData.getInstance().getFuzzyInstances().numInstances();
-			}
-
-			@Override
-			public int getColumnCount() {
-				return GlobalData.getInstance().getFuzzyInstances().numAttributes();
-			}
-
-			@Override
-			public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-				// TODO Revisar el tipo del atributo a editar
-				GlobalData.getInstance().getFuzzyInstances().instance(rowIndex).setValue(columnIndex, Double.parseDouble(aValue.toString()));
-			}
-
-			@Override
-			public String getColumnName(int column) {
-				return GlobalData.getInstance().getFuzzyInstances().attribute(column).name();
-			}
-
-			@Override
-			public boolean isCellEditable(int rowIndex, int columnIndex) {
-				return true;
-			}
-
-		});
-		//table.setBounds(100, 100, getWidth(), getHeight());
-		scrollPane = new JScrollPane(table);
-		//scrollPane.setBounds(100, 100, getWidth(), getHeight());
-		//table.setFillsViewportHeight(true);
-		//normalizePanel.add(attributesList);
-		
-		
-		XYDataset data = createDataset();
-		
-		buttons.add(btnAddFS);
-		buttons.add(btnDelFS);
-		buttons.add(btnEditFS);
-		
-		contentPane.add(normalizePanel);
-		contentPane.add(buttons);
-		contentPane.add(scrollPane);
-		
+		//refreshChart(attributeList.getSelectedIndex());
+		pack();
 	}
-	
-	private static XYDataset createDataset(){
-        XYSeriesCollection dataset = new XYSeriesCollection();
-        
-        
-       /* rqm.generateNumbers();
-        XYSeries series = new XYSeries("Scatter");
-                for(int i = 0; i < rqm.size(); i++){
-                        series.add(rqm.yValueAt(i), rqm.xValueAt(i));
-                }
-                dataset.addSeries(series);*/
-                return dataset;
-    }
 
+	private void refreshFuzzySetList(){
+		fuzzySetsList.removeAllItems();
+		fuzzySetsList.addItem("Seleccione un conjunto difuso...");
+		if(attributeList.getSelectedIndex() != 0){
+			Vector<String> currentFS = GlobalData.getInstance().getFuzzyInstances().getFuzzySets(numericAtts.get(attributeList.getSelectedItem()));
+			for (String fuzzySetLabel : currentFS) {
+				fuzzySetsList.addItem(fuzzySetLabel);
+			}
+			refreshChart(attributeList.getSelectedIndex());
+		}
+	}
 
 }

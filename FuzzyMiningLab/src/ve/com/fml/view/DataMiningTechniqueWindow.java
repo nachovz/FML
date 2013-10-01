@@ -8,12 +8,16 @@ import java.awt.event.ActionListener;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+
+import org.jfree.ui.RefineryUtilities;
 
 import ve.com.fml.model.datasource.GlobalData;
 import ve.com.fml.model.fuzzy.FuzzyDataMining;
@@ -27,6 +31,7 @@ public class DataMiningTechniqueWindow extends JPanel {
 
 	public DataMiningTechniqueWindow(){
 
+		final JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
 		//		JMenuItem mntmAbrir = new JMenuItem(GAL_GUI.language.CommonWords[3]);
 		//		JMenuItem mntmAbrir = new JMenuItem("Abrir");
 		//		mntmAbrir.addActionListener(new ActionListener() {
@@ -236,19 +241,23 @@ public class DataMiningTechniqueWindow extends JPanel {
 					switch(GlobalData.getInstance().getCurrentTechnique()){
 					case FuzzyDataMining.MODEL_FUZZY_KNN:
 						//EditDataWindow kNNFrame = new EditDataWindow();
-						EditKNNWindow kNNFrame = new EditKNNWindow();
+						EditKNNWindow kNNFrame = new EditKNNWindow(topFrame,true);
+						RefineryUtilities.centerFrameOnScreen(kNNFrame);
 						kNNFrame.setVisible(true);
 						break;
 					case FuzzyDataMining.MODEL_FUZZY_DT:
-						EditDTWindow dTFrame = new EditDTWindow();
+						EditDTWindow dTFrame = new EditDTWindow(topFrame,true);
+						RefineryUtilities.centerFrameOnScreen(dTFrame);
 						dTFrame.setVisible(true);
 						break;
 					case FuzzyDataMining.MODEL_FUZZY_KMEANS:
-						EditKMeansWindow kMeansFrame = new EditKMeansWindow();
+						EditKMeansWindow kMeansFrame = new EditKMeansWindow(topFrame,true);
+						RefineryUtilities.centerFrameOnScreen(kMeansFrame);
 						kMeansFrame.setVisible(true);
 						break;
 					case FuzzyDataMining.MODEL_FUZZY_APRIORI:
-						EditAprioriWindow aprioriFrame = new EditAprioriWindow();
+						EditAprioriWindow aprioriFrame = new EditAprioriWindow(topFrame,true);
+						RefineryUtilities.centerFrameOnScreen(aprioriFrame);
 						aprioriFrame.setVisible(true);
 						break;
 					}
