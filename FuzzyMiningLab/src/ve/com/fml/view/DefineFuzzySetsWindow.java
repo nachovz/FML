@@ -90,9 +90,9 @@ public class DefineFuzzySetsWindow extends JDialog {
 	}
 
 	private void refreshChart(Integer attrIndx){
-		String atrName = GlobalData.getInstance().getFuzzyInstances().attribute(attrIndx-1).name();
+		String atrName = GlobalData.getInstance().getFuzzyInstances().attribute(attrIndx).name();
 		System.out.println(GlobalData.getInstance().getFuzzyInstances().getMembership());
-		XYDataset xydataset = createDataset(GlobalData.getInstance().getFuzzyInstances().getMembership().get(attrIndx-1));
+		XYDataset xydataset = createDataset(GlobalData.getInstance().getFuzzyInstances().getMembership().get(attrIndx));
 		chart = ChartFactory.createXYAreaChart("Conjuntos difusos para el atributo "+atrName,"Dominio (x)", "Función de pertenencia \u03BC(x)", xydataset, PlotOrientation.VERTICAL, true, true, false);
 		chart.setBackgroundPaint(Color.white);
 		XYPlot xyplot = (XYPlot) chart.getPlot();
@@ -322,7 +322,7 @@ public class DefineFuzzySetsWindow extends JDialog {
 			for (String fuzzySetLabel : currentFS) {
 				fuzzySetsList.addItem(fuzzySetLabel);
 			}
-			refreshChart(attributeList.getSelectedIndex());
+			refreshChart(numericAtts.get(attributeList.getSelectedItem()));
 		}
 	}
 

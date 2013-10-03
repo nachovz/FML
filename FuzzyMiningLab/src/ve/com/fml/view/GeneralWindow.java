@@ -157,7 +157,7 @@ public class GeneralWindow extends JFrame {
 		progress.setBounds(5, 446, 779, 101);
 		progress.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2), "Progreso", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial",Font.BOLD,12), new Color(0, 0, 0)));
 		
-		JLabel labelDataset = new JLabel("DataSet");
+		JLabel labelDataset = new JLabel("Conjunto");
 		labelDataset.setBounds(40, 15, 120, 23);
 		labelDataset.setFont(new Font("Tahoma", Font.BOLD , 14));
 		
