@@ -10,6 +10,7 @@ import java.util.Vector;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 import org.jfree.chart.ChartFactory;
@@ -133,7 +134,7 @@ public class DefineFuzzySetsWindow extends JDialog {
 		jLabel2 = new javax.swing.JLabel();
 		fuzzySetsList = new JComboBox<String>();
 
-
+		setTitle("Difusificación del conjunto de datos");
 		setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
 		addFuzzySetButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/add.png"))); // NOI18N
@@ -272,7 +273,7 @@ public class DefineFuzzySetsWindow extends JDialog {
 					refreshFuzzySetList();
 					repaint();
 				}else{
-					//alert, tiene que seleccionar un atribruto
+					JOptionPane.showMessageDialog(DefineFuzzySetsWindow.this, "Debe seleccionar un atributo para agregar un conjunto difuso.");
 				}
 			}
 		});
@@ -283,7 +284,7 @@ public class DefineFuzzySetsWindow extends JDialog {
 			public void actionPerformed(ActionEvent arg0) {
 				//TODO prompt para eliminar conjunto difuso sobre la variable seleccionada
 				if(fuzzySetsList.getSelectedIndex() == 0){
-					//error no se ha seleccionado conjunto difuso
+					JOptionPane.showMessageDialog(DefineFuzzySetsWindow.this, "Debe seleccionar un conjunto difuso para poder editarlo.");
 				}else{
 					//prompt de si está seguro
 					GlobalData.getInstance().getFuzzyInstances().removeFuzzySet(numericAtts.get(attributeList.getSelectedItem()), (String) fuzzySetsList.getSelectedItem());
@@ -299,7 +300,7 @@ public class DefineFuzzySetsWindow extends JDialog {
 			public void actionPerformed(ActionEvent arg0) {
 				//TODO prompt para eliminar conjunto difuso sobre la variable seleccionada
 				if(fuzzySetsList.getSelectedIndex() == 0){
-					//error no se ha seleccionado conjunto difuso
+					JOptionPane.showMessageDialog(DefineFuzzySetsWindow.this, "Debe seleccionar un conjunto difuso para poder eliminarlo.");
 				}else{
 					AddFuzzySetWindow addFuzzySetWindow = new AddFuzzySetWindow(numericAtts.get(attributeList.getSelectedItem()),(String)fuzzySetsList.getSelectedItem(),(JDialog)SwingUtilities.getWindowAncestor(editFuzzySetButton),true);
 					addFuzzySetWindow.pack();

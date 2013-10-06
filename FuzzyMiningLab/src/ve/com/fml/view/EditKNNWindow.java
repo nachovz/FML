@@ -52,7 +52,7 @@ public class EditKNNWindow extends javax.swing.JDialog {
 
 		TitleLabel.setText("Configuración de K-Vecinos Difuso");
 
-		kDefLabel.setText("(default = 3)");
+		kDefLabel.setText("(default = 1)");
 
 		cancelButton.setText("Cancelar");
 		cancelButton.addActionListener(new ActionListener() {

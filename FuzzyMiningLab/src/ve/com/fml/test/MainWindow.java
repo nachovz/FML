@@ -4,12 +4,16 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
-import ve.com.fml.view.*;
+import org.jfree.ui.RefineryUtilities;
+
+import ve.com.fml.view.GeneralWindow;
+import ve.com.fml.view.WelcomeWindow;
 
 public class MainWindow {
 
 	private JFrame frame;
 	private static GeneralWindow window;
+	//private static WelcomeWindow window;
 
 	/**
 	 * Launch the application.
@@ -18,7 +22,9 @@ public class MainWindow {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					//window = new WelcomeWindow();
 					window = new GeneralWindow();
+					RefineryUtilities.centerFrameOnScreen(window);
 					window.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

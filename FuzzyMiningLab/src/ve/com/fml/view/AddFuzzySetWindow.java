@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JDialog;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import ve.com.fml.model.datasource.GlobalData;
@@ -154,11 +155,13 @@ public class AddFuzzySetWindow extends JDialog{
 					GlobalData.getInstance().getFuzzyInstances().getMembership().get(attrIndex).removeFuzzySet(fuzzySetLabel);
 					options.save();
 					GlobalData.getInstance().getFuzzyInstances().getMembership().get(attrIndex).addFuzzySet(options.name,options.save());
+					JOptionPane.showMessageDialog(AddFuzzySetWindow.this, "El conjunto difuso \""+options.name+"\" ha sido actualizado.");
 				}else{
 					FuzzyMembership fM = options.save();
 					if(!GlobalData.getInstance().getFuzzyInstances().getMembership().containsKey(attrIndex))
 						GlobalData.getInstance().getFuzzyInstances().getMembership().put(attrIndex, new FuzzyVariable());
 					GlobalData.getInstance().getFuzzyInstances().getMembership().get(attrIndex).addFuzzySet(options.name, fM);
+					JOptionPane.showMessageDialog(AddFuzzySetWindow.this, "El conjunto difuso \""+options.name+"\" ha sido agregado.");
 				}
 				dispose();
 			}

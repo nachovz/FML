@@ -189,7 +189,7 @@ public class GeneralWindow extends JFrame {
 			labelInstanciasValor.setBounds(100, 64, 150, 12);
 			labelInstanciasValor.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
-		JLabel labelConjuntos = new JLabel("Conjuntos: ");
+		JLabel labelConjuntos = new JLabel("Variables difusas: ");
 		labelConjuntos.setBounds(40, 78, 60, 12);
 		labelConjuntos.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
@@ -419,7 +419,7 @@ public class GeneralWindow extends JFrame {
 		labelNombreConjuntoValor.setText(GlobalData.getInstance().getDatasetName());
 		labelAtributosValor.setText(""+(GlobalData.getInstance().getFuzzyInstances().numAttributes()-1));
 		labelInstanciasValor.setText(""+GlobalData.getInstance().getFuzzyInstances().numInstances());
-		labelNumeroConjuntosDifusosValor.setText(""+GlobalData.getInstance().getFuzzyInstances().numClasses());
+		labelNumeroConjuntosDifusosValor.setText(""+GlobalData.getInstance().getFuzzyInstances().getMembership().size());
 	}
 	
 	
