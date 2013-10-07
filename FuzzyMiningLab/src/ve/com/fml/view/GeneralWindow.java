@@ -222,7 +222,7 @@ public class GeneralWindow extends JFrame {
 		JButton btnLimpiar = new JButton("Limpiar Datos");
 		btnLimpiar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(JOptionPane.showConfirmDialog(null, "Desea limpiar todo?","Aceptar",JOptionPane.OK_CANCEL_OPTION)== JOptionPane.OK_OPTION){
+				if(JOptionPane.showConfirmDialog(null, "\u00BFDesea limpiar todo?","Aceptar",JOptionPane.OK_CANCEL_OPTION)== JOptionPane.OK_OPTION){
 					GlobalData.clearInstance();
 					cardPanel.add(new EsquemaDeTrabajo(), "Esquema de trabajo");
 					cardPanel.add(new DataConfigurationWindow(), "Cargar datos");

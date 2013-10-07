@@ -1,5 +1,6 @@
 package ve.com.fml.model.datasource;
 
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -21,9 +22,9 @@ public class GlobalData {
 	private HashMap<String, Object> configuredTechnique;
 	private String result;
 	private String datasetName;
-		
+
 	public static GlobalData getInstance(){
-		
+
 		if(globalData == null){
 			globalData = new GlobalData();
 			return globalData;
@@ -31,10 +32,11 @@ public class GlobalData {
 			return globalData;
 		}
 	}
-	
+
 	public void setupAndRun() {
 		int selectedTech = GlobalData.getInstance().getCurrentTechnique();
 		HashMap<String, Object> opts = GlobalData.getInstance().getConfiguredTechnique();
+		String evalSummary, confusionMatrix;
 		setResult("");
 		switch(selectedTech){
 		case FuzzyDataMining.MODEL_FUZZY_APRIORI:
@@ -58,10 +60,13 @@ public class GlobalData {
 			if(opts.containsKey("ctt"))
 				fdt.setConfidenceFactor(Float.parseFloat(opts.get("ctt").toString()));
 			try {
-				fdt.buildClassifier(GlobalData.getInstance().getFuzzyInstances());
+				System.out.println(GlobalData.getInstance().getFuzzyInstances().getFuzzifiedInstances());
+				fdt.buildClassifier(GlobalData.getInstance().getFuzzyInstances().getFuzzifiedInstances());
 				Evaluation eval = new Evaluation(GlobalData.getInstance().getFuzzyInstances().getFuzzifiedInstances());
 				eval.crossValidateModel(fdt, GlobalData.getInstance().getFuzzyInstances().getFuzzifiedInstances(), 10, new Random(1));
-				setResult(fdt+"\n"+eval.toSummaryString());
+				evalSummary = formatClassifierEvalSummary(eval, 0);
+				confusionMatrix = formatConfussionMatrix(eval, 0);
+				setResult(fdt+evalSummary+confusionMatrix);
 			} catch (Exception e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
@@ -101,7 +106,9 @@ public class GlobalData {
 				fknn.buildClassifier(GlobalData.getInstance().getFuzzyInstances());
 				Evaluation eval = new Evaluation(GlobalData.getInstance().getFuzzyInstances());
 				eval.crossValidateModel(fknn, GlobalData.getInstance().getFuzzyInstances(), 10, new Random(1));
-				setResult(fknn+"\n"+eval.toSummaryString());
+				evalSummary = formatClassifierEvalSummary(eval, 0);
+				confusionMatrix = formatConfussionMatrix(eval, 0);
+				setResult(fknn+evalSummary+confusionMatrix);
 				/*System.out.println(fknn);
 				System.out.println(eval.toSummaryString());*/
 			} catch (Exception e1) {
@@ -111,7 +118,44 @@ public class GlobalData {
 			break;
 		}
 	}
-	
+
+	public String formatClassifierEvalSummary(Evaluation eval, Integer lang) throws Exception{
+		return "\n==== Resultado de Validación Cruzada con 10 pliegues ====\n"
+				+"\nInstancias clasificadas correctamente:\t"+(int)eval.correct()+"\t"+Math.round(eval.pctCorrect()*10000)/10000.0d+"%"
+				+"\nInstancias clasificadas incorrectamente:\t"+(int)eval.incorrect()+"\t"+Math.round(eval.pctIncorrect()*10000)/10000.0d+"%"
+				+"\nError absoluto medio:\t\t"+Math.round(eval.meanAbsoluteError()*10000)/10000.0d
+				+"\nRaíz cuadrada del error cuadrático medio:\t"+Math.round(eval.rootMeanSquaredError()*10000)/10000.0d
+				+"\nError absoluto relativo:\t\t"+Math.round(eval.relativeAbsoluteError()*10000)/10000.0d
+				+"\nRaíz cuadrada del error cuadrático relativo:\t"+Math.round(eval.rootRelativeSquaredError()*10000)/10000.0d
+				+"\nNúmero total de Instancias:\t\t"+(int)eval.numInstances()+"\n";
+	}
+
+	@SuppressWarnings("unchecked")
+	public String formatConfussionMatrix(Evaluation eval, Integer lang) throws Exception{
+		String result = "\n==== Matriz de confusión ====\n";
+		double[][] matrix = eval.confusionMatrix();
+		int numClasses = GlobalData.getInstance().getFuzzyInstances().numClasses();
+		Enumeration<String> values = GlobalData.getInstance().getFuzzyInstances().classAttribute().enumerateValues();
+		for (int i = 0; i < numClasses; i++) {
+			result += (char)('a'+i)+"\t";
+		}
+		result += "<- Clasificado como\n";
+
+		for (int i = 0; i < numClasses; i++) {
+			for (int j = 0; j < numClasses; j++) {
+				result += (int)matrix[i][j]+"\t";
+			}
+			result += "| "+(char)('a'+i)+" = "+values.nextElement()+"\n";
+		}
+
+		values = GlobalData.getInstance().getFuzzyInstances().classAttribute().enumerateValues();
+		result += "\nClase\tPrecisión\tExhausistividad\n";
+		for (int i = 0; i < numClasses; i++) {
+			result += values.nextElement()+"\t"+Math.round(eval.precision(i)*10000)/10000.0d+"\t"+Math.round(eval.recall(i)*10000)/10000.0d+"\n";
+		}
+		return result+"\n";
+	}
+
 	public static void clearInstance(){
 		globalData = null;
 	}
@@ -139,19 +183,19 @@ public class GlobalData {
 	public void setOldfuzzyInstances(FuzzyInstances oldfuzzyInstances) {
 		this.oldfuzzyInstances = oldfuzzyInstances;
 	}
-	
+
 	public void storeInstancesBackup(){
 		oldfuzzyInstances = new FuzzyInstances(fuzzyInstances);
 	}
-	
+
 	public void restoreInstancesBackup(){
 		fuzzyInstances = new FuzzyInstances(oldfuzzyInstances);
 	}
-	
+
 	public static boolean instanceCreated(){
 		return globalData != null;
 	}
-	
+
 	public HashMap<String, Object> getConfiguredTechnique() {
 		return configuredTechnique;
 	}

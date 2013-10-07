@@ -284,7 +284,7 @@ public class DefineFuzzySetsWindow extends JDialog {
 			public void actionPerformed(ActionEvent arg0) {
 				//TODO prompt para eliminar conjunto difuso sobre la variable seleccionada
 				if(fuzzySetsList.getSelectedIndex() == 0){
-					JOptionPane.showMessageDialog(DefineFuzzySetsWindow.this, "Debe seleccionar un conjunto difuso para poder editarlo.");
+					JOptionPane.showMessageDialog(DefineFuzzySetsWindow.this, "Debe seleccionar un conjunto difuso para poder eliminarlo.");
 				}else{
 					//prompt de si está seguro
 					GlobalData.getInstance().getFuzzyInstances().removeFuzzySet(numericAtts.get(attributeList.getSelectedItem()), (String) fuzzySetsList.getSelectedItem());
@@ -300,7 +300,7 @@ public class DefineFuzzySetsWindow extends JDialog {
 			public void actionPerformed(ActionEvent arg0) {
 				//TODO prompt para eliminar conjunto difuso sobre la variable seleccionada
 				if(fuzzySetsList.getSelectedIndex() == 0){
-					JOptionPane.showMessageDialog(DefineFuzzySetsWindow.this, "Debe seleccionar un conjunto difuso para poder eliminarlo.");
+					JOptionPane.showMessageDialog(DefineFuzzySetsWindow.this, "Debe seleccionar un conjunto difuso para poder editarlo.");
 				}else{
 					AddFuzzySetWindow addFuzzySetWindow = new AddFuzzySetWindow(numericAtts.get(attributeList.getSelectedItem()),(String)fuzzySetsList.getSelectedItem(),(JDialog)SwingUtilities.getWindowAncestor(editFuzzySetButton),true);
 					addFuzzySetWindow.pack();

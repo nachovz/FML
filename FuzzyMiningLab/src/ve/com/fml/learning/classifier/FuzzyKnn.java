@@ -37,5 +37,10 @@ public class FuzzyKnn extends IBk{
 		this.getNearestNeighbourSearchAlgorithm().setDistanceFunction(fd);
 		super.buildClassifier(arg0);
 	}
+	
+	@Override
+	public String toString() {
+		return "==== Clasificador K-Vecinos Difuso ====\nUtilizando K = "+getKNN()+" vecino(s) más cercano(s).\n";
+	}
 
 }

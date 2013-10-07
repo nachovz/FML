@@ -25,4 +25,13 @@ public class FuzzyDT extends J48{
 		super.buildClassifier(arg0);
 	}
 
+	@Override
+	public String toString() {
+		return super.toString().replace("J48 pruned tree", "==== Clasificador Árbol de decisión difuso ====\n"+
+				"\nNúmero mínimo de hojas = "+getMinNumObj()+"\n"+
+				"\nUmbral de confianza para la poda = "+getConfidenceFactor())
+				.replace("Number of Leaves", "Número de hojas")
+				.replace("Size of the tree", "Tamaño del árbol");
+	}
+
 }

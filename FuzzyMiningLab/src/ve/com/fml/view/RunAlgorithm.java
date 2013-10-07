@@ -32,7 +32,7 @@ public class RunAlgorithm extends JPanel {
         saveDatasetButton = new javax.swing.JButton();
         jSeparator1 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
-        resultArea = new javax.swing.JTextArea();
+        resultArea = new javax.swing.JEditorPane();
 
         jLabel1.setText("Ejecutar Algoritmo");
 
@@ -47,8 +47,8 @@ public class RunAlgorithm extends JPanel {
         saveDatasetButton.setMinimumSize(new java.awt.Dimension(76, 50));
         saveDatasetButton.setPreferredSize(new java.awt.Dimension(76, 50));
 
-        resultArea.setColumns(20);
-        resultArea.setRows(5);
+//        resultArea.setColumns(20);
+//        resultArea.setRows(5);
         jScrollPane1.setViewportView(resultArea);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(this);
@@ -111,7 +111,7 @@ public class RunAlgorithm extends JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JTextArea resultArea;
+    private javax.swing.JEditorPane resultArea;
     private javax.swing.JButton runAlgButton;
     private javax.swing.JButton saveDatasetButton;
 

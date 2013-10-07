@@ -7,7 +7,6 @@ import javax.swing.JFrame;
 import org.jfree.ui.RefineryUtilities;
 
 import ve.com.fml.view.GeneralWindow;
-import ve.com.fml.view.WelcomeWindow;
 
 public class MainWindow {
 
@@ -24,6 +23,7 @@ public class MainWindow {
 				try {
 					//window = new WelcomeWindow();
 					window = new GeneralWindow();
+					window.setIconImage((new javax.swing.ImageIcon(getClass().getResource("/Images/add.png")).getImage()));
 					RefineryUtilities.centerFrameOnScreen(window);
 					window.setVisible(true);
 				} catch (Exception e) {
