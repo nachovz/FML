@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.HashMap;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import ve.com.fml.model.datasource.GlobalData;
 import ve.com.fml.model.fuzzy.FuzzyDataMining;
@@ -16,6 +17,8 @@ public class EditDTWindow extends javax.swing.JDialog {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private javax.swing.JComboBox<String> classComboBox;
+	private javax.swing.JLabel classLabel;
 	/**
 	 * Creates new form EditDTWindow
 	 * @param isModal 
@@ -46,6 +49,13 @@ public class EditDTWindow extends javax.swing.JDialog {
 		cancelButton = new javax.swing.JButton();
 		saveButton = new javax.swing.JButton();
 		kLabel = new javax.swing.JLabel();
+		classLabel = new javax.swing.JLabel();
+		classComboBox = new javax.swing.JComboBox<String>();
+		final HashMap<String, Integer> nominalAtts =  GlobalData.getInstance().getFuzzyInstances().getNominalAttributes();
+		classComboBox.addItem("Seleccione un atributo clase");
+		for (String nomAttLabel : nominalAtts.keySet()) {
+			classComboBox.addItem(nomAttLabel);
+		}
 
 		// setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		setTitle("Configuración de Algoritmo");
@@ -53,6 +63,8 @@ public class EditDTWindow extends javax.swing.JDialog {
 		kLabel1.setText("Umbral de confianza para la poda:");
 
 		TitleLabel.setText("Configuración de Árbol de Decisión Difuso");
+
+		classLabel.setText("Selección de atributo clase:");
 
 		kDefLabel.setText("(default = 2)");
 
@@ -72,14 +84,19 @@ public class EditDTWindow extends javax.swing.JDialog {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				GlobalData.getInstance().setCurrentTechnique(FuzzyDataMining.MODEL_FUZZY_DT);
-				HashMap<String, Object> options = new HashMap<String, Object>();
-				if(!kTextField.getText().isEmpty())
-					options.put("mno", kTextField.getText());
-				if(!kTextField1.getText().isEmpty())
-					options.put("ctt", kTextField1.getText());
-				GlobalData.getInstance().setConfiguredTechnique(options);
-				dispose();
+				if(classComboBox.getSelectedIndex() != 0){
+					GlobalData.getInstance().getFuzzyInstances().setClassIndex(nominalAtts.get(classComboBox.getSelectedItem()));
+					GlobalData.getInstance().setCurrentTechnique(FuzzyDataMining.MODEL_FUZZY_DT);
+					HashMap<String, Object> options = new HashMap<String, Object>();
+					if(!kTextField.getText().isEmpty())
+						options.put("mno", kTextField.getText());
+					if(!kTextField1.getText().isEmpty())
+						options.put("ctt", kTextField1.getText());
+					GlobalData.getInstance().setConfiguredTechnique(options);
+					dispose();
+				}else{
+					JOptionPane.showMessageDialog(EditDTWindow.this, "Debe seleccionar un atributo clase.");
+				}
 			}
 		});
 
@@ -93,32 +110,34 @@ public class EditDTWindow extends javax.swing.JDialog {
 				.addGroup(layout.createSequentialGroup()
 						.addContainerGap()
 						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addComponent(TitleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(TitleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
 								.addGroup(layout.createSequentialGroup()
 										.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-												.addComponent(kLabel1)
-												.addComponent(kLabel))
-												.addGap(10, 10, 10)
-												.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+												.addComponent(jSeparator2)
+												.addComponent(jSeparator1)
+												.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+														.addGap(0, 0, Short.MAX_VALUE)
+														.addComponent(saveButton)
+														.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+														.addComponent(cancelButton)))
+														.addContainerGap())
 														.addGroup(layout.createSequentialGroup()
-																.addComponent(kTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-																.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(kDefLabel1))
-																.addGroup(layout.createSequentialGroup()
-																		.addComponent(kTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-																		.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																		.addComponent(kDefLabel)))
-																		.addGap(0, 23, Short.MAX_VALUE))
-																		.addGroup(layout.createSequentialGroup()
-																				.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-																						.addComponent(jSeparator1)
-																						.addComponent(jSeparator2)
-																						.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-																								.addGap(0, 0, Short.MAX_VALUE)
-																								.addComponent(saveButton)
+																.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+																		.addComponent(kLabel1, javax.swing.GroupLayout.Alignment.LEADING)
+																		.addComponent(kLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+																		.addComponent(classLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+																		.addGap(10, 10, 10)
+																		.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+																				.addGroup(layout.createSequentialGroup()
+																						.addComponent(kTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+																						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																						.addComponent(kDefLabel1))
+																						.addGroup(layout.createSequentialGroup()
+																								.addComponent(kTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
 																								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																								.addComponent(cancelButton)))
-																								.addContainerGap())))
+																								.addComponent(kDefLabel))
+																								.addComponent(classComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+																								.addGap(13, 23, Short.MAX_VALUE))))
 				);
 		layout.setVerticalGroup(
 				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -129,21 +148,25 @@ public class EditDTWindow extends javax.swing.JDialog {
 						.addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(kLabel)
-								.addComponent(kTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(kDefLabel))
+								.addComponent(classLabel)
+								.addComponent(classComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
 								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(kLabel1)
-										.addComponent(kTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-										.addComponent(kDefLabel1))
-										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-										.addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addComponent(kLabel)
+										.addComponent(kTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addComponent(kDefLabel))
 										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 										.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-												.addComponent(cancelButton)
-												.addComponent(saveButton))
-												.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+												.addComponent(kLabel1)
+												.addComponent(kTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+												.addComponent(kDefLabel1))
+												.addGap(17, 17, 17)
+												.addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+												.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+														.addComponent(cancelButton)
+														.addComponent(saveButton))
+														.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 				);
 
 		pack();

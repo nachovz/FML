@@ -87,11 +87,13 @@ public class GlobalData {
 			}
 			try {
 				fkm.config(GlobalData.getInstance().getFuzzyInstances());
+//				String[] kMopts = {"-c last"};
+//				fkm.setOptions(kMopts);
 				fkm.buildClusterer(GlobalData.getInstance().getFuzzyInstances());
 				ClusterEvaluation eval = new ClusterEvaluation();
 				eval.setClusterer(fkm);
 				eval.evaluateClusterer(GlobalData.getInstance().getFuzzyInstances());
-				setResult(fkm+"\n"+eval.clusterResultsToString());
+				setResult(eval.clusterResultsToString()+"\n");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

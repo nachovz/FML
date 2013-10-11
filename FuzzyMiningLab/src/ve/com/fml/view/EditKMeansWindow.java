@@ -4,7 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import ve.com.fml.model.datasource.GlobalData;
 import ve.com.fml.model.fuzzy.FuzzyDataMining;
@@ -15,6 +17,8 @@ public class EditKMeansWindow extends javax.swing.JDialog {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private JLabel classLabel;
+	private JComboBox<String> classComboBox;
 	/**
 	 * Creates new form EditKMeansWindow
 	 */
@@ -40,7 +44,15 @@ public class EditKMeansWindow extends javax.swing.JDialog {
 		cancelButton = new javax.swing.JButton();
 		saveButton = new javax.swing.JButton();
 		jSeparator2 = new javax.swing.JSeparator();
+		classLabel = new javax.swing.JLabel();
+		classComboBox = new javax.swing.JComboBox<String>();
 
+		final HashMap<String, Integer> nominalAtts =  GlobalData.getInstance().getFuzzyInstances().getNominalAttributes();
+		classComboBox.addItem("Ninguno");
+		for (String nomAttLabel : nominalAtts.keySet()) {
+			classComboBox.addItem(nomAttLabel);
+		}
+		classLabel.setText("Selección de atributo clase:");
 		//setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		setTitle("Configuración de Algoritmo");
 
@@ -64,6 +76,8 @@ public class EditKMeansWindow extends javax.swing.JDialog {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				if(classComboBox.getSelectedIndex() != 0)
+					GlobalData.getInstance().getFuzzyInstances().setClassIndex(nominalAtts.get(classComboBox.getSelectedItem()));
 				GlobalData.getInstance().setCurrentTechnique(FuzzyDataMining.MODEL_FUZZY_KMEANS);
 				HashMap<String, Object> options = new HashMap<String, Object>();
 				if(!kTextField.getText().isEmpty())
@@ -80,24 +94,26 @@ public class EditKMeansWindow extends javax.swing.JDialog {
 				.addGroup(layout.createSequentialGroup()
 						.addContainerGap()
 						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addGroup(layout.createSequentialGroup()
-										.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-												.addComponent(TitleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-												.addGroup(layout.createSequentialGroup()
-														.addComponent(kLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(jSeparator1)
+								.addComponent(jSeparator2)
+								.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+										.addGap(0, 0, Short.MAX_VALUE)
+										.addComponent(saveButton)
+										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addComponent(cancelButton))
+										.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+												.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+														.addComponent(kLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE)
+														.addComponent(classLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 182, Short.MAX_VALUE))
 														.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addComponent(kTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-														.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addComponent(kDefLabel)
-														.addGap(0, 0, Short.MAX_VALUE))
-														.addComponent(jSeparator1)
-														.addComponent(jSeparator2)
-														.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-																.addGap(0, 0, Short.MAX_VALUE)
-																.addComponent(saveButton)
-																.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(cancelButton)))
-																.addContainerGap())
+														.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+																.addComponent(classComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+																.addGroup(layout.createSequentialGroup()
+																		.addComponent(kTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+																		.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																		.addComponent(kDefLabel))))
+																		.addComponent(TitleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+																		.addContainerGap())
 				);
 		layout.setVerticalGroup(
 				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -108,16 +124,20 @@ public class EditKMeansWindow extends javax.swing.JDialog {
 						.addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(kLabel)
-								.addComponent(kTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(kDefLabel))
-								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-								.addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(classLabel)
+								.addComponent(classComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
 								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(cancelButton)
-										.addComponent(saveButton))
-										.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+										.addComponent(kLabel)
+										.addComponent(kTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addComponent(kDefLabel))
+										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+												.addComponent(cancelButton)
+												.addComponent(saveButton))
+												.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 				);
 
 		pack();

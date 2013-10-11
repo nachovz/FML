@@ -109,6 +109,18 @@ public class FuzzyInstances extends Instances {
 
 		return attributes;
 	}
+	
+	public HashMap<String, Integer> getNominalAttributes(){
+		HashMap<String, Integer> attributes = new HashMap<String, Integer>();
+
+		for (int i = 0; i < numAttributes(); i++) {
+			if (attribute(i).type() == Attribute.NOMINAL) {
+				attributes.put(attribute(i).name(),i);
+			}
+		}
+
+		return attributes;
+	}
 
 	public Vector<String> getFuzzySets(Integer attrIndex){
 		Vector<String> fSLabels = new Vector<String>();

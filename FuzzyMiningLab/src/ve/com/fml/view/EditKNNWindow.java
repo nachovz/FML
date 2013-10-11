@@ -4,7 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
 import ve.com.fml.model.datasource.GlobalData;
 import ve.com.fml.model.fuzzy.FuzzyDataMining;
@@ -16,6 +19,8 @@ public class EditKNNWindow extends javax.swing.JDialog {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private JLabel classLabel;
+	private JComboBox<String> classComboBox;
 	/**
 	 * Creates new form EditKNNWindow
 	 * @param isModal 
@@ -35,23 +40,27 @@ public class EditKNNWindow extends javax.swing.JDialog {
 	// <editor-fold defaultstate="collapsed" desc="Generated Code">                          
 	private void initComponents() {
 
+		classLabel = new javax.swing.JLabel();
+		classComboBox = new javax.swing.JComboBox<String>();
 		kLabel = new javax.swing.JLabel();
 		kTextField = new javax.swing.JTextField();
-		TitleLabel = new javax.swing.JLabel();
+		titleLabel = new javax.swing.JLabel();
 		jSeparator1 = new javax.swing.JSeparator();
 		kDefLabel = new javax.swing.JLabel();
 		jSeparator2 = new javax.swing.JSeparator();
 		cancelButton = new javax.swing.JButton();
 		saveButton = new javax.swing.JButton();
-
+		final HashMap<String, Integer> nominalAtts =  GlobalData.getInstance().getFuzzyInstances().getNominalAttributes();
+		classComboBox.addItem("Seleccione un atributo clase");
+		for (String nomAttLabel : nominalAtts.keySet()) {
+			classComboBox.addItem(nomAttLabel);
+		}
 		//setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 		setTitle("Configuración de Algoritmo");
 
+		classLabel.setText("Selección de atributo clase:");
 		kLabel.setText("K (Número de vecinos):");
-
-
-		TitleLabel.setText("Configuración de K-Vecinos Difuso");
-
+		titleLabel.setText("Configuración de K-Vecinos Difuso");
 		kDefLabel.setText("(default = 1)");
 
 		cancelButton.setText("Cancelar");
@@ -68,12 +77,17 @@ public class EditKNNWindow extends javax.swing.JDialog {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				GlobalData.getInstance().setCurrentTechnique(FuzzyDataMining.MODEL_FUZZY_KNN);
-				HashMap<String, Object> options = new HashMap<String, Object>();
-				if(!kTextField.getText().isEmpty())
-					options.put("k", kTextField.getText());
-				GlobalData.getInstance().setConfiguredTechnique(options);
-				dispose();
+				if(classComboBox.getSelectedIndex() != 0){
+					GlobalData.getInstance().getFuzzyInstances().setClassIndex(nominalAtts.get(classComboBox.getSelectedItem()));
+					GlobalData.getInstance().setCurrentTechnique(FuzzyDataMining.MODEL_FUZZY_KNN);
+					HashMap<String, Object> options = new HashMap<String, Object>();
+					if(!kTextField.getText().isEmpty())
+						options.put("k", kTextField.getText());
+					GlobalData.getInstance().setConfiguredTechnique(options);
+					dispose();
+				}else{
+					JOptionPane.showMessageDialog(EditKNNWindow.this, "Debe seleccionar un atributo clase.");
+				}
 			}
 		});
 
@@ -85,50 +99,58 @@ public class EditKNNWindow extends javax.swing.JDialog {
 						.addContainerGap()
 						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 								.addComponent(jSeparator1)
+								.addComponent(jSeparator2)
 								.addGroup(layout.createSequentialGroup()
-										.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-												.addComponent(TitleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-												.addGroup(layout.createSequentialGroup()
-														.addComponent(kLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-														.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addComponent(kTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
-														.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-														.addComponent(kDefLabel)
-														.addGap(0, 2, Short.MAX_VALUE))
-														.addComponent(jSeparator2)
-														.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-																.addGap(0, 0, Short.MAX_VALUE)
-																.addComponent(saveButton)
+										.addComponent(titleLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 219, Short.MAX_VALUE)
+										.addGap(68, 68, 68))
+										.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+												.addGap(0, 0, Short.MAX_VALUE)
+												.addComponent(saveButton)
+												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+												.addComponent(cancelButton))
+												.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+														.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+																.addComponent(classLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+																.addComponent(kLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 																.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(cancelButton)))
-																.addContainerGap())
+																.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+																		.addGroup(layout.createSequentialGroup()
+																				.addComponent(kTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+																				.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																				.addComponent(kDefLabel))
+																				.addComponent(classComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))))
+																				.addContainerGap())
 				);
 		layout.setVerticalGroup(
 				layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
 				.addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-						.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(TitleLabel)
+						.addContainerGap()
+						.addComponent(titleLabel)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
 						.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-								.addComponent(kLabel)
-								.addComponent(kTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addComponent(kDefLabel))
-								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-								.addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+								.addComponent(classLabel)
+								.addComponent(classComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 								.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-										.addComponent(cancelButton)
-										.addComponent(saveButton))
-										.addGap(16, 16, 16))
+										.addComponent(kLabel)
+										.addComponent(kTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addComponent(kDefLabel))
+										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+										.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+												.addComponent(cancelButton)
+												.addComponent(saveButton))
+												.addGap(16, 16, 16))
 				);
 
 		pack();
 	}// </editor-fold>                        
 
 	// Variables declaration - do not modify                     
-	private javax.swing.JLabel TitleLabel;
+	private javax.swing.JLabel titleLabel;
 	private javax.swing.JButton cancelButton;
 	private javax.swing.JButton saveButton;
 	private javax.swing.JSeparator jSeparator1;
