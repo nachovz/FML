@@ -101,10 +101,15 @@ public class DefineFuzzySetsWindow extends JDialog {
 		xyplot.setForegroundAlpha(0.65F);
 		xyplot.setDomainGridlinePaint(Color.white);
 		xyplot.setRangeGridlinePaint(Color.white);
+		
 		ValueAxis valueaxis = xyplot.getDomainAxis();
 		valueaxis.setTickMarkPaint(Color.black);
 		valueaxis.setLowerMargin(0.0D);
 		valueaxis.setUpperMargin(0.0D);
+		//valores max y min
+		valueaxis.setRange(GlobalData.getInstance().getFuzzyInstances().kthSmallestValue(GlobalData.getInstance().getFuzzyInstances().attribute(attrIndx), 1),
+				GlobalData.getInstance().getFuzzyInstances().kthSmallestValue(GlobalData.getInstance().getFuzzyInstances().attribute(attrIndx), 
+						GlobalData.getInstance().getFuzzyInstances().numInstances()));
 		ValueAxis valueaxis1 = xyplot.getRangeAxis();
 		valueaxis1.setTickMarkPaint(Color.black);
 		
