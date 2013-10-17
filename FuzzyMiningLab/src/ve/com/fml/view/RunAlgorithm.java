@@ -5,15 +5,19 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import org.jfree.ui.RefineryUtilities;
 
 import ve.com.fml.model.datasource.GlobalData;
+import ve.com.fml.model.datasource.InstancesLoader;
 
 public class RunAlgorithm extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -111,6 +115,34 @@ public class RunAlgorithm extends JPanel {
 				if(runSummaryWindow.getOk()){
 					GlobalData.getInstance().setupAndRun();
 					resultArea.setText(GlobalData.getInstance().getResult());
+				}
+			}
+		});
+		
+		saveDatasetButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println(GlobalData.getInstance().getFuzzyInstances());
+				String sufix = "";
+				try{
+					JFileChooser fc= new JFileChooser();
+					if(GlobalData.getInstance().getFuzzyInstances().getMembership().isEmpty()){
+						fc.setFileFilter(new FileNameExtensionFilter("Archivos ARFF", "arff"));
+						sufix = ".arff";
+					}else{
+						fc.setFileFilter(new FileNameExtensionFilter("Archivos FARFF", "farff"));
+						sufix = ".farff";
+					}
+					
+					int returnVal= fc.showSaveDialog(RunAlgorithm.this);
+					if(returnVal == JFileChooser.APPROVE_OPTION){
+						InstancesLoader.saveToTextFile(GlobalData.getInstance().getFuzzyInstances(), fc.getSelectedFile().getAbsolutePath()+sufix);
+					}
+					//actualizar();
+				}catch(Exception ex){
+					//					JOptionPane.showMessageDialog(null, GAL_GUI.language.Errors[10]);
+					JOptionPane.showMessageDialog(null, "Error al guardar el archivo");
 				}
 			}
 		});

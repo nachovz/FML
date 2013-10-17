@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.Vector;
 
 import ve.com.fml.model.fuzzy.membership.FuzzyMembership;
+import ve.com.fml.model.fuzzy.membership.SingletonFuzzyMembership;
+import ve.com.fml.model.fuzzy.membership.TrapFuzzyMembership;
+import ve.com.fml.model.fuzzy.membership.TriangleFuzzyMembership;
 import weka.core.Attribute;
 import weka.core.Instances;
 
@@ -91,10 +94,33 @@ public class FuzzyInstances extends Instances {
 
 	@Override
 	public String toString() {
-		String output = super.toString()+"\n";
-		output += "Fuzzy Sets: \n";
-		for (Integer index : membership.keySet()) 
-			output += attribute(index).name()+": "+membership.get(index)+"\n";
+		String output = super.toString()+"\n\n@fuzzydata\n";
+		String type = null, params = null;
+
+		for (Integer index : membership.keySet()){
+			Map<String, FuzzyMembership> fuzzyVars = membership.get(index).getFuzzySets();
+			for (String label : fuzzyVars.keySet()) {
+				if(fuzzyVars.get(label) instanceof SingletonFuzzyMembership){
+					type = "singleton";
+					SingletonFuzzyMembership fuzzyMembership = (SingletonFuzzyMembership) fuzzyVars.get(label); 
+					params = fuzzyMembership.getX()+"";
+				}
+				if(fuzzyVars.get(label) instanceof TriangleFuzzyMembership){
+					type = "triangle";
+					TriangleFuzzyMembership fuzzyMembership = (TriangleFuzzyMembership) fuzzyVars.get(label);
+					params = fuzzyMembership.getLowerBound()+" "+fuzzyMembership.getTopTriangle()+" "+fuzzyMembership.getUpperBound();
+				}
+					
+				if(fuzzyVars.get(label) instanceof TrapFuzzyMembership){
+					type = "trap";
+					TrapFuzzyMembership fuzzyMembership = (TrapFuzzyMembership) fuzzyVars.get(label);
+					params = fuzzyMembership.getLowerBound()+" "+fuzzyMembership.getTopTrap1()+" "+fuzzyMembership.getTopTrap2()+" "+fuzzyMembership.getUpperBound();
+				}
+					
+				output += "@fuzzyset "+index+" "+label+" "+type+" "+params+"\n";
+			}
+			
+		}
 		return output;
 	}
 

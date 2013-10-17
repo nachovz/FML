@@ -22,7 +22,6 @@ import org.jfree.ui.RefineryUtilities;
 
 import ve.com.fml.model.datasource.GlobalData;
 import ve.com.fml.model.datasource.InstancesLoader;
-import ve.com.fml.model.fuzzy.FuzzyInstances;
 
 public class DataConfigurationWindow extends JPanel {
 
@@ -70,11 +69,17 @@ public class DataConfigurationWindow extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try{
 					JFileChooser fc= new JFileChooser();
-					fc.setFileFilter(new FileNameExtensionFilter("Arff files", "arff"));
+					fc.setFileFilter(new FileNameExtensionFilter("Archivos ARFF y FARFF", "arff","farff"));
 					int returnVal= fc.showOpenDialog(DataConfigurationWindow.this);
-					if(returnVal == JFileChooser.APPROVE_OPTION)
-						GlobalData.getInstance().setFuzzyInstances(new FuzzyInstances(InstancesLoader.loadFromTextFile(fc.getSelectedFile().getAbsolutePath())));
+					if(returnVal == JFileChooser.APPROVE_OPTION){
+						if(fc.getSelectedFile().getName().endsWith(".arff")){
+							GlobalData.getInstance().setFuzzyInstances(InstancesLoader.loadFromArffFile(fc.getSelectedFile().getAbsolutePath()));	
+						}else if(fc.getSelectedFile().getName().endsWith(".farff")){
+							GlobalData.getInstance().setFuzzyInstances(InstancesLoader.loadFromFarffFile(fc.getSelectedFile().getAbsolutePath()));
+						}
+
 						GlobalData.getInstance().setDatasetName(fc.getSelectedFile().getName());
+					}
 					//actualizar();
 				}catch(Exception ex){
 					//					JOptionPane.showMessageDialog(null, GAL_GUI.language.Errors[10]);
@@ -104,11 +109,11 @@ public class DataConfigurationWindow extends JPanel {
 				if(GlobalData.getInstance().getFuzzyInstances() == null)
 					JOptionPane.showMessageDialog(DataConfigurationWindow.this, "No se han cargado los datos");
 				else{
-					
+
 					EditDataWindow editFrame= new EditDataWindow(topFrame,true);
 					RefineryUtilities.centerFrameOnScreen(editFrame);
 					editFrame.setVisible(true);				
-					
+
 				}
 				//				if(!GAL_GUI.gal.executed())
 				//					JOptionPane.showMessageDialog(DataConfigurationWindow.this, GAL_GUI.language.Errors[21]);
@@ -163,7 +168,7 @@ public class DataConfigurationWindow extends JPanel {
 		//		add(btn_Ejecutar);
 		add(lblDefineFuzzySets);
 		add(btn_DefineFuzzySets);
-		
+
 		add(lblVerResultados);
 		add(btn_VerResultados);
 		//		add(lblGuardar);
@@ -174,7 +179,7 @@ public class DataConfigurationWindow extends JPanel {
 	}
 
 	void actualizar(){
-		
+
 	}
 
 
