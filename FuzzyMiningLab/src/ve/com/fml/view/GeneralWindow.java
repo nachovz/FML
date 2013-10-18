@@ -157,8 +157,8 @@ public class GeneralWindow extends JFrame {
 		progress.setBounds(5, 446, 779, 101);
 		progress.setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2), "Progreso", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial",Font.BOLD,12), new Color(0, 0, 0)));
 		
-		JLabel labelDataset = new JLabel("Conjunto");
-		labelDataset.setBounds(40, 15, 120, 23);
+		JLabel labelDataset = new JLabel("Conjunto de Datos");
+		labelDataset.setBounds(40, 15, 150, 23);
 		labelDataset.setFont(new Font("Tahoma", Font.BOLD , 14));
 		
 		pnl_ProgressCromosoma = new JPanel();
@@ -189,7 +189,7 @@ public class GeneralWindow extends JFrame {
 			labelInstanciasValor.setBounds(100, 64, 150, 12);
 			labelInstanciasValor.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
-		JLabel labelConjuntos = new JLabel("Variables difusas: ");
+		JLabel labelConjuntos = new JLabel("V. Difusas: ");
 		labelConjuntos.setBounds(40, 78, 60, 12);
 		labelConjuntos.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		

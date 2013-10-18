@@ -82,6 +82,8 @@ public class EditKMeansWindow extends javax.swing.JDialog {
 				HashMap<String, Object> options = new HashMap<String, Object>();
 				if(!kTextField.getText().isEmpty())
 					options.put("k", kTextField.getText());
+				else
+					options.put("k", "2");
 				GlobalData.getInstance().setConfiguredTechnique(options);
 				dispose();
 			}

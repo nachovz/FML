@@ -73,8 +73,12 @@ public class EditAprioriWindow extends javax.swing.JDialog {
 				HashMap<String, Object> options = new HashMap<String, Object>();
 				if(!kTextField.getText().isEmpty())
 					options.put("nr", kTextField.getText());
+				else
+					options.put("nr", "10");
 				if(!kTextField1.getText().isEmpty())
 					options.put("mc", kTextField1.getText());
+				else
+					options.put("mc", "0.9");
 				GlobalData.getInstance().setConfiguredTechnique(options);
 				dispose();
 			}

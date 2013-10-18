@@ -90,8 +90,12 @@ public class EditDTWindow extends javax.swing.JDialog {
 					HashMap<String, Object> options = new HashMap<String, Object>();
 					if(!kTextField.getText().isEmpty())
 						options.put("mno", kTextField.getText());
+					else
+						options.put("mno", "2");
 					if(!kTextField1.getText().isEmpty())
 						options.put("ctt", kTextField1.getText());
+					else
+						options.put("ctt", "0.25");
 					GlobalData.getInstance().setConfiguredTechnique(options);
 					dispose();
 				}else{
