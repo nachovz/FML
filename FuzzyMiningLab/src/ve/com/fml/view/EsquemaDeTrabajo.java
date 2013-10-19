@@ -5,6 +5,7 @@ import java.awt.Font;
 
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
@@ -32,6 +33,7 @@ public class EsquemaDeTrabajo extends JPanel {
 //			label.setIcon(new ImageIcon(EsquemaDeTrabajo.class.getResource("/Images/mapa_ppal.png")));
 //		else
 //			label.setIcon(new ImageIcon(EsquemaDeTrabajo.class.getResource("/Images/mapa_ppal_english.png")));
+		label.setIcon(new ImageIcon(EsquemaDeTrabajo.class.getResource("/Images/diagrama principal.png")));
 		label.setBackground(new Color(255,255,255));
 		GroupLayout gl_picture = new GroupLayout(picture);
 		gl_picture.setHorizontalGroup(
