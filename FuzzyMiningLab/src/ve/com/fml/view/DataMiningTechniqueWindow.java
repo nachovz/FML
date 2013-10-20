@@ -36,7 +36,7 @@ public class DataMiningTechniqueWindow extends JPanel {
 
 		setSize(630, 435);
 		initComponents();
-		setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 255), 2), "Selección de Técnica de Minería Difusa", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial",Font.BOLD,12), new Color(0, 0, 255)));
+		setBorder(new TitledBorder(new LineBorder(new Color(102, 36, 131), 2), "Configuración de Técnica de Minería Difusa", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial",Font.BOLD,12), new Color(102, 36, 131)));
 
 	}
 
@@ -53,7 +53,7 @@ public class DataMiningTechniqueWindow extends JPanel {
 		dmTechniqueList = new javax.swing.JComboBox<String>();
 
 
-		pictureLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/mapa_DefinirFuncion.png"))); // NOI18N
+		pictureLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/diagrama-configuracion.png"))); // NOI18N
 
 		javax.swing.GroupLayout picPanelLayout = new javax.swing.GroupLayout(picPanel);
 		picPanel.setLayout(picPanelLayout);
@@ -82,21 +82,25 @@ public class DataMiningTechniqueWindow extends JPanel {
 					case FuzzyDataMining.MODEL_FUZZY_KNN:
 						//EditDataWindow kNNFrame = new EditDataWindow();
 						EditKNNWindow kNNFrame = new EditKNNWindow(topFrame,true);
+						kNNFrame.setIconImage((new javax.swing.ImageIcon(getClass().getResource("/Images/icon-fml.png")).getImage()));
 						RefineryUtilities.centerFrameOnScreen(kNNFrame);
 						kNNFrame.setVisible(true);
 						break;
 					case FuzzyDataMining.MODEL_FUZZY_DT:
 						EditDTWindow dTFrame = new EditDTWindow(topFrame,true);
+						dTFrame.setIconImage((new javax.swing.ImageIcon(getClass().getResource("/Images/icon-fml.png")).getImage()));
 						RefineryUtilities.centerFrameOnScreen(dTFrame);
 						dTFrame.setVisible(true);
 						break;
 					case FuzzyDataMining.MODEL_FUZZY_KMEANS:
 						EditKMeansWindow kMeansFrame = new EditKMeansWindow(topFrame,true);
+						kMeansFrame.setIconImage((new javax.swing.ImageIcon(getClass().getResource("/Images/icon-fml.png")).getImage()));
 						RefineryUtilities.centerFrameOnScreen(kMeansFrame);
 						kMeansFrame.setVisible(true);
 						break;
 					case FuzzyDataMining.MODEL_FUZZY_APRIORI:
 						EditAprioriWindow aprioriFrame = new EditAprioriWindow(topFrame,true);
+						aprioriFrame.setIconImage((new javax.swing.ImageIcon(getClass().getResource("/Images/icon-fml.png")).getImage()));
 						RefineryUtilities.centerFrameOnScreen(aprioriFrame);
 						aprioriFrame.setVisible(true);
 						break;

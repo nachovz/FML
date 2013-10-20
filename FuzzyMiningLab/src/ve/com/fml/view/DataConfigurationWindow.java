@@ -100,6 +100,7 @@ public class DataConfigurationWindow extends JPanel {
 					JOptionPane.showMessageDialog(DataConfigurationWindow.this, "No se han cargado los datos");
 				else{
 					EditDataWindow editFrame= new EditDataWindow(topFrame,true);
+					editFrame.setIconImage((new javax.swing.ImageIcon(getClass().getResource("/Images/icon-fml.png")).getImage()));
 					RefineryUtilities.centerFrameOnScreen(editFrame);
 					editFrame.setVisible(true);				
 
@@ -133,6 +134,7 @@ public class DataConfigurationWindow extends JPanel {
 					JOptionPane.showMessageDialog(DataConfigurationWindow.this, "No se han cargado los datos");
 				else{
 					DefineFuzzySetsWindow fuzzyEditFrame= new DefineFuzzySetsWindow(topFrame,true);
+					fuzzyEditFrame.setIconImage((new javax.swing.ImageIcon(getClass().getResource("/Images/icon-fml.png")).getImage()));
 					RefineryUtilities.centerFrameOnScreen(fuzzyEditFrame);
 					fuzzyEditFrame.setVisible(true);
 				}

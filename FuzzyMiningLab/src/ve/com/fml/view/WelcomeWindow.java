@@ -7,6 +7,9 @@ import javax.swing.SwingConstants;
 import javax.swing.JLabel;
 import javax.swing.ImageIcon;
 import javax.swing.Box;
+
+import org.jfree.ui.RefineryUtilities;
+
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -21,15 +24,17 @@ public class WelcomeWindow extends JFrame {
 	 */
 	public WelcomeWindow() {
 		setResizable(false);
-		setTitle("JGAL");
+		setTitle("jFML");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 480, 369);
 		
 		JButton btnInicio = new JButton("Ingresar");
-		btnInicio.setBounds(205, 307, 70, 23);
+		btnInicio.setBounds(190, 307, 100, 23);
 		btnInicio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				GeneralWindow frame= new GeneralWindow();
+				frame.setIconImage((new javax.swing.ImageIcon(getClass().getResource("/Images/icon-fml.png")).getImage()));
+				RefineryUtilities.centerFrameOnScreen(frame);
 				frame.setVisible(true);
 				dispose();
 			}
@@ -38,7 +43,7 @@ public class WelcomeWindow extends JFrame {
 		JLabel label = new JLabel("");
 		label.setBounds(0, 0, 473, 239);
 		label.setVerticalAlignment(SwingConstants.TOP);
-		label.setIcon(new ImageIcon(WelcomeWindow.class.getResource("/Images/logo.png")));
+		label.setIcon(new ImageIcon(WelcomeWindow.class.getResource("/Images/logo-jfml.png")));
 		label.setLabelFor(this);
 		
 		Box verticalBox_1 = Box.createVerticalBox();
@@ -53,7 +58,7 @@ public class WelcomeWindow extends JFrame {
 		lblTutora.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		
 		Box verticalBox = Box.createVerticalBox();
-		verticalBox.setBounds(297, 250, 167, 51);
+		verticalBox.setBounds(340, 250, 167, 51);
 		
 		JLabel lblNewLabel_1 = new JLabel("Desarrolladores:");
 		verticalBox.add(lblNewLabel_1);

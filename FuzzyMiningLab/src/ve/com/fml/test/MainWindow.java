@@ -6,13 +6,13 @@ import javax.swing.JFrame;
 
 import org.jfree.ui.RefineryUtilities;
 
-import ve.com.fml.view.GeneralWindow;
+import ve.com.fml.view.WelcomeWindow;
 
 public class MainWindow {
 
 	private JFrame frame;
-	private static GeneralWindow window;
-	//private static WelcomeWindow window;
+	//private static GeneralWindow window;
+	private static WelcomeWindow window;
 
 	/**
 	 * Launch the application.
@@ -21,9 +21,9 @@ public class MainWindow {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					//window = new WelcomeWindow();
-					window = new GeneralWindow();
-					window.setIconImage((new javax.swing.ImageIcon(getClass().getResource("/Images/add.png")).getImage()));
+					//window = new GeneralWindow();
+					window = new WelcomeWindow();
+					window.setIconImage((new javax.swing.ImageIcon(getClass().getResource("/Images/icon-fml.png")).getImage()));
 					RefineryUtilities.centerFrameOnScreen(window);
 					window.setVisible(true);
 				} catch (Exception e) {

@@ -34,7 +34,7 @@ public class RunAlgorithm extends JPanel {
 	private void initComponents() {
 
 		final JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-		setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2), "Modelo resultante", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial",Font.BOLD,12), Color.BLACK));
+		setBorder(new TitledBorder(new LineBorder(new Color(211, 130, 0), 2), "Generación de Modelo de Minería de Datos", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial",Font.BOLD,12), new Color(211, 130, 0)));
 		jLabel1 = new javax.swing.JLabel();
 		runAlgButton = new javax.swing.JButton();
 		jLabel2 = new javax.swing.JLabel();
@@ -110,6 +110,7 @@ public class RunAlgorithm extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				RunSummaryWindow runSummaryWindow = new RunSummaryWindow(topFrame, true);
+				runSummaryWindow.setIconImage((new javax.swing.ImageIcon(getClass().getResource("/Images/icon-fml.png")).getImage()));
 				RefineryUtilities.centerFrameOnScreen(runSummaryWindow);
 				runSummaryWindow.setVisible(true);
 				if(runSummaryWindow.getOk()){

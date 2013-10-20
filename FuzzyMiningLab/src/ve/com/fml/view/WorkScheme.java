@@ -11,14 +11,14 @@ import javax.swing.JPanel;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-public class EsquemaDeTrabajo extends JPanel {
+public class WorkScheme extends JPanel {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Create the panel.
 	 */
-	public EsquemaDeTrabajo() {
+	public WorkScheme() {
 		setSize(630, 435);
 		
 		setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 0), 2), "Esquema de trabajo", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial",Font.BOLD,12), Color.BLACK));
@@ -33,7 +33,7 @@ public class EsquemaDeTrabajo extends JPanel {
 //			label.setIcon(new ImageIcon(EsquemaDeTrabajo.class.getResource("/Images/mapa_ppal.png")));
 //		else
 //			label.setIcon(new ImageIcon(EsquemaDeTrabajo.class.getResource("/Images/mapa_ppal_english.png")));
-		label.setIcon(new ImageIcon(EsquemaDeTrabajo.class.getResource("/Images/diagrama-principal.png")));
+		label.setIcon(new ImageIcon(WorkScheme.class.getResource("/Images/diagrama-principal.png")));
 		label.setBackground(new Color(255,255,255));
 		GroupLayout gl_picture = new GroupLayout(picture);
 		gl_picture.setHorizontalGroup(

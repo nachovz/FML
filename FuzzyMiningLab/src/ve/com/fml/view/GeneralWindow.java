@@ -12,6 +12,7 @@ import java.awt.event.WindowListener;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -71,7 +72,7 @@ public class GeneralWindow extends JFrame {
 		final JPanel cardPanel = new JPanel();
 		cardPanel.setBounds(154, 5, 630, 435);
 		cardPanel.setLayout(new CardLayout(0, 0));
-		cardPanel.add(new EsquemaDeTrabajo(), "Esquema de trabajo");
+		cardPanel.add(new WorkScheme(), "Esquema de trabajo");
 		cardPanel.add(new DataConfigurationWindow(), "Cargar datos");
 		cardPanel.add(new DataMiningTechniqueWindow(), "Seleccion tecnica");
 		cardPanel.add(new RunAlgorithm(), "Generacion del Modelo");
@@ -84,7 +85,7 @@ public class GeneralWindow extends JFrame {
 		btnEsquemaDeTrabajo.setBounds(3, 20, 141, 30);
 		btnEsquemaDeTrabajo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(! (real_interface instanceof EsquemaDeTrabajo))
+				if(! (real_interface instanceof WorkScheme))
 					((CardLayout)cardPanel.getLayout()).show(cardPanel,"Esquema de trabajo");
 			}
 		});
@@ -224,7 +225,7 @@ public class GeneralWindow extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(JOptionPane.showConfirmDialog(null, "\u00BFDesea limpiar todo?","Aceptar",JOptionPane.OK_CANCEL_OPTION)== JOptionPane.OK_OPTION){
 					GlobalData.clearInstance();
-					cardPanel.add(new EsquemaDeTrabajo(), "Esquema de trabajo");
+					cardPanel.add(new WorkScheme(), "Esquema de trabajo");
 					cardPanel.add(new DataConfigurationWindow(), "Cargar datos");
 					cardPanel.add(new DataMiningTechniqueWindow(), "Seleccion tecnica");
 					cardPanel.add(new RunAlgorithm(), "Generacion del Modelo");
@@ -312,14 +313,15 @@ public class GeneralWindow extends JFrame {
 //				helpFrame.setVisible(true);
 //			}
 //		});
-		help.setBackground(new Color(0, 0, 0));
-		help.setBounds(747, 7, 28, 28);
+	//	help.setBackground(new Color(0, 0, 0));
+		help.setBorder(new LineBorder(new Color(0, 0, 0), 1));
+		help.setBounds(748, 7, 28, 28);
 		progress.add(help);
 		help.setLayout(null);
 		
 		JLabel label = new JLabel("");
 		label.setHorizontalAlignment(SwingConstants.CENTER);
-		//label.setIcon(new ImageIcon(GeneralWindow.class.getResource("/Images/help.png")));
+		label.setIcon(new ImageIcon(GeneralWindow.class.getResource("/Images/help.png")));
 		label.setBackground(Color.BLACK);
 		label.setBounds(0, 0, 28, 28);
 		help.add(label);
