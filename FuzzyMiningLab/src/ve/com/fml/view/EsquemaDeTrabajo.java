@@ -33,7 +33,7 @@ public class EsquemaDeTrabajo extends JPanel {
 //			label.setIcon(new ImageIcon(EsquemaDeTrabajo.class.getResource("/Images/mapa_ppal.png")));
 //		else
 //			label.setIcon(new ImageIcon(EsquemaDeTrabajo.class.getResource("/Images/mapa_ppal_english.png")));
-		label.setIcon(new ImageIcon(EsquemaDeTrabajo.class.getResource("/Images/diagrama principal.png")));
+		label.setIcon(new ImageIcon(EsquemaDeTrabajo.class.getResource("/Images/diagrama-principal.png")));
 		label.setBackground(new Color(255,255,255));
 		GroupLayout gl_picture = new GroupLayout(picture);
 		gl_picture.setHorizontalGroup(

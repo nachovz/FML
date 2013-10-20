@@ -91,7 +91,7 @@ public class GeneralWindow extends JFrame {
 		btnEsquemaDeTrabajo.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
 //		JButton btnDefinirCromosoma = new JButton(GAL_GUI.language.casosDeUso[1]);
-		JButton btnLoadData = new JButton("Carga de Datos");
+		JButton btnLoadData = new JButton("Preparar los Datos");
 		btnLoadData.setBounds(3, 90, 141, 30);
 		btnLoadData.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -102,7 +102,7 @@ public class GeneralWindow extends JFrame {
 		btnLoadData.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
 		//JButton btnDefinirFuncin = new JButton(GAL_GUI.language.casosDeUso[2]);
-		btnDefinirFuncin = new JButton("Seleccionar Técnica");
+		btnDefinirFuncin = new JButton("Configurar Técnica");
 		btnDefinirFuncin.setBounds(3, 160, 141, 30);
 		btnDefinirFuncin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -113,7 +113,7 @@ public class GeneralWindow extends JFrame {
 		btnDefinirFuncin.setFont(new Font("Tahoma", Font.PLAIN, 11));
 		
 //		JButton btnConfiguraralgoritmo = new JButton(GAL_GUI.language.casosDeUso[3]);
-		btnConfiguraralgoritmo = new JButton("Ejecutar algoritmo");
+		btnConfiguraralgoritmo = new JButton("Generar Modelo");
 		btnConfiguraralgoritmo.setBounds(3, 230, 141, 30);
 		btnConfiguraralgoritmo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

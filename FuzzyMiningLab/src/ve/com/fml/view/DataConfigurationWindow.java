@@ -5,14 +5,10 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
@@ -29,43 +25,47 @@ public class DataConfigurationWindow extends JPanel {
 	 * Configuration window / Pantalla configuracion de datos
 	 */
 	private static final long serialVersionUID = 1L;
+	private javax.swing.JButton editButton;
+	private javax.swing.JLabel editLabel;
+	private javax.swing.JButton fuzzyButton;
+	private javax.swing.JLabel fuzzyLabel;
+	private javax.swing.JSeparator jSeparator1;
+	private javax.swing.JButton openButton;
+	private javax.swing.JLabel openLabel;
+	private javax.swing.JPanel picPanel;
+	private javax.swing.JLabel pictureLabel;
+	private javax.swing.Box.Filler filler1;
+	private javax.swing.Box.Filler filler2;
 
 	public DataConfigurationWindow(){
 
-		final JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+
 		setSize(630, 435);
+		initComponents();
+		setBorder(new TitledBorder(new LineBorder(new Color(47, 172, 67), 2), "Preparación de datos", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial",Font.BOLD,12), new Color(47, 172, 67)));
 
-		setBorder(new TitledBorder(new LineBorder(new Color(0, 0, 255), 2), "Carga de datos", TitledBorder.LEADING, TitledBorder.TOP, new Font("Arial",Font.BOLD,12), new Color(0, 0, 255)));
+	}
 
-		//		JPanel picture = new JPanel();
-		//		picture.setBounds(16, 132, 598, 286);
-		//		picture.setBackground(Color.WHITE);
+	private void initComponents() {
+		final JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+		openLabel = new javax.swing.JLabel();
+		openButton = new javax.swing.JButton();
+		editLabel = new javax.swing.JLabel();
+		editButton = new javax.swing.JButton();
+		jSeparator1 = new javax.swing.JSeparator();
+		picPanel = new javax.swing.JPanel();
+		pictureLabel = new javax.swing.JLabel();
+		fuzzyButton = new javax.swing.JButton();
+		fuzzyLabel = new javax.swing.JLabel();
+		filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+		filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
 
-		//		JPanel help = new JPanel();
-		//		help.addMouseListener(new MouseAdapter() {
-		//			@Override
-		//			public void mouseClicked(MouseEvent e) {
-		//				GAL_GUI.helpViewer.setCurrentID(GAL_GUI.language.helpTargets[3]);
-		//				// Create a new frame.
-		//				JFrame helpFrame = new JFrame();
-		//				// Set it's size.
-		//				helpFrame.setSize(800,600);
-		//				// Add the created helpViewer to it.
-		//				helpFrame.getContentPane().add(GAL_GUI.helpViewer);
-		//				// Set a default close operation.
-		//				helpFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		//				//Ponemos en visible
-		//				helpFrame.setVisible(true);
-		//			}
-		//		});
-		//		help.setBounds(598, 7, 28, 28);
-		//		help.setBackground(new Color(0, 0, 255));
+		openLabel.setText("Abrir Archivo");
 
-		/**Controles para abrir el archivo*/
-
-		JButton btn_AbrirConfiguracion = new JButton("");
-		btn_AbrirConfiguracion.setIcon(new ImageIcon(DataConfigurationWindow.class.getResource("/Images/btn_AbrirConfig.png")));
-		btn_AbrirConfiguracion.addActionListener(new ActionListener() {
+		openButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/btn_AbrirConfig.png"))); // NOI18N
+		openButton.setMinimumSize(new java.awt.Dimension(76, 50));
+		openButton.setPreferredSize(new java.awt.Dimension(76, 50));
+		openButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try{
 					JFileChooser fc= new JFileChooser();
@@ -85,56 +85,48 @@ public class DataConfigurationWindow extends JPanel {
 					//					JOptionPane.showMessageDialog(null, GAL_GUI.language.Errors[10]);
 					JOptionPane.showMessageDialog(null, "Error al cargar archivos");
 				}
-				actualizar();
 			}
 		});
-		btn_AbrirConfiguracion.setBounds(48, 28, 76, 50);
 
+		editLabel.setText("Editar Datos");
 
-
-		//		JLabel lblAbrirConf = new JLabel(GAL_GUI.language.botonesPrincipales[10]);
-		JLabel lblAbrirConf = new JLabel("Abrir Archivo");
-		lblAbrirConf.setBounds(48, 84, 76, 14);
-		lblAbrirConf.setHorizontalAlignment(SwingConstants.CENTER);
-
-
-
-		/**Controles para editar el conjunto de datos*/
-
-		JButton btn_VerResultados = new JButton("");
-		btn_VerResultados.setIcon(new ImageIcon(DataConfigurationWindow.class.getResource("/Images/btn_Parametros.png")));
-		btn_VerResultados.addActionListener(new ActionListener() {
+		editButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/btn_Parametros.png"))); // NOI18N
+		editButton.setMinimumSize(new java.awt.Dimension(76, 50));
+		editButton.setPreferredSize(new java.awt.Dimension(76, 50));
+		editButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//JOptionPane.showMessageDialog(DataConfigurationWindow.this, GAL_GUI.language.Errors[21]);
 				if(GlobalData.getInstance().getFuzzyInstances() == null)
 					JOptionPane.showMessageDialog(DataConfigurationWindow.this, "No se han cargado los datos");
 				else{
-
 					EditDataWindow editFrame= new EditDataWindow(topFrame,true);
 					RefineryUtilities.centerFrameOnScreen(editFrame);
 					editFrame.setVisible(true);				
 
 				}
-				//				if(!GAL_GUI.gal.executed())
-				//					JOptionPane.showMessageDialog(DataConfigurationWindow.this, GAL_GUI.language.Errors[21]);
-				//				else{
-				//					ResultsViewWindow Newframe= new ResultsViewWindow();
-				//					Newframe.setVisible(true);
-				//				}
 			}
 		});
-		btn_VerResultados.setBounds(166, 28, 76, 50);
 
-		//		JLabel lblVerResultados = new JLabel(GAL_GUI.language.botonesPrincipales[8]);
-		JLabel lblVerResultados = new JLabel("Editar datos");
-		lblVerResultados.setBounds(166, 84, 76, 14);
-		lblVerResultados.setHorizontalAlignment(SwingConstants.CENTER);
+		pictureLabel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/diagrama-preparacion.png"))); // NOI18N
 
-		/**Controles para difusificar los datos*/
+		javax.swing.GroupLayout picPanelLayout = new javax.swing.GroupLayout(picPanel);
+		picPanel.setLayout(picPanelLayout);
+		picPanelLayout.setHorizontalGroup(
+				picPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(picPanelLayout.createSequentialGroup()
+						.addContainerGap()
+						.addComponent(pictureLabel)
+						.addContainerGap(12, Short.MAX_VALUE))
+				);
+		picPanelLayout.setVerticalGroup(
+				picPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addComponent(pictureLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+				);
 
-		JButton btn_DefineFuzzySets = new JButton("");
-		btn_DefineFuzzySets.setIcon(new ImageIcon(DataConfigurationWindow.class.getResource("/Images/btn_Resultados.png")));
-		btn_DefineFuzzySets.addActionListener(new ActionListener() {
+		fuzzyButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/btn_Resultados.png"))); // NOI18N
+		fuzzyButton.setMinimumSize(new java.awt.Dimension(76, 50));
+		fuzzyButton.setPreferredSize(new java.awt.Dimension(76, 50));
+		fuzzyButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				//JOptionPane.showMessageDialog(DataConfigurationWindow.this, GAL_GUI.language.Errors[21]);
 				if(GlobalData.getInstance().getFuzzyInstances() == null)
@@ -144,43 +136,73 @@ public class DataConfigurationWindow extends JPanel {
 					RefineryUtilities.centerFrameOnScreen(fuzzyEditFrame);
 					fuzzyEditFrame.setVisible(true);
 				}
-				//				if(!GAL_GUI.gal.executed())
-				//					JOptionPane.showMessageDialog(DataConfigurationWindow.this, GAL_GUI.language.Errors[21]);
-				//				else{
-				//					ResultsViewWindow Newframe= new ResultsViewWindow();
-				//					Newframe.setVisible(true);
-				//				}
 			}
 		});
-		btn_DefineFuzzySets.setBounds(280, 28, 76, 50);
+		fuzzyLabel.setText("Difusificación");
 
-		//		JLabel lblVerResultados = new JLabel(GAL_GUI.language.botonesPrincipales[8]);
-		JLabel lblDefineFuzzySets = new JLabel("Difusificación");
-		lblDefineFuzzySets.setBounds(280, 84, 76, 14);
-		lblDefineFuzzySets.setHorizontalAlignment(SwingConstants.CENTER);
+		javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(this);
+		setLayout(jPanel1Layout);
+		jPanel1Layout.setHorizontalGroup(
+				jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(jPanel1Layout.createSequentialGroup()
+						.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+								.addGroup(jPanel1Layout.createSequentialGroup()
+										.addGap(10, 10, 10)
+										.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+												.addComponent(picPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+												.addComponent(jSeparator1)))
+												.addGroup(jPanel1Layout.createSequentialGroup()
+														.addGap(68, 68, 68)
+														.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+																.addComponent(openButton, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+																.addComponent(openLabel))
+																.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																.addComponent(filler1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+																.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+																		.addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+																		.addComponent(editLabel))
+																		.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																		.addComponent(filler2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+																		.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																		.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+																				.addComponent(fuzzyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+																				.addComponent(fuzzyLabel))
+																				.addGap(61, 61, 61)))
+																				.addContainerGap())
+				);
+		jPanel1Layout.setVerticalGroup(
+				jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+				.addGroup(jPanel1Layout.createSequentialGroup()
+						.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+								.addGroup(jPanel1Layout.createSequentialGroup()
+										.addContainerGap()
+										.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+												.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+														.addGroup(jPanel1Layout.createSequentialGroup()
+																.addComponent(openButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+																.addGap(7, 7, 7)
+																.addComponent(openLabel))
+																.addGroup(jPanel1Layout.createSequentialGroup()
+																		.addComponent(fuzzyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+																		.addGap(7, 7, 7)
+																		.addComponent(fuzzyLabel)))
+																		.addGroup(jPanel1Layout.createSequentialGroup()
+																				.addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+																				.addGap(7, 7, 7)
+																				.addComponent(editLabel))))
+																				.addGroup(jPanel1Layout.createSequentialGroup()
+																						.addGap(39, 39, 39)
+																						.addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+																						.addGroup(jPanel1Layout.createSequentialGroup()
+																								.addGap(35, 35, 35)
+																								.addComponent(filler2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
+																								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																								.addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+																								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+																								.addComponent(picPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+																								.addContainerGap())
+				);
 
-
-
-		setLayout(null);
-		//		picture.setLayout(gl_picture);
-		//		add(picture);
-		//		add(lblEjecutar);
-		//		add(btn_Ejecutar);
-		add(lblDefineFuzzySets);
-		add(btn_DefineFuzzySets);
-
-		add(lblVerResultados);
-		add(btn_VerResultados);
-		//		add(lblGuardar);
-		//		add(btn_Guardar);
-		add(lblAbrirConf);
-		add(btn_AbrirConfiguracion);
-		//		add(help);
 	}
-
-	void actualizar(){
-
-	}
-
-
 }
