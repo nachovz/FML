@@ -110,16 +110,16 @@ public class FuzzyInstances extends Instances {
 					TriangleFuzzyMembership fuzzyMembership = (TriangleFuzzyMembership) fuzzyVars.get(label);
 					params = fuzzyMembership.getLowerBound()+" "+fuzzyMembership.getTopTriangle()+" "+fuzzyMembership.getUpperBound();
 				}
-					
+
 				if(fuzzyVars.get(label) instanceof TrapFuzzyMembership){
 					type = "trap";
 					TrapFuzzyMembership fuzzyMembership = (TrapFuzzyMembership) fuzzyVars.get(label);
 					params = fuzzyMembership.getLowerBound()+" "+fuzzyMembership.getTopTrap1()+" "+fuzzyMembership.getTopTrap2()+" "+fuzzyMembership.getUpperBound();
 				}
-					
+
 				output += "@fuzzyset "+index+" "+label+" "+type+" "+params+"\n";
 			}
-			
+
 		}
 		return output;
 	}
@@ -135,7 +135,7 @@ public class FuzzyInstances extends Instances {
 
 		return attributes;
 	}
-	
+
 	public HashMap<String, Integer> getNominalAttributes(){
 		HashMap<String, Integer> attributes = new HashMap<String, Integer>();
 
@@ -153,6 +153,19 @@ public class FuzzyInstances extends Instances {
 		if(membership.containsKey(attrIndex))
 			fSLabels.addAll(membership.get(attrIndex).getLabelList());
 		return fSLabels;
+	}
+
+	@Override
+	public void deleteAttributeAt(int arg0) {
+		for(int i = arg0; i < numAttributes(); i++){
+			if(membership.containsKey(i)){
+				membership.remove(i);
+			}
+			if(membership.containsKey(i+1)){
+				membership.put(i, membership.get(i+1));
+			}
+		}
+		super.deleteAttributeAt(arg0);
 	}
 
 }
