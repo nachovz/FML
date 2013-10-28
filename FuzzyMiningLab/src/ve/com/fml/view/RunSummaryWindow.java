@@ -78,14 +78,14 @@ public class RunSummaryWindow extends JDialog{
 			titleLabel.setText("Resumen de configuración de Árbol de Decisión Difuso");
 			summaryText += "- Número mínimo de instancias por hoja: ";
 			if(opts.containsKey("mno"))
-				summaryText += opts.get("nr").toString()+"\n";
-			else
-				summaryText += "2\n";
-			summaryText += "- Umbral mínimo de confianza para la poda: ";
-			if(opts.containsKey("mno"))
 				summaryText += opts.get("mno").toString()+"\n";
 			else
 				summaryText += "0.25\n";
+			summaryText += "- Umbral mínimo de confianza para la poda: ";
+			if(opts.containsKey("ctt"))
+				summaryText += opts.get("ctt").toString()+"\n";
+			else
+				summaryText += "2\n";
 			summaryText += "- Validación cruzada con 10 pliegues";
 			break;
 		case FuzzyDataMining.MODEL_FUZZY_KMEANS:

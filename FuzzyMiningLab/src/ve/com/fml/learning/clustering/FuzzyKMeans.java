@@ -13,7 +13,7 @@ public class FuzzyKMeans extends SimpleKMeans {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	FuzzyDistance fd;
+	private FuzzyDistance fd;
 	
 	public void config(FuzzyInstances fuzzyInstances){
 		fd = new FuzzyDistance(fuzzyInstances);
@@ -43,6 +43,17 @@ public class FuzzyKMeans extends SimpleKMeans {
 	public void buildClusterer(Instances arg0) throws Exception {
 		this.setDistanceFunction(fd);
 		super.buildClusterer(arg0);
+	}
+	
+	@Override
+	public String toString() {
+		return super.toString().replace("kMeans\n======", "==== K-Medias Difuso ====\n")
+				.replace("Number of iterations", "Número de iteraciones")
+				.replace("Within cluster sum of squared errors", "Suma del error cuadrático interno de cada cluster")
+				.replace("Missing values globally replaced with mean/mode\n", "")
+				.replace("Cluster centroids", "Centroides")
+				.replace("Attribute", "Atributo")
+				.replace("Full Data", "Conjunto de Datos");
 	}
 
 }

@@ -74,26 +74,20 @@ public class GlobalData {
 			break;
 		case FuzzyDataMining.MODEL_FUZZY_KMEANS:
 			FuzzyKMeans fkm = new FuzzyKMeans();
-			if(opts.containsKey("k")){
-				try {
-					fkm.setNumClusters(Integer.parseInt(opts.get("k").toString()));
-				} catch (NumberFormatException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
 			try {
+				if(opts.containsKey("k"))
+					fkm.setNumClusters(Integer.parseInt(opts.get("k").toString()));
+				if(opts.containsKey("class")){
+					//String[] kMopts = {"-c "+opts.get("class")};
+					String[] kMopts = {"-c last"};
+					fkm.setOptions(kMopts);
+				}
 				fkm.config(GlobalData.getInstance().getFuzzyInstances());
-//				String[] kMopts = {"-c last"};
-//				fkm.setOptions(kMopts);
 				fkm.buildClusterer(GlobalData.getInstance().getFuzzyInstances());
 				ClusterEvaluation eval = new ClusterEvaluation();
 				eval.setClusterer(fkm);
 				eval.evaluateClusterer(GlobalData.getInstance().getFuzzyInstances());
-				setResult(eval.clusterResultsToString()+"\n");
+				setResult(formatClustererEvalSummary(eval, 0)+"\n");
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -130,6 +124,14 @@ public class GlobalData {
 				+"\nError absoluto relativo:\t\t"+Math.round(eval.relativeAbsoluteError()*10000)/10000.0d
 				+"\nRaíz cuadrada del error cuadrático relativo:\t"+Math.round(eval.rootRelativeSquaredError()*10000)/10000.0d
 				+"\nNúmero total de Instancias:\t\t"+(int)eval.numInstances()+"\n";
+	}
+
+	public String formatClustererEvalSummary(ClusterEvaluation eval, Integer lang) throws Exception{
+		return eval.clusterResultsToString()+"\n";
+				//+eval.getLogLikelihood()+"\n"
+				//+eval.getNumClusters()+"\n"
+				//+eval.getClassesToClusters().length+"\n"
+				//+eval.getClusterAssignments().length+"\n";
 	}
 
 	@SuppressWarnings("unchecked")

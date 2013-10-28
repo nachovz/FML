@@ -76,14 +76,15 @@ public class EditKMeansWindow extends javax.swing.JDialog {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if(classComboBox.getSelectedIndex() != 0)
-					GlobalData.getInstance().getFuzzyInstances().setClassIndex(nominalAtts.get(classComboBox.getSelectedItem()));
+				
 				GlobalData.getInstance().setCurrentTechnique(FuzzyDataMining.MODEL_FUZZY_KMEANS);
 				HashMap<String, Object> options = new HashMap<String, Object>();
 				if(!kTextField.getText().isEmpty())
 					options.put("k", kTextField.getText());
 				else
 					options.put("k", "2");
+				if(classComboBox.getSelectedIndex() != 0)
+					options.put("class", nominalAtts.get(classComboBox.getSelectedItem()));
 				GlobalData.getInstance().setConfiguredTechnique(options);
 				dispose();
 			}
