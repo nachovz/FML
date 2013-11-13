@@ -155,6 +155,9 @@ public class EditDataWindow extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					GlobalData.getInstance().restoreInstancesBackup();
+					abstractTableModel.fireTableStructureChanged();
+					//table.removeColumn(table.getColumn(attrIndex));
+					refreshAttributeList();
 					repaint();
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
