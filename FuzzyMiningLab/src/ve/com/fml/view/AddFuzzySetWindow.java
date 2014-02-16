@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import ve.com.fml.model.datasource.GlobalData;
 import ve.com.fml.model.fuzzy.FuzzyVariable;
 import ve.com.fml.model.fuzzy.membership.FuzzyMembership;
+import ve.com.fml.model.fuzzy.membership.GaussianFuzzyMembership;
 import ve.com.fml.model.fuzzy.membership.SingletonFuzzyMembership;
 import ve.com.fml.model.fuzzy.membership.TrapFuzzyMembership;
 import ve.com.fml.model.fuzzy.membership.TriangleFuzzyMembership;
@@ -64,6 +65,9 @@ public class AddFuzzySetWindow extends JDialog{
 		case 3:
 			options = new SingletonFormPanel((SingletonFuzzyMembership)mem,fuzzySetLabel);
 			break;
+		case 4:
+			options = new GaussianFormPanel((GaussianFuzzyMembership)mem,fuzzySetLabel);
+			break;
 		}		
 		javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
 		getContentPane().setLayout(layout);
@@ -111,6 +115,7 @@ public class AddFuzzySetWindow extends JDialog{
 		fuzzySetType.addItem("Triangular");
 		fuzzySetType.addItem("Trapezoidal");
 		fuzzySetType.addItem("Singleton");
+		fuzzySetType.addItem("Gaussiana");
 		
 
 		fuzzySetType.addActionListener(new ActionListener() {
@@ -211,6 +216,8 @@ public class AddFuzzySetWindow extends JDialog{
 				fuzzySetType.setSelectedIndex(2);
 			}else if(GlobalData.getInstance().getFuzzyInstances().getMembership().get(attrIndex).getFuzzySets().get(fuzzySetLabel) instanceof SingletonFuzzyMembership){
 				fuzzySetType.setSelectedIndex(3);
+			}else if(GlobalData.getInstance().getFuzzyInstances().getMembership().get(attrIndex).getFuzzySets().get(fuzzySetLabel) instanceof GaussianFuzzyMembership){
+				fuzzySetType.setSelectedIndex(4);
 			}
 			refreshFuzzySetDef(fuzzySetType.getSelectedIndex(),GlobalData.getInstance().getFuzzyInstances().getMembership().get(attrIndex).getFuzzySets().get(fuzzySetLabel));
 		}
@@ -497,6 +504,89 @@ public class AddFuzzySetWindow extends JDialog{
 											.addComponent(xField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
 											.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
 											.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					);
+		}
+	}
+	
+	private class GaussianFormPanel extends FuzzySetFormPanel{
+
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private javax.swing.JLabel jLabel1;
+		private javax.swing.JLabel jLabel2;
+		private javax.swing.JLabel jLabel3;
+		private javax.swing.JTextField nameField;
+		private javax.swing.JTextField muField;
+		private javax.swing.JTextField sigmaField;
+
+		public GaussianFormPanel(GaussianFuzzyMembership mem, String fuzzySetLabel) {
+			nameField = new javax.swing.JTextField();
+			muField = new javax.swing.JTextField();
+			sigmaField = new javax.swing.JTextField();
+			if(mem != null){
+				nameField.setText(fuzzySetLabel);
+				muField.setText(mem.getMu()+"");
+				sigmaField.setText(mem.getSigma()+"");
+			}
+			initComponents();
+		}
+
+		public FuzzyMembership save(){
+			name = nameField.getText();
+			GaussianFuzzyMembership mem = new GaussianFuzzyMembership(Double.parseDouble(sigmaField.getText()), Double.parseDouble(muField.getText()));
+			return mem;
+		}
+
+		private void initComponents(){
+			jLabel1 = new javax.swing.JLabel();
+			
+			jLabel2 = new javax.swing.JLabel();
+			
+			jLabel3 = new javax.swing.JLabel();
+
+			jLabel1.setText("Nombre del conjunto difuso:");
+
+			jLabel2.setText("Valor medio:");
+			
+			jLabel3.setText("Desviación estándar:");
+
+
+			javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(this);
+			this.setLayout(jPanel1Layout);
+			jPanel1Layout.setHorizontalGroup(
+					jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+					.addGroup(jPanel1Layout.createSequentialGroup()
+							.addContainerGap()
+							.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+									.addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+									.addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+									.addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+									.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+									.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+											.addComponent(sigmaField, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+											.addComponent(muField, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+											.addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
+											.addContainerGap(12, Short.MAX_VALUE))
+					);
+			jPanel1Layout.setVerticalGroup(
+					jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+					.addGroup(jPanel1Layout.createSequentialGroup()
+							.addContainerGap()
+							.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+									.addComponent(jLabel1)
+									.addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+									.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+									.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+										.addComponent(jLabel2)
+										.addComponent(muField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+										.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+										.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+												.addComponent(jLabel3)
+												.addComponent(sigmaField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+												.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+												.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					);
 		}
 	}

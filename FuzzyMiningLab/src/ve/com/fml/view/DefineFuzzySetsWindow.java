@@ -27,6 +27,7 @@ import org.jfree.ui.RefineryUtilities;
 import ve.com.fml.model.datasource.GlobalData;
 import ve.com.fml.model.fuzzy.FuzzyVariable;
 import ve.com.fml.model.fuzzy.membership.FuzzyMembership;
+import ve.com.fml.model.fuzzy.membership.GaussianFuzzyMembership;
 import ve.com.fml.model.fuzzy.membership.SingletonFuzzyMembership;
 import ve.com.fml.model.fuzzy.membership.TrapFuzzyMembership;
 import ve.com.fml.model.fuzzy.membership.TriangleFuzzyMembership;
@@ -61,7 +62,7 @@ public class DefineFuzzySetsWindow extends JDialog {
 		initComponents();
 	}
 
-	private static XYSeries createSeries(String name, FuzzyMembership fuzzyMembership){
+	private static XYSeries createSeries(String name, FuzzyMembership fuzzyMembership, double minVal, double maxVal){
 		XYSeries xySeries = new XYSeries(name);
 		if(fuzzyMembership instanceof TriangleFuzzyMembership){
 			xySeries.add(((TriangleFuzzyMembership)fuzzyMembership).getLowerBound(), 0D);
@@ -73,17 +74,23 @@ public class DefineFuzzySetsWindow extends JDialog {
 			xySeries.add(((TrapFuzzyMembership)fuzzyMembership).getTopTrap2(), 1D);
 			xySeries.add(((TrapFuzzyMembership)fuzzyMembership).getUpperBound(), 0D);
 		}else if(fuzzyMembership instanceof SingletonFuzzyMembership){
-			xySeries.add(((SingletonFuzzyMembership)fuzzyMembership).getX(), 1D);
+			xySeries.add(((SingletonFuzzyMembership)fuzzyMembership).getX()-((SingletonFuzzyMembership)fuzzyMembership).getEpsilon(), 1D);
+			xySeries.add(((SingletonFuzzyMembership)fuzzyMembership).getX()+((SingletonFuzzyMembership)fuzzyMembership).getEpsilon(), 1D);
+		}else if(fuzzyMembership instanceof GaussianFuzzyMembership){
+			double step = 0.01;
+			for(double i = minVal; i <= maxVal; i += step){
+				xySeries.add(i, ((GaussianFuzzyMembership)fuzzyMembership).fuzzyEval(i));
+			}
 		}
 		return xySeries;
 
 	}
 
-	private static XYDataset createDataset(FuzzyVariable fuzzyVariable) {
+	private static XYDataset createDataset(FuzzyVariable fuzzyVariable, double minVal, double maxVal) {
 		XYSeriesCollection xyseriescollection = new XYSeriesCollection();
 		if(fuzzyVariable != null){
 			for (String name : fuzzyVariable.getFuzzySets().keySet()) {
-				xyseriescollection.addSeries(createSeries(name, fuzzyVariable.getFuzzySets().get(name)));
+				xyseriescollection.addSeries(createSeries(name, fuzzyVariable.getFuzzySets().get(name), minVal, maxVal));
 			}
 		}
 		xyseriescollection.setIntervalWidth(0.0D);
@@ -93,7 +100,10 @@ public class DefineFuzzySetsWindow extends JDialog {
 	private void refreshChart(Integer attrIndx){
 		String atrName = GlobalData.getInstance().getFuzzyInstances().attribute(attrIndx).name();
 		System.out.println(GlobalData.getInstance().getFuzzyInstances().getMembership());
-		XYDataset xydataset = createDataset(GlobalData.getInstance().getFuzzyInstances().getMembership().get(attrIndx));
+		double minVal = GlobalData.getInstance().getFuzzyInstances().kthSmallestValue(GlobalData.getInstance().getFuzzyInstances().attribute(attrIndx), 1);
+		double maxVal = GlobalData.getInstance().getFuzzyInstances().kthSmallestValue(GlobalData.getInstance().getFuzzyInstances().attribute(attrIndx), 
+				GlobalData.getInstance().getFuzzyInstances().numInstances());
+		XYDataset xydataset = createDataset(GlobalData.getInstance().getFuzzyInstances().getMembership().get(attrIndx), minVal, maxVal);
 		chart = ChartFactory.createXYAreaChart("Conjuntos difusos para el atributo "+atrName,"Dominio (x)", "Función de pertenencia \u03BC(x)", xydataset, PlotOrientation.VERTICAL, true, true, false);
 		chart.setBackgroundPaint(Color.white);
 		XYPlot xyplot = (XYPlot) chart.getPlot();
@@ -107,9 +117,7 @@ public class DefineFuzzySetsWindow extends JDialog {
 		valueaxis.setLowerMargin(0.0D);
 		valueaxis.setUpperMargin(0.0D);
 		//valores max y min
-		valueaxis.setRange(GlobalData.getInstance().getFuzzyInstances().kthSmallestValue(GlobalData.getInstance().getFuzzyInstances().attribute(attrIndx), 1),
-				GlobalData.getInstance().getFuzzyInstances().kthSmallestValue(GlobalData.getInstance().getFuzzyInstances().attribute(attrIndx), 
-						GlobalData.getInstance().getFuzzyInstances().numInstances()));
+		valueaxis.setRange(minVal, maxVal);
 		ValueAxis valueaxis1 = xyplot.getRangeAxis();
 		valueaxis1.setTickMarkPaint(Color.black);
 		

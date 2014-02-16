@@ -153,7 +153,7 @@ public class GlobalData {
 		}
 
 		values = GlobalData.getInstance().getFuzzyInstances().classAttribute().enumerateValues();
-		result += "\nClase\tPrecisión\tExhausistividad\n";
+		result += "\nClase\tPrecisión\tSensibilidad\n";
 		for (int i = 0; i < numClasses; i++) {
 			result += values.nextElement()+"\t"+Math.round(eval.precision(i)*10000)/10000.0d+"\t"+Math.round(eval.recall(i)*10000)/10000.0d+"\n";
 		}

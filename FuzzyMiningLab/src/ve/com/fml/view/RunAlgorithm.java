@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -17,7 +19,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import org.jfree.ui.RefineryUtilities;
 
 import ve.com.fml.model.datasource.GlobalData;
-import ve.com.fml.model.datasource.InstancesLoader;
 
 public class RunAlgorithm extends JPanel {
 	private static final long serialVersionUID = 1L;
@@ -38,7 +39,7 @@ public class RunAlgorithm extends JPanel {
 		jLabel1 = new javax.swing.JLabel();
 		runAlgButton = new javax.swing.JButton();
 		jLabel2 = new javax.swing.JLabel();
-		saveDatasetButton = new javax.swing.JButton();
+		saveResultButton = new javax.swing.JButton();
 		jSeparator1 = new javax.swing.JSeparator();
 		jScrollPane1 = new javax.swing.JScrollPane();
 		resultArea = new javax.swing.JEditorPane();
@@ -50,11 +51,11 @@ public class RunAlgorithm extends JPanel {
 		runAlgButton.setMinimumSize(new java.awt.Dimension(76, 50));
 		runAlgButton.setPreferredSize(new java.awt.Dimension(76, 50));
 
-		jLabel2.setText("Guardar Conjunto de Datos");
+		jLabel2.setText("Guardar Resultados");
 
-		saveDatasetButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/btn_Guardar.png"))); // NOI18N
-		saveDatasetButton.setMinimumSize(new java.awt.Dimension(76, 50));
-		saveDatasetButton.setPreferredSize(new java.awt.Dimension(76, 50));
+		saveResultButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/btn_Guardar.png"))); // NOI18N
+		saveResultButton.setMinimumSize(new java.awt.Dimension(76, 50));
+		saveResultButton.setPreferredSize(new java.awt.Dimension(76, 50));
 
 		//        resultArea.setColumns(20);
 		//        resultArea.setRows(5);
@@ -78,7 +79,7 @@ public class RunAlgorithm extends JPanel {
 																.addComponent(jLabel1))
 																.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 131, Short.MAX_VALUE)
 																.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-																		.addComponent(saveDatasetButton, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+																		.addComponent(saveResultButton, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
 																		.addComponent(jLabel2))
 																		.addGap(108, 108, 108)))
 																		.addContainerGap())
@@ -89,7 +90,7 @@ public class RunAlgorithm extends JPanel {
 						.addContainerGap()
 						.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
 								.addGroup(jPanel1Layout.createSequentialGroup()
-										.addComponent(saveDatasetButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+										.addComponent(saveResultButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
 										.addGap(7, 7, 7)
 										.addComponent(jLabel2))
 										.addGroup(jPanel1Layout.createSequentialGroup()
@@ -120,7 +121,37 @@ public class RunAlgorithm extends JPanel {
 			}
 		});
 		
-		saveDatasetButton.addActionListener(new ActionListener() {
+		saveResultButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println(GlobalData.getInstance().getFuzzyInstances());
+				String sufix = "";
+				if(GlobalData.getInstance().getResult() == null || GlobalData.getInstance().getResult().length() == 0){
+					JOptionPane.showMessageDialog(null, "Debe generar el modelo para poder guardarlo en un archivo");
+					return;
+				}
+				try{
+					JFileChooser fc= new JFileChooser();
+					fc.setFileFilter(new FileNameExtensionFilter("Archivos TXT", "txt"));
+					sufix = ".txt";
+					
+					int returnVal= fc.showSaveDialog(RunAlgorithm.this);
+					if(returnVal == JFileChooser.APPROVE_OPTION){
+						BufferedWriter writer = new BufferedWriter(new FileWriter(fc.getSelectedFile().getAbsolutePath()+sufix));
+						writer.write(GlobalData.getInstance().getResult());
+						writer.flush();
+						writer.close();
+					}
+					//actualizar();
+				}catch(Exception ex){
+					//					JOptionPane.showMessageDialog(null, GAL_GUI.language.Errors[10]);
+					JOptionPane.showMessageDialog(null, "Error al guardar el archivo");
+				}
+			}
+		});
+		
+		/*saveResultButton.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -146,7 +177,7 @@ public class RunAlgorithm extends JPanel {
 					JOptionPane.showMessageDialog(null, "Error al guardar el archivo");
 				}
 			}
-		});
+		});*/
 
 	}// </editor-fold>
 
@@ -156,6 +187,6 @@ public class RunAlgorithm extends JPanel {
 	private javax.swing.JSeparator jSeparator1;
 	private javax.swing.JEditorPane resultArea;
 	private javax.swing.JButton runAlgButton;
-	private javax.swing.JButton saveDatasetButton;
+	private javax.swing.JButton saveResultButton;
 
 }

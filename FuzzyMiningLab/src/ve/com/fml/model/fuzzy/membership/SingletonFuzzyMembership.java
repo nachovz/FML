@@ -7,7 +7,7 @@ public class SingletonFuzzyMembership extends FuzzyMembership {
 	 */
 	private static final long serialVersionUID = 1L;
 	private double x;
-	private double epsilon = 0.0001;
+	private double epsilon = 0.01;
 	
 	public SingletonFuzzyMembership(double value){
 		x = value;
