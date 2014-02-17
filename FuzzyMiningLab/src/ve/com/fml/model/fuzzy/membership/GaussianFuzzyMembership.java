@@ -20,7 +20,7 @@ public class GaussianFuzzyMembership extends FuzzyMembership{
 
 	@Override
 	public double fuzzyEval(double value) {
-		Gaussian gaussian = new Gaussian(mu, sigma);
+		Gaussian gaussian = new Gaussian(1D, mu, sigma);
 		return gaussian.value(value);
 	}
 	

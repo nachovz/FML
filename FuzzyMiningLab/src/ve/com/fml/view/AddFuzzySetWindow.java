@@ -7,6 +7,8 @@ import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import org.apache.commons.lang3.math.NumberUtils;
+
 import ve.com.fml.model.datasource.GlobalData;
 import ve.com.fml.model.fuzzy.FuzzyVariable;
 import ve.com.fml.model.fuzzy.membership.FuzzyMembership;
@@ -156,6 +158,11 @@ public class AddFuzzySetWindow extends JDialog{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Validar 
+				String check = options.getErrorMessages();
+				if(check != null && check.length() > 0){
+					JOptionPane.showMessageDialog(AddFuzzySetWindow.this, "No se pudo guardar el conjunto difuso:\n"+check);
+					return;
+				}
 				if(fuzzySetLabel != null){
 					GlobalData.getInstance().getFuzzyInstances().getMembership().get(attrIndex).removeFuzzySet(fuzzySetLabel);
 					options.save();
@@ -270,7 +277,6 @@ public class AddFuzzySetWindow extends JDialog{
 			jLabel2 = new javax.swing.JLabel();
 			jLabel3 = new javax.swing.JLabel();
 			jLabel5 = new javax.swing.JLabel();
-			
 
 			jLabel1.setText("Nombre del conjunto difuso:");
 
@@ -321,6 +327,30 @@ public class AddFuzzySetWindow extends JDialog{
 															.addComponent(upBoundField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
 															.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					);
+		}
+
+		@Override
+		public String getErrorMessages() {
+			errorMessages = "";
+			if(nameField.getText() == null || nameField.getText().isEmpty())
+				errorMessages+="Debe ingresar un nombre para el conjunto difuso";
+			else if(lowBoundField.getText() == null || lowBoundField.getText().isEmpty())
+				errorMessages+="Debe ingresar un valor para el límite inferior del triángulo";
+			else if(!NumberUtils.isNumber(lowBoundField.getText())) 
+				errorMessages+="El límite inferior del triángulo debe ser un número real";
+			else if(upBoundField.getText() == null || upBoundField.getText().isEmpty())
+				errorMessages+="Debe ingresar un valor para el límite superior del triángulo";
+			else if(!NumberUtils.isNumber(upBoundField.getText())) 
+				errorMessages+="El límite superior del triángulo debe ser un número real";
+			else if(topField.getText() == null || topField.getText().isEmpty())
+				errorMessages+="Debe ingresar un valor para el pico del triángulo";
+			else if(!NumberUtils.isNumber(topField.getText())) 
+				errorMessages+="El pico del triángulo debe ser un número real";
+			else if(!(Double.parseDouble(lowBoundField.getText()) < Double.parseDouble(topField.getText())
+					&& Double.parseDouble(topField.getText()) < Double.parseDouble(upBoundField.getText())
+					))
+				errorMessages+="Error al crear el conjunto difuso triangular. Revise las dimensiones definidas.";
+			return errorMessages;
 		}
 	}
 
@@ -435,6 +465,35 @@ public class AddFuzzySetWindow extends JDialog{
 			mem.setTopTrap2(Double.parseDouble(top2Field.getText()));
 			return mem;
 		}
+
+		@Override
+		public String getErrorMessages() {
+			errorMessages = "";
+			if(nameField.getText() == null || nameField.getText().isEmpty())
+				errorMessages+="Debe ingresar un nombre para el conjunto difuso";
+			else if(lowBoundField.getText() == null || lowBoundField.getText().isEmpty())
+				errorMessages+="Debe ingresar un valor para el límite inferior del trapecio";
+			else if(!NumberUtils.isNumber(lowBoundField.getText())) 
+				errorMessages+="El límite inferior del trapecio debe ser un número real";
+			else if(upBoundField.getText() == null || upBoundField.getText().isEmpty())
+				errorMessages+="Debe ingresar un valor para el límite superior del trapecio";
+			else if(!NumberUtils.isNumber(upBoundField.getText())) 
+				errorMessages+="El límite superior del trapecio debe ser un número real";
+			else if(top1Field.getText() == null || top1Field.getText().isEmpty())
+				errorMessages+="Debe ingresar un valor para el punto máximo inicial del trapecio";
+			else if(!NumberUtils.isNumber(top1Field.getText())) 
+				errorMessages+="El punto máximo inicial del trapecio debe ser un número real";
+			else if(top2Field.getText() == null || top2Field.getText().isEmpty())
+				errorMessages+="Debe ingresar un valor para el punto máximo final del trapecio";
+			else if(!NumberUtils.isNumber(top2Field.getText())) 
+				errorMessages+="El punto máximo final del trapecio debe ser un número real";
+			else if(!(Double.parseDouble(lowBoundField.getText()) < Double.parseDouble(top1Field.getText())
+					&& Double.parseDouble(top1Field.getText()) < Double.parseDouble(top2Field.getText())
+					&& Double.parseDouble(top2Field.getText()) < Double.parseDouble(upBoundField.getText())
+					))
+				errorMessages+="Error al crear el conjunto difuso trapezoidal. Revise las dimensiones definidas.";
+			return errorMessages;
+		}
 	}
 
 	private class SingletonFormPanel extends FuzzySetFormPanel{
@@ -505,6 +564,18 @@ public class AddFuzzySetWindow extends JDialog{
 											.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
 											.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					);
+		}
+
+		@Override
+		public String getErrorMessages() {
+			errorMessages = "";
+			if(nameField.getText() == null || nameField.getText().isEmpty())
+				errorMessages+="Debe ingresar un nombre para el conjunto difuso";
+			else if(xField.getText() == null || xField.getText().isEmpty())
+				errorMessages+="Debe ingresar un valor para el punto delta";
+			else if(!NumberUtils.isNumber(xField.getText())) 
+				errorMessages+="El punto delta debe ser un número real";
+			return errorMessages;
 		}
 	}
 	
@@ -589,6 +660,24 @@ public class AddFuzzySetWindow extends JDialog{
 												.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					);
 		}
+
+		@Override
+		public String getErrorMessages() {
+			errorMessages = "";
+			if(nameField.getText() == null || nameField.getText().isEmpty())
+				errorMessages+="Debe ingresar un nombre para el conjunto difuso";
+			else if(muField.getText() == null || muField.getText().isEmpty())
+				errorMessages+="Debe ingresar un valor medio";
+			else if(!NumberUtils.isNumber(muField.getText())) 
+				errorMessages+="El valor medio debe ser un número real";
+			else if(sigmaField.getText() == null || sigmaField.getText().isEmpty())
+				errorMessages+="Debe ingresar un valor para la desviación estándar";
+			else if(!NumberUtils.isNumber(sigmaField.getText())) 
+				errorMessages+="La desviación estándar debe ser un número real";
+			else if(Double.parseDouble(sigmaField.getText()) <= 0D)
+				errorMessages+="La desviación estándar debe ser mayor que 0";
+			return errorMessages;
+		}
 	}
 
 	private abstract class FuzzySetFormPanel extends JPanel{
@@ -596,9 +685,12 @@ public class AddFuzzySetWindow extends JDialog{
 		 * 
 		 */
 		public String name;
+		public String errorMessages = "";
 
 		private static final long serialVersionUID = 1L;
 
 		public abstract FuzzyMembership save();
+
+		public abstract String getErrorMessages();
 	}
 }
