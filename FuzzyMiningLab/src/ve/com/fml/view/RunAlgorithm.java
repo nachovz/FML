@@ -110,6 +110,11 @@ public class RunAlgorithm extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
+				String validate = GlobalData.getInstance().validateModel();
+				if(!validate.equals("")){
+					JOptionPane.showMessageDialog(null, validate);
+					return;
+				}
 				RunSummaryWindow runSummaryWindow = new RunSummaryWindow(topFrame, true);
 				runSummaryWindow.setIconImage((new javax.swing.ImageIcon(getClass().getResource("/Images/icon-fml.png")).getImage()));
 				RefineryUtilities.centerFrameOnScreen(runSummaryWindow);

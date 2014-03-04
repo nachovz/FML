@@ -32,6 +32,29 @@ public class GlobalData {
 			return globalData;
 		}
 	}
+	
+	public String validateModel(){
+		String result = "";
+		switch(currentTechnique){
+		case FuzzyDataMining.MODEL_FUZZY_APRIORI:
+			if(fuzzyInstances.getNumericAttributes().size() > fuzzyInstances.getMembership().size())
+				result = "Debe definir al menos un conjunto difuso por cada atributo numérico";
+			break;
+		case FuzzyDataMining.MODEL_FUZZY_DT:
+			if(fuzzyInstances.getNumericAttributes().size() > fuzzyInstances.getMembership().size())
+				result = "Debe definir al menos un conjunto difuso por cada atributo numérico";
+			break;
+		case FuzzyDataMining.MODEL_FUZZY_KMEANS:
+			if(fuzzyInstances.getNumericAttributes().size() > fuzzyInstances.getMembership().size())
+				result = "Debe definir al menos un conjunto difuso por cada atributo numérico";
+			break;
+		case FuzzyDataMining.MODEL_FUZZY_KNN:
+			if(fuzzyInstances.getNumericAttributes().size() > fuzzyInstances.getMembership().size())
+				result = "Debe definir al menos un conjunto difuso por cada atributo numérico";
+			break;
+		}
+		return result;
+	}
 
 	public void setupAndRun() {
 		int selectedTech = GlobalData.getInstance().getCurrentTechnique();
