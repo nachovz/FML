@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
@@ -80,14 +81,32 @@ public class EditDataWindow extends JDialog {
 		normalizeButton.setPreferredSize(new java.awt.Dimension(76, 50));
 		normalizeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Normalize normalize = new Normalize();
-				try {
-					normalize.setInputFormat(GlobalData.getInstance().getFuzzyInstances());
-					GlobalData.getInstance().setFuzzyInstances(new FuzzyInstances(Filter.useFilter(GlobalData.getInstance().getFuzzyInstances(), normalize)));
+				
+				
+				
+				if(attributeList.getSelectedIndex() != 0){
+					
+					int attrIndex = attributes.get(attributeList.getSelectedItem());
+					Normalize normalize = new Normalize();
+					try {
+						normalize.setInputFormat(GlobalData.getInstance().getFuzzyInstances());
+						FuzzyInstances filtered = new FuzzyInstances(Filter.useFilter(GlobalData.getInstance().getFuzzyInstances(), normalize));
+
+						GlobalData.getInstance().getFuzzyInstances().deleteAttributeAt(attrIndex);
+						GlobalData.getInstance().getFuzzyInstances().insertAttributeAt(filtered.attribute(attrIndex), attrIndex);
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+		
+					//initComponents();
+
+					abstractTableModel.fireTableStructureChanged();
+					//table.removeColumn(table.getColumn(attrIndex));
+					refreshAttributeList();
 					repaint();
-				} catch (Exception e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				}else{
+					JOptionPane.showMessageDialog(EditDataWindow.this, "Debe seleccionar un atributo para normalizar");
 				}
 			}
 		});
@@ -142,6 +161,8 @@ public class EditDataWindow extends JDialog {
 					//table.removeColumn(table.getColumn(attrIndex));
 					refreshAttributeList();
 					repaint();
+				}else {
+					JOptionPane.showMessageDialog(EditDataWindow.this, "Debe seleccionar un atributo para eliminar");
 				}
 			}
 		});
@@ -322,7 +343,10 @@ public class EditDataWindow extends JDialog {
 			@Override
 			public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
 				// TODO Revisar el tipo del atributo a editar
-				//GlobalData.getInstance().getFuzzyInstances().instance(rowIndex).setValue(columnIndex, Double.parseDouble(aValue.toString()));
+				if (GlobalData.getInstance().getFuzzyInstances().attribute(columnIndex).isNumeric()){
+					GlobalData.getInstance().getFuzzyInstances().instance(rowIndex).setValue(columnIndex, Double.parseDouble(aValue.toString()));
+					
+				} 
 			}
 
 			@Override
@@ -332,7 +356,7 @@ public class EditDataWindow extends JDialog {
 
 			@Override
 			public boolean isCellEditable(int rowIndex, int columnIndex) {
-				return true;
+				return GlobalData.getInstance().getFuzzyInstances().attribute(columnIndex).isNumeric();
 			}
 
 

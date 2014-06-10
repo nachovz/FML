@@ -13,7 +13,6 @@ import ve.com.fml.model.fuzzy.membership.TrapFuzzyMembership;
 import ve.com.fml.model.fuzzy.membership.TriangleFuzzyMembership;
 import weka.core.Instances;
 import weka.core.converters.ConverterUtils.DataSource;
-import weka.experiment.InstanceQuery;
 
 public class InstancesLoader {
 
@@ -36,8 +35,9 @@ public class InstancesLoader {
 		String currentLine = "", lines = "";
 		Instances instances = null;
 		boolean fuzzyData = false;
+		Scanner scanner = null;
 		try {
-			Scanner scanner = new Scanner(new File(path));
+			scanner = new Scanner(new File(path));
 			scanner.useDelimiter("\n");
 			while(scanner.hasNext()){
 				currentLine = scanner.next();
@@ -84,6 +84,9 @@ public class InstancesLoader {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally{
+			if(scanner != null)
+				scanner.close();
 		}
 		return fuzzyInstances;
 	}
@@ -102,32 +105,5 @@ public class InstancesLoader {
 		
 	}
 
-	public static Instances loadFromMySQLTable(String ip, String port, String schema, String username, String password, String table){
-		return loadFromMySQLTable(ip, port, schema, username, password, table, null);
-	}
-
-	public static Instances loadFromMySQLTable(String ip, String port, String schema, String username, String password, String table, Integer classIndex){
-		Instances instances = null;
-		try {
-			InstanceQuery query = new InstanceQuery();
-			query.setDatabaseURL("jdbc:mysql://"+ip+":"+port+"/"+schema);
-			query.setUsername(username);
-			query.setPassword(password);
-			query.setQuery("SELECT * FROM "+table);
-			instances = query.retrieveInstances();
-
-			// Make the last attribute be the class
-			instances.setClassIndex(classIndex == null? instances.numAttributes() - 1: classIndex);
-
-			// Print header and instances.
-			System.out.println("\nDataset:\n");
-			System.out.println(instances);
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return instances;
-	}
 
 }

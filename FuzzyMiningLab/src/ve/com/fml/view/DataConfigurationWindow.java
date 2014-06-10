@@ -34,8 +34,8 @@ public class DataConfigurationWindow extends JPanel {
 	private javax.swing.JLabel openLabel;
 	private javax.swing.JPanel picPanel;
 	private javax.swing.JLabel pictureLabel;
-	private javax.swing.Box.Filler filler1;
-	private javax.swing.Box.Filler filler2;
+	private javax.swing.JButton saveDatasetButton;
+	private javax.swing.JLabel jLabel2;
 
 	public DataConfigurationWindow(){
 
@@ -48,17 +48,17 @@ public class DataConfigurationWindow extends JPanel {
 
 	private void initComponents() {
 		final JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
-		openLabel = new javax.swing.JLabel();
-		openButton = new javax.swing.JButton();
-		editLabel = new javax.swing.JLabel();
-		editButton = new javax.swing.JButton();
-		jSeparator1 = new javax.swing.JSeparator();
-		picPanel = new javax.swing.JPanel();
-		pictureLabel = new javax.swing.JLabel();
-		fuzzyButton = new javax.swing.JButton();
-		fuzzyLabel = new javax.swing.JLabel();
-		filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
-		filler2 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 0), new java.awt.Dimension(0, 0), new java.awt.Dimension(32767, 0));
+        openLabel = new javax.swing.JLabel();
+        openButton = new javax.swing.JButton();
+        editLabel = new javax.swing.JLabel();
+        editButton = new javax.swing.JButton();
+        jSeparator1 = new javax.swing.JSeparator();
+        picPanel = new javax.swing.JPanel();
+        pictureLabel = new javax.swing.JLabel();
+        fuzzyButton = new javax.swing.JButton();
+        fuzzyLabel = new javax.swing.JLabel();
+        saveDatasetButton = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
 
 		openLabel.setText("Abrir Archivo");
 
@@ -141,70 +141,105 @@ public class DataConfigurationWindow extends JPanel {
 			}
 		});
 		fuzzyLabel.setText("Difusificación");
+		
+
+        saveDatasetButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Images/btn_Guardar.png"))); // NOI18N
+        saveDatasetButton.setMinimumSize(new java.awt.Dimension(76, 50));
+        saveDatasetButton.setPreferredSize(new java.awt.Dimension(76, 50));
+        
+        saveDatasetButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.out.println(GlobalData.getInstance().getFuzzyInstances());
+				if(GlobalData.getInstance().getFuzzyInstances() == null){
+					JOptionPane.showMessageDialog(null, "Debe configurar un conjunto de datos para poder guardarlo.");
+					return;
+				}
+				String sufix = "";
+				try{
+					JFileChooser fc= new JFileChooser();
+					if(GlobalData.getInstance().getFuzzyInstances().getMembership().isEmpty()){
+						fc.setFileFilter(new FileNameExtensionFilter("Archivos ARFF", "arff"));
+						sufix = ".arff";
+					}else{
+						fc.setFileFilter(new FileNameExtensionFilter("Archivos FARFF", "farff"));
+						sufix = ".farff";
+					}
+					
+					int returnVal= fc.showSaveDialog(DataConfigurationWindow.this);
+					if(returnVal == JFileChooser.APPROVE_OPTION){
+						InstancesLoader.saveToTextFile(GlobalData.getInstance().getFuzzyInstances(), fc.getSelectedFile().getAbsolutePath()+sufix);
+					}
+					//actualizar();
+				}catch(Exception ex){
+					//					JOptionPane.showMessageDialog(null, GAL_GUI.language.Errors[10]);
+					JOptionPane.showMessageDialog(null, "Error al guardar el archivo");
+				}
+			}
+		});
+
+        jLabel2.setText("Guardar");
 
 		javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(this);
-		setLayout(jPanel1Layout);
-		jPanel1Layout.setHorizontalGroup(
-				jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(jPanel1Layout.createSequentialGroup()
-						.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addGroup(jPanel1Layout.createSequentialGroup()
-										.addGap(10, 10, 10)
-										.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-												.addComponent(picPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-												.addComponent(jSeparator1)))
-												.addGroup(jPanel1Layout.createSequentialGroup()
-														.addGap(68, 68, 68)
-														.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-																.addComponent(openButton, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-																.addComponent(openLabel))
-																.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addComponent(filler1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-																.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-																		.addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-																		.addComponent(editLabel))
-																		.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																		.addComponent(filler2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-																		.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																		.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-																				.addComponent(fuzzyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
-																				.addComponent(fuzzyLabel))
-																				.addGap(61, 61, 61)))
-																				.addContainerGap())
-				);
-		jPanel1Layout.setVerticalGroup(
-				jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-				.addGroup(jPanel1Layout.createSequentialGroup()
-						.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-								.addGroup(jPanel1Layout.createSequentialGroup()
-										.addContainerGap()
-										.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-												.addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-														.addGroup(jPanel1Layout.createSequentialGroup()
-																.addComponent(openButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-																.addGap(7, 7, 7)
-																.addComponent(openLabel))
-																.addGroup(jPanel1Layout.createSequentialGroup()
-																		.addComponent(fuzzyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-																		.addGap(7, 7, 7)
-																		.addComponent(fuzzyLabel)))
-																		.addGroup(jPanel1Layout.createSequentialGroup()
-																				.addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-																				.addGap(7, 7, 7)
-																				.addComponent(editLabel))))
-																				.addGroup(jPanel1Layout.createSequentialGroup()
-																						.addGap(39, 39, 39)
-																						.addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-																						.addGroup(jPanel1Layout.createSequentialGroup()
-																								.addGap(35, 35, 35)
-																								.addComponent(filler2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)))
-																								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																								.addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-																								.addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-																								.addComponent(picPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-																								.addContainerGap())
-				);
+        this.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(picPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jSeparator1)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(40, 40, 40)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(openButton, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(openLabel))
+                        .addGap(69, 69, 69)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(editLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(fuzzyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(fuzzyLabel))
+                        .addGap(69, 69, 69)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                            .addComponent(jLabel2)
+                            .addComponent(saveDatasetButton, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(40, 40, 40)))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(openButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(7, 7, 7)
+                        .addComponent(openLabel))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(fuzzyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(7, 7, 7)
+                        .addComponent(fuzzyLabel))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(editButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(7, 7, 7)
+                        .addComponent(editLabel))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(saveDatasetButton, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(7, 7, 7)
+                        .addComponent(jLabel2)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(picPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
 
 	}
 }
